@@ -69,9 +69,9 @@
 </script>
 
 <section class="pt-16 md:pt-32">
-	<h2 data-aos="fade-up" class="text-3xl font-bold text-center mb-2">Projects</h2>
+	<h2 data-aos="fade-up" class="text-3xl text-interactive font-bold text-center mb-2">Projects</h2>
 	<div data-aos="fade-in">
-		<p class="text-center text-gray-500 dark:text-gray-400 mb-16 md:mb-24">
+		<p class="text-center interactive text-gray-500 dark:text-gray-400 mb-16 md:mb-24">
 			Here are some of the projects I've worked on. Click on the project to view more details.
 		</p>
 	</div>
@@ -82,22 +82,22 @@
 				class="rounded-2xl flex flex-col items-center md:flex-row ring-2 ring-opacity-5 ring-white overflow-hidden transition ring-offset-4 ring-offset-dark hover:ring-opacity-10 hover:scale-[101%] cursor-pointer"
 				class:md:flex-row-reverse={index % 2 === 0}
 			>
-				<img src={project.image} alt={project.title} class="w-full md:w-1/2 h-44 md:h-72 object-cover" />
+				<img src={project.image} alt={project.title} class="w-full text-interactive md:w-1/2 h-44 md:h-72 object-cover" />
 				<div class="p-6 md:w-1/2">
-					<h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+					<h3 class="text-xl font-semibold interactive mb-2 text-gray-800 dark:text-white">
 						{project.title}
 					</h3>
-					<p class="text-gray-600 dark:text-gray-300 mb-4">{project.description}</p>
+					<p class="text-gray-600 dark:text-gray-300 text-interactive mb-4">{project.description}</p>
 					<div class="flex items-center gap-3">
 						<a
 							href={project.githubUrl}
-							class="bg-transparent border border-white px-4 py-2 rounded-full hover:bg-white hover:text-gray-900 center transition duration-300 ring-1 ring-offset-2 ring-offset-dark gap-2 ring-green-400"
+							class="bg-transparent text-interactive border border-white px-4 py-2 rounded-full hover:bg-white hover:text-gray-900 center transition duration-300 ring-1 ring-offset-2 ring-offset-dark gap-2 ring-green-400"
 						>
 							<i class="fab fa-github"></i> GitHub
 						</a>
 						<a
 							href={project.projectUrl}
-							class="bg-blue-500 border border-blue-500 px-4 py-2 rounded-full hover:bg-blue-600 center transition duration-300 ring-1 ring-offset-2 ring-offset-dark ring-green-400 gap-2"
+							class="bg-blue-500 interactive border border-blue-500 px-4 py-2 rounded-full hover:bg-blue-600 center transition duration-300 ring-1 ring-offset-2 ring-offset-dark ring-green-400 gap-2"
 						>
 							<i class="fas fa-link"></i> View Project
 						</a>

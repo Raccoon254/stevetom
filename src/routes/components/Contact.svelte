@@ -38,11 +38,11 @@
 
 <section id="contact" class="pt-16 md:pt-32">
   <div class="">
-      <h2 data-aos="fade-up" class="text-3xl font-bold text-center mb-8">Contact Me</h2>
+      <h2 data-aos="fade-up" class="text-3xl font-bold text-interactive text-center mb-8">Contact Me</h2>
       
       <div class="max-w-3xl mx-auto rounded-lg shadow-lg overflow-hidden">
           <div class="p-6 md:p-8">
-              <p data-aos="zoom-in" class="text-gray-600 dark:text-gray-300 mb-6 text-center">
+              <p data-aos="zoom-in" class="text-gray-600 interactive dark:text-gray-300 mb-6 text-center">
                   I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
               </p>
               
@@ -51,10 +51,10 @@
                       <a href={info.link} 
                          data-aos="zoom-in"
                          data-aos-delay={100*(index+1)}
-                         class="flex items-center p-4 bg-gray-600 bg-opacity-10 rounded-lg transition-colors duration-300 hover:bg-gray-800"
+                         class="flex items-center text-interactive p-4 bg-gray-600 bg-opacity-10 rounded-lg transition-colors duration-300 hover:bg-gray-800"
                          target="_blank" 
                          rel="noopener noreferrer">
-                          <i class="{info.icon} text-2xl text-blue-500 dark:text-blue-400 mr-4"></i>
+                          <i class="{info.icon} text-2xl interactive text-blue-500 dark:text-blue-400 mr-4"></i>
                           <div>
                               <h3 class="font-semibold text-gray-800 dark:text-white">{info.label}</h3>
                               <p class="text-gray-600 dark:text-gray-300">{info.value}</p>
@@ -66,12 +66,12 @@
       </div>
 
       <div class="mt-12 text-center">
-          <p data-aos="zoom-up" class="text-gray-600 dark:text-gray-300 mb-4">
+          <p data-aos="zoom-up" class="text-gray-600 interactive dark:text-gray-300 mb-4">
               Prefer a more formal approach? Feel free to send me a message!
           </p>
           <div class="center">
             <a href="mailto:tomsteve187@gmail.com" 
-             class="bg-transparent border border-white px-4 py-2 w-36 rounded-full hover:bg-white hover:text-gray-900 center transition duration-300 ring-1 ring-offset-2 ring-offset-dark gap-2 ring-green-400">
+             class="bg-transparent border border-white px-4 py-2 w-36 rounded-full hover:bg-white hover:text-gray-900 text-interactive center transition duration-300 ring-1 ring-offset-2 ring-offset-dark gap-2 ring-green-400">
               <i class="fas fa-envelope"></i>
               Send Email
           </a>
