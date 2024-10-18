@@ -31,3 +31,10 @@ body {
   border-radius: 100%;
   mix-blend-mode: difference;
 }
+
+/* Small devices */
+@media (max-width: 768px) {
+  .cursor {
+    display: none;
+  }
+}
