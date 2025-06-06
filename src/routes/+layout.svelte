@@ -41,11 +41,11 @@
 						</div>
 					</div>
 					<div class="text-left col-span-2">
-						<p class="mb-4">
+						<p class="mb-4 opacity-70">
 							Hi, I'm KenTom[Steve Osoro Tom], the developer behind Projects like Status Saver, Jestorm, Cline, and
 							many more. I'm a passionate developer with a keen interest in technology and software
 						</p>
-						<p class="mb-4">
+						<p class="mb-4 opacity-70">
 							This website is a showcase of my work and a platform to connect with me. Feel free to reach out to me for any queries or collaborations, I'm always open to new opportunities and challenges, and I'm looking forward to working with you. Thank you for visiting my website.
 						</p>
 						<div class="flex flex-wrap justify-start gap-4 mt-4">

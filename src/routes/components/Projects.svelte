@@ -191,6 +191,9 @@
                     A curated collection of my digital creations, each telling a unique story of innovation,
                     problem-solving, and technical excellence. Hover to explore the details.
                 </p>
+                <div class="text-xs my-4 text-gray-500 italic opacity-70">
+                    Fiverr and Upwork projects are not included here, but you can find SOME of them in my github
+                </div>
                 <div class="decorative-line"></div>
             </div>
         </div>
@@ -422,6 +425,16 @@
         .projects-container {
             grid-template-columns: 1fr;
             gap: 5rem;
+        }
+        .image-container{
+            height: 50% !important;
+        }
+        .project-card {
+            position: relative;
+            height: 400px !important;
+        }
+        .content-section{
+            height: 50% !important;
         }
     }
 
