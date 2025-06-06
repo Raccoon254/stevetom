@@ -1,18 +1,365 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.jpg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%sveltekit.head%
-		<!-- fontawesome and devicons -->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<head>
+	<meta charset="utf-8" />
 
-		<link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
-          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2639581020397408"
-     crossorigin="anonymous"></script>
-	</head>
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+	<!-- Basic Meta Tags -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="theme-color" content="#000000" />
+	<meta name="color-scheme" content="dark light" />
+
+	<!-- Favicon and Icons -->
+	<link rel="icon" href="%sveltekit.assets%/favicon.jpg" />
+	<link rel="apple-touch-icon" sizes="180x180" href="%sveltekit.assets%/favicon.jpg" />
+	<link rel="icon" type="image/png" sizes="32x32" href="%sveltekit.assets%/favicon.jpg" />
+	<link rel="icon" type="image/png" sizes="16x16" href="%sveltekit.assets%/favicon.jpg" />
+
+	<!-- Primary Meta Tags -->
+	<title>KenTom - Steve Osoro Tom | Full-Stack Developer & Software Engineer</title>
+	<meta name="title" content="KenTom - Steve Osoro Tom | Full-Stack Developer & Software Engineer" />
+	<meta name="description" content="KenTom (Steve Osoro Tom) aka Raccoon254 - Experienced full-stack developer specializing in React, Laravel, Kotlin, and modern web technologies. Creator of Status Saver, JeStorm, Scholarspace, and innovative digital solutions." />
+	<meta name="keywords" content="KenTom, Steve Osoro Tom, Steve Tom, Raccoon254, full-stack developer, web developer, software engineer, React developer, Laravel developer, Kotlin developer, Android developer, JavaScript, TypeScript, PHP, Python, portfolio, Kenya developer, Chuka University, computer science, web development, mobile development, freelancer, tech consultant" />
+	<meta name="author" content="Steve Osoro Tom (KenTom)" />
+	<meta name="robots" content="index, follow" />
+	<meta name="language" content="English" />
+	<meta name="revisit-after" content="7 days" />
+
+	<!-- Canonical URL -->
+	<link rel="canonical" href="https://stevetom.vercel.app/" />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://stevetom.vercel.app/" />
+	<meta property="og:site_name" content="KenTom Portfolio" />
+	<meta property="og:title" content="KenTom - Steve Osoro Tom | Full-Stack Developer & Software Engineer" />
+	<meta property="og:description" content="Experienced full-stack developer creating innovative digital solutions. Specializing in React, Laravel, Kotlin, and modern web technologies. View my portfolio featuring Status Saver, JeStorm, Scholarspace, and more." />
+	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+	<meta property="og:image:alt" content="KenTom - Steve Osoro Tom Portfolio Banner" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:locale" content="en_US" />
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/" />
+	<meta name="twitter:title" content="KenTom - Steve Osoro Tom | Full-Stack Developer & Software Engineer" />
+	<meta name="twitter:description" content="Experienced full-stack developer creating innovative digital solutions. Specializing in React, Laravel, Kotlin, and modern web technologies." />
+	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+	<meta name="twitter:image:alt" content="KenTom - Steve Osoro Tom Portfolio Banner" />
+	<meta name="twitter:creator" content="@raccoon254" />
+	<meta name="twitter:site" content="@raccoon254" />
+
+	<!-- LinkedIn -->
+	<meta property="linkedin:owner" content="steve-tom-822a81230" />
+
+	<!-- Additional Social Media Tags -->
+	<meta property="business:contact_data:locality" content="Nairobi" />
+	<meta property="business:contact_data:region" content="Kenya" />
+	<meta property="business:contact_data:country_name" content="Kenya" />
+	<meta property="business:contact_data:email" content="tomsteve187@gmail.com" />
+	<meta property="business:contact_data:phone_number" content="+254758481320" />
+	<meta property="business:contact_data:website" content="https://stevetom.vercel.app/" />
+
+	<!-- Schema.org Structured Data -->
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "Person",
+			"name": "Steve Osoro Tom",
+			"alternateName": ["KenTom", "Raccoon254"],
+			"jobTitle": "Full-Stack Developer & Software Engineer",
+			"description": "Experienced full-stack developer specializing in React, Laravel, Kotlin, and modern web technologies",
+			"url": "https://stevetom.vercel.app/",
+			"image": "https://stevetom.vercel.app/kentom_website_banner.jpg",
+			"email": "tomsteve187@gmail.com",
+			"telephone": "+254758481320",
+			"address": {
+				"@type": "PostalAddress",
+				"addressLocality": "Nairobi",
+				"addressCountry": "Kenya"
+			},
+			"sameAs": [
+				"https://github.com/Raccoon254",
+				"https://www.linkedin.com/in/steve-tom-822a81230/",
+				"https://www.instagram.com/raccoon.254/",
+				"https://wa.me/254758481320"
+			],
+			"alumniOf": {
+				"@type": "EducationalOrganization",
+				"name": "Chuka University",
+				"department": "Computer Science"
+			},
+			"knowsAbout": [
+				"JavaScript",
+				"TypeScript",
+				"React",
+				"Next.js",
+				"Laravel",
+				"PHP",
+				"Kotlin",
+				"Python",
+				"Node.js",
+				"Android Development",
+				"Web Development",
+				"Software Engineering",
+				"Full-Stack Development"
+			],
+			"owns": [
+				{
+					"@type": "SoftwareApplication",
+					"name": "Status Saver",
+					"applicationCategory": "Mobile Application",
+					"operatingSystem": "Android",
+					"url": "https://status-saver.vercel.app"
+				},
+				{
+					"@type": "WebApplication",
+					"name": "JeStorm",
+					"applicationCategory": "Project Management",
+					"url": "https://jestorm.vercel.app"
+				},
+				{
+					"@type": "WebApplication",
+					"name": "Scholarspace",
+					"applicationCategory": "Education",
+					"url": "https://scholarspace.me"
+				},
+				{
+					"@type": "WebApplication",
+					"name": "InternLink",
+					"applicationCategory": "Career Platform",
+					"url": "https://intern.co.ke"
+				}
+			],
+			"memberOf": {
+				"@type": "Organization",
+				"name": "FutureSpace Kenya",
+				"url": "https://futurespace.vercel.app/"
+			}
+		}
+	</script>
+
+	<!-- Website Schema -->
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			"name": "KenTom Portfolio",
+			"url": "https://stevetom.vercel.app/",
+			"description": "Portfolio website of Steve Osoro Tom (KenTom), showcasing full-stack development projects and software engineering expertise",
+			"author": {
+				"@type": "Person",
+				"name": "Steve Osoro Tom",
+				"alternateName": ["KenTom", "Raccoon254"]
+			},
+			"inLanguage": "en-US",
+			"copyrightYear": "2024",
+			"copyrightHolder": {
+				"@type": "Person",
+				"name": "Steve Osoro Tom"
+			},
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": "https://stevetom.vercel.app/?search={search_term_string}",
+				"query-input": "required name=search_term_string"
+			}
+		}
+	</script>
+
+	<!-- Professional Service Schema -->
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "ProfessionalService",
+			"name": "KenTom Development Services",
+			"description": "Professional web and mobile development services by Steve Osoro Tom",
+			"provider": {
+				"@type": "Person",
+				"name": "Steve Osoro Tom",
+				"alternateName": ["KenTom", "Raccoon254"]
+			},
+			"serviceType": [
+				"Web Development",
+				"Mobile App Development",
+				"Full-Stack Development",
+				"Software Engineering",
+				"UI/UX Design",
+				"Database Design",
+				"API Development"
+			],
+			"areaServed": {
+				"@type": "Country",
+				"name": "Kenya"
+			},
+			"url": "https://stevetom.vercel.app/",
+			"telephone": "+254758481320",
+			"email": "tomsteve187@gmail.com",
+			"address": {
+				"@type": "PostalAddress",
+				"addressLocality": "Nairobi",
+				"addressCountry": "Kenya"
+			}
+		}
+	</script>
+
+	<!-- External CSS Libraries -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+	<link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+
+	<!-- Preconnect to external domains for performance -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+
+	<!-- DNS Prefetch -->
+	<link rel="dns-prefetch" href="//github.com" />
+	<link rel="dns-prefetch" href="//linkedin.com" />
+	<link rel="dns-prefetch" href="//vercel.app" />
+
+	<!-- Alternate versions -->
+	<link rel="alternate" hreflang="en" href="https://stevetom.vercel.app/" />
+	<link rel="alternate" hreflang="x-default" href="https://stevetom.vercel.app/" />
+
+	<!-- Manifest -->
+	<link rel="manifest" href="/manifest.json" />
+
+	<!-- Security Headers -->
+	<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+	<meta http-equiv="X-Frame-Options" content="DENY" />
+	<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+	<meta name="referrer" content="strict-origin-when-cross-origin" />
+
+	<!-- Verification Tags (Add your actual verification codes) -->
+	<!-- <meta name="google-site-verification" content="your-google-verification-code" /> -->
+	<!-- <meta name="msvalidate.01" content="your-bing-verification-code" /> -->
+	<!-- <meta name="yandex-verification" content="your-yandex-verification-code" /> -->
+
+	<!-- Additional Meta for Brand Recognition -->
+	<meta name="application-name" content="KenTom Portfolio" />
+	<meta name="msapplication-TileColor" content="#000000" />
+	<meta name="msapplication-config" content="/browserconfig.xml" />
+
+	<!-- Rich Snippets for Developer -->
+	<meta name="developer" content="Steve Osoro Tom (KenTom)" />
+	<meta name="designer" content="Steve Osoro Tom (KenTom)" />
+	<meta name="owner" content="Steve Osoro Tom (KenTom)" />
+	<meta name="reply-to" content="tomsteve187@gmail.com" />
+	<meta name="target" content="developers, recruiters, clients, tech enthusiasts" />
+	<meta name="subject" content="Full-Stack Development Portfolio" />
+	<meta name="copyright" content="Steve Osoro Tom (KenTom)" />
+	<meta name="abstract" content="Professional portfolio showcasing full-stack development expertise, innovative projects, and software engineering solutions by Steve Osoro Tom, also known as KenTom or Raccoon254." />
+	<meta name="topic" content="Web Development, Software Engineering, Portfolio" />
+	<meta name="summary" content="Experienced developer specializing in modern web technologies, mobile applications, and innovative digital solutions." />
+	<meta name="classification" content="Technology, Software Development, Portfolio" />
+	<meta name="category" content="Technology" />
+	<meta name="coverage" content="Worldwide" />
+	<meta name="distribution" content="Global" />
+	<meta name="rating" content="General" />
+
+	<!-- Geo Tags -->
+	<meta name="geo.region" content="KE" />
+	<meta name="geo.placename" content="Nairobi" />
+	<meta name="geo.position" content="-1.286389;36.817223" />
+	<meta name="ICBM" content="-1.286389, 36.817223" />
+
+	<!-- Contact Information -->
+	<meta name="contact" content="tomsteve187@gmail.com" />
+	<meta name="email" content="tomsteve187@gmail.com" />
+	<meta name="phone" content="+254758481320" />
+	<meta name="address" content="Nairobi, Kenya" />
+
+	<!-- Professional Details -->
+	<meta name="profession" content="Full-Stack Developer" />
+	<meta name="skills" content="JavaScript, React, Laravel, Kotlin, Python, Node.js, TypeScript, PHP, Android Development" />
+	<meta name="experience" content="5+ years in software development" />
+	<meta name="education" content="Applied Computer Science, Chuka University" />
+	<meta name="specialization" content="Web Development, Mobile App Development, Software Engineering" />
+
+	<!-- Google AdSense -->
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2639581020397408" crossorigin="anonymous"></script>
+
+	<!-- SvelteKit head content -->
+	%sveltekit.head%
+</head>
+<body data-sveltekit-preload-data="hover">
+<div style="display: contents">%sveltekit.body%</div>
+
+<!-- Structured Data for Projects -->
+<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "ItemList",
+		"name": "KenTom's Featured Projects",
+		"description": "A collection of innovative software projects by Steve Osoro Tom",
+		"itemListElement": [
+			{
+				"@type": "SoftwareApplication",
+				"position": 1,
+				"name": "Skillkenya",
+				"description": "Educational platform for learning tech skills",
+				"url": "https://www.skillkenya.com/",
+				"applicationCategory": "Education",
+				"operatingSystem": "Web",
+				"author": {
+					"@type": "Person",
+					"name": "Steve Osoro Tom"
+				}
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 2,
+				"name": "Status Saver",
+				"description": "Android application for saving WhatsApp statuses",
+				"url": "https://status-saver.vercel.app",
+				"applicationCategory": "Utility",
+				"operatingSystem": "Android",
+				"author": {
+					"@type": "Person",
+					"name": "Steve Osoro Tom"
+				}
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 3,
+				"name": "JeStorm",
+				"description": "Project management tool for developers",
+				"url": "https://jestorm.vercel.app",
+				"applicationCategory": "ProductivityApplication",
+				"operatingSystem": "Web",
+				"author": {
+					"@type": "Person",
+					"name": "Steve Osoro Tom"
+				}
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 4,
+				"name": "Scholarspace",
+				"description": "Academic platform for assignment help services",
+				"url": "https://scholarspace.me",
+				"applicationCategory": "Education",
+				"operatingSystem": "Web",
+				"author": {
+					"@type": "Person",
+					"name": "Steve Osoro Tom"
+				}
+			},
+			{
+				"@type": "SoftwareApplication",
+				"position": 5,
+				"name": "InternLink",
+				"description": "Platform connecting students with internship opportunities",
+				"url": "https://intern.co.ke",
+				"applicationCategory": "BusinessApplication",
+				"operatingSystem": "Web",
+				"author": {
+					"@type": "Person",
+					"name": "Steve Osoro Tom"
+				}
+			}
+		]
+	}
+</script>
+</body>
 </html>
