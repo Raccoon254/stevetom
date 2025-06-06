@@ -22,7 +22,7 @@
             image: 'skillkenya.png',
             projectUrl: 'https://www.skillkenya.com/',
             githubUrl: '#',
-            tech: ['React', 'Node.js', 'MongoDB', 'Express'],
+            tech: ['React', 'Node.js', 'MySQL', 'NextJs','Prisma'],
             year: '2024',
             category: 'Education Platform',
             features: ['Video Streaming', 'Payment Integration', 'User Analytics', 'Course Management'],
@@ -37,7 +37,7 @@
             tech: ['Kotlin', 'Android Studio', 'SQLite', 'Material Design'],
             year: '2023',
             category: 'Mobile Application',
-            features: ['Auto-detection', 'Batch Operations', 'Cloud Backup', 'Share Integration'],
+            features: ['Auto-detection', 'Batch Operations', 'Auto Refresh', 'Share Integration'],
             status: 'live'
         },
         {
@@ -58,11 +58,11 @@
             image: 'scholarspace.png',
             projectUrl: 'https://scholarspace.me',
             githubUrl: 'https://github.com/Raccoon254/Scholarspace.io',
-            tech: ['Laravel', 'PHP', 'MySQL', 'Vue.js'],
+            tech: ['Laravel', 'PHP', 'MySQL', 'Livewire'],
             year: '2023',
             category: 'Academic Platform',
             features: ['Assignment Matching', 'Secure Payments', 'Live Chat', 'Document Management'],
-            status: 'live'
+            status: 'development'
         },
         {
             title: 'Project InternLink',
@@ -70,11 +70,11 @@
             image: 'internlink.png',
             projectUrl: 'https://intern.co.ke',
             githubUrl: 'https://github.com/FutureSpace-Kenya/InternLink',
-            tech: ['React', 'Express', 'PostgreSQL', 'AWS'],
+            tech: ['React', 'NextJs', 'PostgreSQL', 'Vercel'],
             year: '2024',
             category: 'Career Platform',
-            features: ['AI Matching', 'Application Tracking', 'Interview Scheduling', 'Portfolio Builder'],
-            status: 'live'
+            features: ['Application Tracking', 'Interview Scheduling', 'Portfolio Builder'],
+            status: 'development'
         },
         {
             title: 'FutureSpace',
@@ -82,7 +82,7 @@
             image: 'futurespace.png',
             projectUrl: 'https://futurespace.vercel.app/',
             githubUrl: 'https://github.com/FutureSpace-Kenya',
-            tech: ['Next.js', 'Tailwind', 'Framer Motion', 'Vercel'],
+            tech: ['Next.js', 'Tailwind', 'HTML', 'Vercel'],
             year: '2024',
             category: 'Corporate Website',
             features: ['Interactive Animations', 'Service Showcase', 'Contact Forms', 'Portfolio Gallery'],
@@ -94,7 +94,7 @@
             image: 'crown-chambers.png',
             projectUrl: 'https://crown-chambers.vercel.app/',
             githubUrl: 'https://github.com/Raccoon254/',
-            tech: ['React', 'TypeScript', 'Sanity CMS', 'Stripe'],
+            tech: ['React', 'TypeScript', 'Vercel', 'TailwindCSS'],
             year: '2024',
             category: 'Legal Services',
             features: ['Case Management', 'Client Portal', 'Document Templates', 'Appointment Booking'],
@@ -106,7 +106,7 @@
             image: 'cline.png',
             projectUrl: '#',
             githubUrl: 'https://github.com/Raccoon254/cline',
-            tech: ['Svelte', 'SvelteKit', 'Supabase', 'TailwindCSS'],
+            tech: ['Laravel', 'Livewire', 'MySQL', 'TailwindCSS'],
             year: '2024',
             category: 'Business Tool',
             features: ['Client Dashboard', 'Invoice Generation', 'Project Tracking', 'Communication Hub'],
@@ -185,6 +185,7 @@
     <div class="projects-container" bind:this={projectsContainer}>
         {#each projects as project, index}
             <div
+                    role="article"
                     class="project-card"
                     style="--delay: {index * 0.1}s"
                     on:mouseenter={() => handleProjectHover(index)}
@@ -252,7 +253,11 @@
                                 <h5 class="tech-title">Tech Stack</h5>
                                 <div class="tech-grid">
                                     {#each project.tech as tech}
-                                        <span class="tech-pill">{tech}</span>
+                                        <div>
+                                            <i class="devicon-react-original colored"></i>
+                                            <i class={`devicon-${tech.toLowerCase()}-plain colored`}></i>
+                                            <span class="tech-pill">{tech}</span>
+                                        </div>
                                     {/each}
                                 </div>
                             </div>
@@ -278,7 +283,7 @@
                             target="_blank"
                             rel="noopener noreferrer"
                     >
-                        <i class="fas fa-external-link-alt"></i>
+                        <i class="fas fa-link"></i>
                         <span>Live Demo</span>
                         <div class="btn-glow"></div>
                     </a>
@@ -539,6 +544,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        backdrop-filter: blur(10px);
     }
 
     .project-title {
