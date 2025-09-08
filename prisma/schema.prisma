@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  image       String
+  projectUrl  String
+  githubUrl   String
+  tech        String[] // Array of technologies used
+  year        String
+  category    String
+  features    String[] // Array of key features
+  status      ProjectStatus @default(DEVELOPMENT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Service {
+  id           String   @id @default(cuid())
+  name         String
+  description  String
+  price        Float? // Optional pricing
+  duration     String? // e.g., "2-4 weeks"
+  technologies String[] // Technologies used for this service
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relation to service requests
+  requests ServiceRequest[]
+}
+
+model ServiceRequest {
+  id           String               @id @default(cuid())
+  serviceId    String
+  clientName   String
+  clientEmail  String
+  clientPhone  String?
+  company      String?
+  projectTitle String
+  description  String // Client's project description
+  requirements String? // Additional requirements
+  budget       Float? // Client's budget
+  timeline     String? // Expected timeline
+  status       ServiceRequestStatus @default(PENDING)
+  notes        String? // Internal notes
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  // Relation to service
+  service Service @relation(fields: [serviceId], references: [id])
+}
+
+enum ProjectStatus {
+  LIVE
+  DEVELOPMENT
+  ARCHIVED
+}
+
+enum ServiceRequestStatus {
+  PENDING
+  IN_REVIEW
+  ACCEPTED
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
