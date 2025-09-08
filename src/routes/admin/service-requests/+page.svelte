@@ -82,13 +82,13 @@
 
     function getStatusColor(status: string) {
         switch (status) {
-            case 'PENDING': return 'bg-yellow-500';
-            case 'IN_REVIEW': return 'bg-blue-500';
-            case 'ACCEPTED': return 'bg-green-500';
-            case 'IN_PROGRESS': return 'bg-purple-500';
-            case 'COMPLETED': return 'bg-green-700';
-            case 'REJECTED': return 'bg-red-500';
-            default: return 'bg-gray-500';
+            case 'PENDING': return 'badge-warning';
+            case 'IN_REVIEW': return 'badge-info';
+            case 'ACCEPTED': return 'badge-success';
+            case 'IN_PROGRESS': return 'badge-primary';
+            case 'COMPLETED': return 'badge-success';
+            case 'REJECTED': return 'badge-error';
+            default: return 'badge-ghost';
         }
     }
 
@@ -107,15 +107,15 @@
 <div class="space-y-6">
     <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-white">Service Requests</h1>
-            <p class="text-gray-400">Manage client service requests</p>
+            <h1 class="text-3xl font-bold">Service Requests</h1>
+            <p>Manage client service requests</p>
         </div>
         
         <!-- Filter -->
-        <div class="flex items-center gap-4">
+        <div class="form-control">
             <select 
                 bind:value={filterStatus}
-                class="bg-gray-700 text-white px-4 py-2 rounded border border-gray-600 focus:border-blue-500"
+                class="select select-bordered"
             >
                 <option value="">All Statuses</option>
                 <option value="PENDING">Pending</option>
@@ -129,184 +129,189 @@
     </div>
 
     {#if loading}
-        <div class="flex justify-center py-12">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div class="flex justify-center items-center min-h-[80vh] py-12">
+            <div class="animate-spin rounded-full h-12 w-12 loading loading-ring"></div>
         </div>
     {:else if requests.length === 0}
-        <div class="bg-gray-800 rounded-lg p-12 text-center border border-gray-700">
-            <i class="fas fa-inbox text-4xl text-gray-600 mb-4"></i>
-            <h3 class="text-xl text-gray-400 mb-2">No service requests</h3>
-            <p class="text-gray-500">When clients submit service requests, they'll appear here.</p>
+        <div class="text-center py-12">
+            <div class="w-16 h-16 bg-base-300 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-inbox"></i>
+            </div>
+            <h3 class="font-medium mb-2">No service requests</h3>
+            <p class="text-sm">When clients submit service requests, they'll appear here.</p>
         </div>
     {:else}
-        <div class="bg-gray-800 rounded-lg overflow-hidden border border-gray-700">
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-700">
+        <div class="overflow-x-auto">
+            <table class="table w-full">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Project</th>
+                        <th>Service</th>
+                        <th>Budget</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each requests as request}
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Client</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Project</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Service</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Budget</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-700">
-                        {#each requests as request}
-                            <tr class="hover:bg-gray-700 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap">
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <div class="avatar">
+                                        <div class="mask mask-squircle w-10 h-10">
+                                            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-medium">
+                                                {request.clientName.charAt(0).toUpperCase()}
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div>
-                                        <div class="text-white font-medium">{request.clientName}</div>
-                                        <div class="text-gray-400 text-sm">{request.clientEmail}</div>
+                                        <div class="font-bold">{request.clientName}</div>
+                                        <div class="text-sm opacity-50">{request.clientEmail}</div>
                                         {#if request.company}
-                                            <div class="text-gray-500 text-xs">{request.company}</div>
+                                            <div class="text-xs opacity-50">{request.company}</div>
                                         {/if}
                                     </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="text-white font-medium">{request.projectTitle}</div>
-                                    <div class="text-gray-400 text-sm line-clamp-2">{request.description.substring(0, 100)}...</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-gray-300">{request.service.name}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-green-400">
-                                        {request.budget ? `$${request.budget}` : 'Not specified'}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 py-1 rounded text-xs text-white {getStatusColor(request.status)}">
-                                        {request.status.replace('_', ' ')}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-gray-400 text-sm">
-                                    {formatDate(request.createdAt)}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex space-x-2">
-                                        <button 
-                                            on:click={() => showDetails(request)}
-                                            class="text-blue-400 hover:text-blue-300 text-sm"
-                                        >
-                                            View
-                                        </button>
-                                        <button 
-                                            on:click={() => deleteRequest(request)}
-                                            class="text-red-400 hover:text-red-300 text-sm"
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        {/each}
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="font-bold">{request.projectTitle}</div>
+                                <div class="text-sm opacity-50 line-clamp-2">{request.description.substring(0, 100)}...</div>
+                            </td>
+                            <td>
+                                <div>{request.service.name}</div>
+                            </td>
+                            <td>
+                                <div class="text-green-400">
+                                    {request.budget ? `${request.budget}` : 'Not specified'}
+                                </div>
+                            </td>
+                            <td>
+                                <span class={`badge ${getStatusColor(request.status)}`}>
+                                    {request.status.replace('_', ' ')}
+                                </span>
+                            </td>
+                            <td>
+                                {formatDate(request.createdAt)}
+                            </td>
+                            <td>
+                                <div class="flex space-x-2">
+                                    <button 
+                                        on:click={() => showDetails(request)}
+                                        class="btn btn-info btn-sm"
+                                    >
+                                        View
+                                    </button>
+                                    <button 
+                                        on:click={() => deleteRequest(request)}
+                                        class="btn btn-error btn-sm"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
         </div>
     {/if}
 </div>
 
 {#if showDetailModal && selectedRequest}
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-gray-800 rounded-lg w-full max-w-2xl max-h-screen overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold text-white">Service Request Details</h2>
-                    <button 
-                        on:click={() => showDetailModal = false}
-                        class="text-gray-400 hover:text-white"
-                    >
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-
-                <div class="space-y-6">
-                    <!-- Client Information -->
-                    <div class="bg-gray-700 p-4 rounded-lg">
-                        <h3 class="text-white font-semibold mb-3">Client Information</h3>
+    <dialog class="modal modal-open">
+        <div class="modal-box w-11/12 max-w-5xl">
+            <h3 class="font-bold text-lg">Service Request Details</h3>
+            
+            <div class="space-y-6 mt-4">
+                <!-- Client Information -->
+                <div class="card bg-base-200 shadow-xl">
+                    <div class="card-body">
+                        <h3 class="card-title">Client Information</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="text-gray-400 text-sm">Name</label>
-                                <p class="text-white">{selectedRequest.clientName}</p>
+                                <label class="text-sm opacity-50">Name</label>
+                                <p>{selectedRequest.clientName}</p>
                             </div>
                             <div>
-                                <label class="text-gray-400 text-sm">Email</label>
-                                <p class="text-white">{selectedRequest.clientEmail}</p>
+                                <label class="text-sm opacity-50">Email</label>
+                                <p>{selectedRequest.clientEmail}</p>
                             </div>
                             {#if selectedRequest.clientPhone}
                                 <div>
-                                    <label class="text-gray-400 text-sm">Phone</label>
-                                    <p class="text-white">{selectedRequest.clientPhone}</p>
+                                    <label class="text-sm opacity-50">Phone</label>
+                                    <p>{selectedRequest.clientPhone}</p>
                                 </div>
                             {/if}
                             {#if selectedRequest.company}
                                 <div>
-                                    <label class="text-gray-400 text-sm">Company</label>
-                                    <p class="text-white">{selectedRequest.company}</p>
+                                    <label class="text-sm opacity-50">Company</label>
+                                    <p>{selectedRequest.company}</p>
                                 </div>
                             {/if}
                         </div>
                     </div>
+                </div>
 
-                    <!-- Project Information -->
-                    <div class="bg-gray-700 p-4 rounded-lg">
-                        <h3 class="text-white font-semibold mb-3">Project Information</h3>
+                <!-- Project Information -->
+                <div class="card bg-base-200 shadow-xl">
+                    <div class="card-body">
+                        <h3 class="card-title">Project Information</h3>
                         <div class="space-y-3">
                             <div>
-                                <label class="text-gray-400 text-sm">Project Title</label>
-                                <p class="text-white">{selectedRequest.projectTitle}</p>
+                                <label class="text-sm opacity-50">Project Title</label>
+                                <p>{selectedRequest.projectTitle}</p>
                             </div>
                             <div>
-                                <label class="text-gray-400 text-sm">Service Requested</label>
-                                <p class="text-white">{selectedRequest.service.name}</p>
+                                <label class="text-sm opacity-50">Service Requested</label>
+                                <p>{selectedRequest.service.name}</p>
                             </div>
                             <div>
-                                <label class="text-gray-400 text-sm">Description</label>
-                                <p class="text-white whitespace-pre-wrap">{selectedRequest.description}</p>
+                                <label class="text-sm opacity-50">Description</label>
+                                <p class="whitespace-pre-wrap">{selectedRequest.description}</p>
                             </div>
                             {#if selectedRequest.requirements}
                                 <div>
-                                    <label class="text-gray-400 text-sm">Additional Requirements</label>
-                                    <p class="text-white whitespace-pre-wrap">{selectedRequest.requirements}</p>
+                                    <label class="text-sm opacity-50">Additional Requirements</label>
+                                    <p class="whitespace-pre-wrap">{selectedRequest.requirements}</p>
                                 </div>
                             {/if}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {#if selectedRequest.budget}
                                     <div>
-                                        <label class="text-gray-400 text-sm">Budget</label>
+                                        <label class="text-sm opacity-50">Budget</label>
                                         <p class="text-green-400">${selectedRequest.budget}</p>
                                     </div>
                                 {/if}
                                 {#if selectedRequest.timeline}
                                     <div>
-                                        <label class="text-gray-400 text-sm">Timeline</label>
-                                        <p class="text-white">{selectedRequest.timeline}</p>
+                                        <label class="text-sm opacity-50">Timeline</label>
+                                        <p>{selectedRequest.timeline}</p>
                                     </div>
                                 {/if}
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Status Management -->
-                    <div class="bg-gray-700 p-4 rounded-lg">
-                        <h3 class="text-white font-semibold mb-3">Status Management</h3>
+                <!-- Status Management -->
+                <div class="card bg-base-200 shadow-xl">
+                    <div class="card-body">
+                        <h3 class="card-title">Status Management</h3>
                         <div class="flex items-center gap-4">
-                            <span class="text-gray-400">Current Status:</span>
-                            <span class="px-3 py-1 rounded text-sm text-white {getStatusColor(selectedRequest.status)}">
+                            <span class="opacity-50">Current Status:</span>
+                            <span class={`badge ${getStatusColor(selectedRequest.status)}`}>
                                 {selectedRequest.status.replace('_', ' ')}
                             </span>
                         </div>
                         <div class="mt-4">
-                            <label class="text-gray-400 text-sm mb-2 block">Change Status:</label>
+                            <label class="opacity-50 mb-2 block">Change Status:</label>
                             <div class="flex flex-wrap gap-2">
                                 {#each getStatusOptions(selectedRequest.status) as status}
                                     <button
                                         on:click={() => updateRequestStatus(selectedRequest, status)}
-                                        class="px-3 py-1 rounded text-sm text-white {getStatusColor(status)} hover:opacity-80"
+                                        class={`btn btn-sm ${getStatusColor(status)}`}
                                     >
                                         {status.replace('_', ' ')}
                                     </button>
@@ -314,41 +319,49 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    {#if selectedRequest.notes}
-                        <div class="bg-gray-700 p-4 rounded-lg">
-                            <h3 class="text-white font-semibold mb-3">Internal Notes</h3>
-                            <p class="text-gray-300 whitespace-pre-wrap">{selectedRequest.notes}</p>
+                {#if selectedRequest.notes}
+                    <div class="card bg-base-200 shadow-xl">
+                        <div class="card-body">
+                            <h3 class="card-title">Internal Notes</h3>
+                            <p class="whitespace-pre-wrap">{selectedRequest.notes}</p>
                         </div>
-                    {/if}
-
-                    <!-- Contact Actions -->
-                    <div class="flex justify-between items-center pt-4 border-t border-gray-600">
-                        <div class="flex space-x-4">
-                            <a 
-                                href="mailto:{selectedRequest.clientEmail}"
-                                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                            >
-                                <i class="fas fa-envelope mr-2"></i>Email Client
-                            </a>
-                            {#if selectedRequest.clientPhone}
-                                <a 
-                                    href="tel:{selectedRequest.clientPhone}"
-                                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                                >
-                                    <i class="fas fa-phone mr-2"></i>Call Client
-                                </a>
-                            {/if}
-                        </div>
-                        <button 
-                            on:click={() => deleteRequest(selectedRequest)}
-                            class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                        >
-                            Delete Request
-                        </button>
                     </div>
+                {/if}
+
+                <!-- Contact Actions -->
+                <div class="modal-action">
+                    <div class="flex space-x-4">
+                        <a 
+                            href="mailto:{selectedRequest.clientEmail}"
+                            class="btn btn-primary"
+                        >
+                            <i class="fas fa-envelope mr-2"></i>Email Client
+                        </a>
+                        {#if selectedRequest.clientPhone}
+                            <a 
+                                href="tel:{selectedRequest.clientPhone}"
+                                class="btn btn-success"
+                            >
+                                <i class="fas fa-phone mr-2"></i>Call Client
+                            </a>
+                        {/if}
+                    </div>
+                    <button 
+                        on:click={() => deleteRequest(selectedRequest)}
+                        class="btn btn-error"
+                    >
+                        Delete Request
+                    </button>
+                    <button 
+                        on:click={() => showDetailModal = false}
+                        class="btn"
+                    >
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
+    </dialog>
 {/if}

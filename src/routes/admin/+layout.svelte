@@ -5,10 +5,10 @@
     $: currentPath = $page.route.id;
 </script>
 
-<div class="min-h-screen bg-gray-900 text-white flex overflow-hidden">
+<div class="min-h-screen text-white border-b border-gray-900 flex overflow-hidden">
     <!-- Sidebar -->
     <aside
-            class="w-64 bg-gray-800 min-h-screen border-r border-gray-700 relative shadow-lg"
+            class="w-64 min-h-screen border-r border-gray-900 relative"
             in:fly={{ x: -200, duration: 500 }}
     >
         <div class="p-6 flex flex-col h-full">
@@ -20,7 +20,7 @@
                         <p class="text-gray-400 text-sm">Dashboard</p>
                     </div>
                 </div>
-                <div class="h-px bg-gray-700"></div>
+                <div class="h-px bg-gray-900"></div>
             </div>
 
             <!-- Navigation -->
@@ -48,7 +48,7 @@
 
             <!-- Bottom Section -->
             <div class="mt-auto" in:fade={{ duration: 600 }}>
-                <div class="h-px bg-gray-700 mb-4"></div>
+                <div class="h-px bg-gray-900 mb-4"></div>
                 <a href="/" class="nav-link hover:text-red-400 transition-all duration-300">
                     <i class="fas fa-arrow-left w-5"></i>
                     <span>Back to Site</span>
@@ -58,7 +58,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 bg-gray-900 overflow-y-auto" in:fade={{ duration: 600 }}>
+    <main class="flex-1 overflow-y-auto" in:fade={{ duration: 600 }}>
         <div class="p-8 animate-fadeIn">
             <slot />
         </div>

@@ -58,146 +58,170 @@
 <div class="space-y-8">
     <!-- Header Section -->
     <div>
-        <h1 class="text-3xl font-bold text-white mb-2">Dashboard</h1>
-        <p class="text-gray-400">Overview of your portfolio and business</p>
+        <h1 class="text-3xl font-bold mb-2">Dashboard</h1>
+        <p>Overview of your portfolio and business</p>
     </div>
 
     {#if loading}
-        <div class="flex justify-center items-center py-12">
-            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            <p class="text-gray-400 ml-3">Loading...</p>
+        <div class="flex justify-center items-center min-h-[80vh] py-12">
+            <div class="animate-spin rounded-full h-12 w-12 loading loading-ring"></div>
         </div>
     {:else}
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="stat-card">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-400 text-sm">Total Projects</p>
-                        <p class="text-2xl font-semibold text-white">{stats.projects}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-folder text-white"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-400 text-sm">Active Services</p>
-                        <p class="text-2xl font-semibold text-white">{stats.services}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-cogs text-white"></i>
+            <div class="card bg-base-200/10 border border-gray-900 shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm">Total Projects</p>
+                            <p class="text-2xl font-semibold">{stats.projects}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-folder text-white"></i>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="stat-card">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-400 text-sm">Total Requests</p>
-                        <p class="text-2xl font-semibold text-white">{stats.serviceRequests}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-envelope text-white"></i>
+            <div class="card bg-base-200/10 border border-gray-900 shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm">Active Services</p>
+                            <p class="text-2xl font-semibold">{stats.services}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-cogs text-white"></i>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="stat-card">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-400 text-sm">Pending Requests</p>
-                        <p class="text-2xl font-semibold {stats.pendingRequests > 0 ? 'text-yellow-400' : 'text-white'}">{stats.pendingRequests}</p>
+            <div class="card bg-base-200/10 border border-gray-900 shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm">Total Requests</p>
+                            <p class="text-2xl font-semibold">{stats.serviceRequests}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-envelope text-white"></i>
+                        </div>
                     </div>
-                    <div class="w-12 h-12 {stats.pendingRequests > 0 ? 'bg-yellow-500' : 'bg-gray-600'} rounded-lg flex items-center justify-center">
-                        <i class="fas fa-clock text-white"></i>
+                </div>
+            </div>
+            
+            <div class="card bg-base-200/10 border border-gray-900 shadow-xl">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm">Pending Requests</p>
+                            <p class="text-2xl font-semibold {stats.pendingRequests > 0 ? 'text-yellow-400' : ''}">{stats.pendingRequests}</p>
+                        </div>
+                        <div class="w-12 h-12 {stats.pendingRequests > 0 ? 'bg-yellow-500' : 'bg-gray-600'} rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clock text-white"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Recent Service Requests -->
-        <div class="bg-gray-800 border border-gray-700 rounded-lg p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-semibold text-white">Recent Service Requests</h2>
-                <a href="/admin/service-requests" class="text-blue-400 hover:text-blue-300 text-sm">
-                    View all →
-                </a>
-            </div>
-            
-            {#if recentRequests.length === 0}
-                <div class="text-center py-12">
-                    <div class="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-inbox text-gray-400"></i>
-                    </div>
-                    <h3 class="text-white font-medium mb-2">No requests yet</h3>
-                    <p class="text-gray-400 text-sm">When clients submit service requests, they'll appear here</p>
+        <div class="card bg-base-200/10 border border-gray-900 shadow-xl">
+            <div class="card-body">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="card-title">Recent Service Requests</h2>
+                    <a href="/admin/service-requests" class="text-blue-400 hover:text-blue-300 text-sm">
+                        View all →
+                    </a>
                 </div>
-            {:else}
-                <div class="space-y-4">
-                    {#each recentRequests as request}
-                        <div class="flex items-center justify-between p-4 bg-gray-700 border border-gray-600 rounded-lg">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium">
-                                    {request.clientName.charAt(0).toUpperCase()}
-                                </div>
-                                <div>
-                                    <h4 class="text-white font-medium">{request.projectTitle}</h4>
-                                    <p class="text-gray-400 text-sm">{request.clientName} • {request.service.name}</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span class="px-2 py-1 rounded text-xs font-medium {getStatusColor(request.status)}">
-                                    {request.status.replace('_', ' ')}
-                                </span>
-                                <p class="text-gray-500 text-xs mt-1">{formatDate(request.createdAt)}</p>
-                            </div>
+                
+                {#if recentRequests.length === 0}
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 bg-base-300 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-inbox"></i>
                         </div>
-                    {/each}
-                </div>
-            {/if}
+                        <h3 class="font-medium mb-2">No requests yet</h3>
+                        <p class="text-sm">When clients submit service requests, they'll appear here</p>
+                    </div>
+                {:else}
+                    <div class="overflow-x-auto">
+                        <table class="table w-full">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Project</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {#each recentRequests as request}
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center gap-3">
+                                                <div class="avatar">
+                                                    <div class="mask mask-squircle w-10 h-10">
+                                                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-medium">
+                                                            {request.clientName.charAt(0).toUpperCase()}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="font-bold">{request.projectTitle}</div>
+                                                    <div class="text-sm opacity-50">{request.clientName} • {request.service.name}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-ghost badge-sm {getStatusColor(request.status)}">
+                                                {request.status.replace('_', ' ')}
+                                            </span>
+                                        </td>
+                                        <td>{formatDate(request.createdAt)}</td>
+                                    </tr>
+                                {/each}
+                            </tbody>
+                        </table>
+                    </div>
+                {/if}
+            </div>
         </div>
 
         <!-- Quick Actions -->
         <div>
-            <h2 class="text-xl font-semibold text-white mb-6">Quick Actions</h2>
+            <h2 class="text-xl font-semibold mb-6">Quick Actions</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <a href="/admin/projects" class="bg-gray-800 border border-gray-700 p-6 rounded-lg hover:border-gray-600 transition-colors">
-                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-plus text-white"></i>
+                <a href="/admin/projects" class="card bg-base-200/10 border border-gray-900 shadow-xl hover:shadow-2xl transition-shadow">
+                    <div class="card-body items-center text-center">
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-plus text-white"></i>
+                        </div>
+                        <h3 class="card-title">Add New Project</h3>
+                        <p class="text-sm">Showcase your latest work</p>
                     </div>
-                    <h3 class="text-white font-medium mb-2">Add New Project</h3>
-                    <p class="text-gray-400 text-sm">Showcase your latest work</p>
                 </a>
                 
-                <a href="/admin/services" class="bg-gray-800 border border-gray-700 p-6 rounded-lg hover:border-gray-600 transition-colors">
-                    <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-plus text-white"></i>
+                <a href="/admin/services" class="card bg-base-200/10 border border-gray-900 shadow-xl hover:shadow-2xl transition-shadow">
+                    <div class="card-body items-center text-center">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-plus text-white"></i>
+                        </div>
+                        <h3 class="card-title">Add New Service</h3>
+                        <p class="text-sm">Expand your offerings</p>
                     </div>
-                    <h3 class="text-white font-medium mb-2">Add New Service</h3>
-                    <p class="text-gray-400 text-sm">Expand your offerings</p>
                 </a>
                 
-                <a href="/api/test" target="_blank" class="bg-gray-800 border border-gray-700 p-6 rounded-lg hover:border-gray-600 transition-colors">
-                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fas fa-database text-white"></i>
+                <a href="/api/test" target="_blank" class="card bg-base-200/10 border border-gray-900 shadow-xl hover:shadow-2xl transition-shadow">
+                    <div class="card-body items-center text-center">
+                        <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-database text-white"></i>
+                        </div>
+                        <h3 class="card-title">Test Database</h3>
+                        <p class="text-sm">Check system connectivity</p>
                     </div>
-                    <h3 class="text-white font-medium mb-2">Test Database</h3>
-                    <p class="text-gray-400 text-sm">Check system connectivity</p>
                 </a>
             </div>
         </div>
     {/if}
 </div>
-
-<style>
-    .stat-card {
-        background-color: rgb(31, 41, 55);
-        border: 1px solid rgb(55, 65, 81);
-        border-radius: 0.5rem;
-        padding: 1.5rem;
-    }
-</style>
