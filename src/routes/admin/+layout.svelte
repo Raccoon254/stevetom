@@ -1,55 +1,110 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    
+    import { fly, fade, scale } from 'svelte/transition';
+
     $: currentPath = $page.route.id;
 </script>
 
-<div class="min-h-screen bg-gray-900 text-white">
-    <div class="flex">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-gray-800 min-h-screen p-6">
-            <div class="mb-8">
-                <h1 class="text-2xl font-bold text-white">Admin Dashboard</h1>
-                <p class="text-gray-400 text-sm">kenTom Portfolio</p>
+<div class="min-h-screen bg-gray-900 text-white flex overflow-hidden">
+    <!-- Sidebar -->
+    <aside
+            class="w-64 bg-gray-800 min-h-screen border-r border-gray-700 relative shadow-lg"
+            in:fly={{ x: -200, duration: 500 }}
+    >
+        <div class="p-6 flex flex-col h-full">
+            <!-- Header -->
+            <div class="mb-8" in:fade={{ duration: 600 }}>
+                <div class="flex items-center gap-3 mb-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white tracking-wide">Admin</h1>
+                        <p class="text-gray-400 text-sm">Dashboard</p>
+                    </div>
+                </div>
+                <div class="h-px bg-gray-700"></div>
             </div>
-            
-            <nav class="space-y-2">
-                <a 
-                    href="/admin" 
-                    class="block px-4 py-2 rounded-lg transition-colors {currentPath === '/admin' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700'}"
-                >
-                    <i class="fas fa-dashboard mr-3"></i>Dashboard
-                </a>
-                <a 
-                    href="/admin/projects" 
-                    class="block px-4 py-2 rounded-lg transition-colors {currentPath?.includes('/admin/projects') ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700'}"
-                >
-                    <i class="fas fa-project-diagram mr-3"></i>Projects
-                </a>
-                <a 
-                    href="/admin/services" 
-                    class="block px-4 py-2 rounded-lg transition-colors {currentPath?.includes('/admin/services') ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700'}"
-                >
-                    <i class="fas fa-cogs mr-3"></i>Services
-                </a>
-                <a 
-                    href="/admin/service-requests" 
-                    class="block px-4 py-2 rounded-lg transition-colors {currentPath?.includes('/admin/service-requests') ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-700'}"
-                >
-                    <i class="fas fa-envelope mr-3"></i>Service Requests
-                </a>
+
+            <!-- Navigation -->
+            <nav class="space-y-2 flex-1">
+                {#each [
+                    { href: '/admin', label: 'Dashboard', icon: 'fas fa-chart-line' },
+                    { href: '/admin/projects', label: 'Projects', icon: 'fas fa-folder' },
+                    { href: '/admin/services', label: 'Services', icon: 'fas fa-cogs' },
+                    { href: '/admin/service-requests', label: 'Requests', icon: 'fas fa-envelope' }
+                ] as link (link.href)}
+                    <a
+                            href={link.href}
+                            class="nav-link mb-2 relative {currentPath === link.href || currentPath?.includes(link.href) ? 'active' : ''}"
+                            in:fade={{ duration: 400 }}
+                    >
+                        <i class="{link.icon} w-5"></i>
+                        <span>{link.label}</span>
+                        <!-- Active highlight bar -->
+                        {#if currentPath === link.href || currentPath?.includes(link.href)}
+                            <div class="absolute right-2 top-2 bottom-2 w-1 bg-blue-400 rounded-full animate-pulse"></div>
+                        {/if}
+                    </a>
+                {/each}
             </nav>
-            
-            <div class="mt-8 pt-8 border-t border-gray-700">
-                <a href="/" class="block px-4 py-2 rounded-lg text-gray-300 hover:bg-gray-700 transition-colors">
-                    <i class="fas fa-arrow-left mr-3"></i>Back to Site
+
+            <!-- Bottom Section -->
+            <div class="mt-auto" in:fade={{ duration: 600 }}>
+                <div class="h-px bg-gray-700 mb-4"></div>
+                <a href="/" class="nav-link hover:text-red-400 transition-all duration-300">
+                    <i class="fas fa-arrow-left w-5"></i>
+                    <span>Back to Site</span>
                 </a>
             </div>
-        </aside>
-        
-        <!-- Main Content -->
-        <main class="flex-1 p-8">
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 bg-gray-900 overflow-y-auto" in:fade={{ duration: 600 }}>
+        <div class="p-8 animate-fadeIn">
             <slot />
-        </main>
-    </div>
+        </div>
+    </main>
 </div>
+
+<style>
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        text-decoration: none;
+        color: rgb(156, 163, 175);
+        position: relative;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(128, 128, 128, 0.1);
+    }
+    .nav-link:hover {
+        color: white;
+        background: linear-gradient(
+                90deg,
+                rgba(59, 130, 246, 0.2),
+                rgba(37, 99, 235, 0.1)
+        );
+    }
+    .nav-link.active {
+        color: white;
+        background: linear-gradient(
+                90deg,
+                rgba(59, 130, 246, 0.8),
+                rgba(37, 99, 235, 0.8)
+        );
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-fadeIn {
+        animation: fadeIn 0.6s ease-in-out;
+    }
+</style>
