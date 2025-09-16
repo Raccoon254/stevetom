@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { Mail, Linkedin, MessageCircle, Instagram } from 'lucide-svelte';
+  
   // Define a type for contact information
   type ContactInfo = {
-      icon: string;
+      icon: any;
       label: string;
       value: string;
       link: string;
@@ -10,25 +12,25 @@
   // Array of contact information
   const contactInfo: ContactInfo[] = [
       {
-          icon: "fas fa-envelope",
+          icon: Mail,
           label: "Email",
           value: "tomsteve187@gmail.com",
           link: "mailto:tomsteve187@gmail.com"
       },
       {
-          icon: "fab fa-linkedin",
+          icon: Linkedin,
           label: "LinkedIn",
           value: "Steve Tom",
           link: "https://www.linkedin.com/in/steve-tom-822a81230/"
       },
       {
-          icon: "fab fa-whatsapp",
+          icon: MessageCircle,
           label: "WhatsApp",
           value: "+254 758 481 320",
           link: "https://wa.me/254758481320"
       },
       {
-          icon: "fab fa-instagram",
+          icon: Instagram,
           label: "Instagram",
           value: "@raccoon.254",
           link: "https://www.instagram.com/raccoon.254/"
@@ -54,7 +56,7 @@
                          class="flex items-center text-interactive p-4 bg-gray-600 bg-opacity-10 rounded-lg transition-colors duration-300 hover:bg-gray-800"
                          target="_blank" 
                          rel="noopener noreferrer">
-                          <i class="{info.icon} text-2xl interactive text-blue-500 dark:text-blue-400 mr-4"></i>
+                          <svelte:component this={info.icon} size="24" class="interactive text-blue-500 dark:text-blue-400 mr-4" />
                           <div>
                               <h3 class="font-semibold text-gray-800 dark:text-white">{info.label}</h3>
                               <p class="text-gray-600 dark:text-gray-300">{info.value}</p>
@@ -72,7 +74,7 @@
           <div class="center">
             <a href="mailto:tomsteve187@gmail.com" 
              class="bg-transparent border border-white px-4 py-2 w-36 rounded-full hover:bg-white hover:text-gray-900 text-interactive center transition duration-300 ring-1 ring-offset-2 ring-offset-dark gap-2 ring-green-400">
-              <i class="fas fa-envelope"></i>
+              <Mail size="16" />
               Send Email
           </a>
           </div>

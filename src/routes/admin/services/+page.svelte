@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { Plus } from 'lucide-svelte';
     
     let services: any[] = [];
     let loading = true;
@@ -148,7 +149,7 @@
             on:click={openAddForm}
             class="btn btn-primary"
         >
-            <i class="fas fa-plus mr-2"></i>Add Service
+            <Plus size="16" class="mr-2" />Add Service
         </button>
     </div>
 

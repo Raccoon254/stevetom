@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { Inbox, Mail, Phone } from 'lucide-svelte';
     
     let requests: any[] = [];
     let loading = true;
@@ -135,7 +136,7 @@
     {:else if requests.length === 0}
         <div class="text-center py-12">
             <div class="w-16 h-16 bg-base-300 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-inbox"></i>
+                <Inbox size="24" />
             </div>
             <h3 class="font-medium mb-2">No service requests</h3>
             <p class="text-sm">When clients submit service requests, they'll appear here.</p>
@@ -337,14 +338,14 @@
                             href="mailto:{selectedRequest.clientEmail}"
                             class="btn btn-primary"
                         >
-                            <i class="fas fa-envelope mr-2"></i>Email Client
+                            <Mail size="16" class="mr-2" />Email Client
                         </a>
                         {#if selectedRequest.clientPhone}
                             <a 
                                 href="tel:{selectedRequest.clientPhone}"
                                 class="btn btn-success"
                             >
-                                <i class="fas fa-phone mr-2"></i>Call Client
+                                <Phone size="16" class="mr-2" />Call Client
                             </a>
                         {/if}
                     </div>

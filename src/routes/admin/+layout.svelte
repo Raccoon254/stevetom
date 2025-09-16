@@ -1,6 +1,7 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { fly, fade, scale } from 'svelte/transition';
+    import { TrendingUp, Folder, Settings, Mail, ArrowLeft, LogOut } from 'lucide-svelte';
 
     $: currentPath = $page.route.id;
 </script>
@@ -26,17 +27,17 @@
             <!-- Navigation -->
             <nav class="space-y-2 flex-1">
                 {#each [
-                    { href: '/admin', label: 'Dashboard', icon: 'fas fa-chart-line' },
-                    { href: '/admin/projects', label: 'Projects', icon: 'fas fa-folder' },
-                    { href: '/admin/services', label: 'Services', icon: 'fas fa-cogs' },
-                    { href: '/admin/service-requests', label: 'Requests', icon: 'fas fa-envelope' }
+                    { href: '/admin', label: 'Dashboard', icon: TrendingUp },
+                    { href: '/admin/projects', label: 'Projects', icon: Folder },
+                    { href: '/admin/services', label: 'Services', icon: Settings },
+                    { href: '/admin/service-requests', label: 'Requests', icon: Mail }
                 ] as link (link.href)}
                     <a
                             href={link.href}
                             class="nav-link mb-2 relative {currentPath === link.href || currentPath?.includes(link.href) ? 'active' : ''}"
                             in:fade={{ duration: 400 }}
                     >
-                        <i class="{link.icon} w-5"></i>
+                        <svelte:component this={link.icon} size="20" />
                         <span>{link.label}</span>
                         <!-- Active highlight bar -->
                         {#if currentPath === link.href || currentPath?.includes(link.href)}
@@ -49,10 +50,16 @@
             <!-- Bottom Section -->
             <div class="mt-auto" in:fade={{ duration: 600 }}>
                 <div class="h-px bg-gray-900 mb-4"></div>
-                <a href="/" class="nav-link hover:text-red-400 transition-all duration-300">
-                    <i class="fas fa-arrow-left w-5"></i>
+                <a href="/" class="nav-link hover:text-green-400 transition-all duration-300">
+                    <ArrowLeft size="20" />
                     <span>Back to Site</span>
                 </a>
+                <form action="/logout" method="POST" class="w-full">
+                    <button type="submit" class="nav-link mt-2 w-full hover:text-red-400 transition-all duration-300">
+                        <LogOut size="20" />
+                        <span>Logout</span>
+                    </button>
+                </form>
             </div>
         </div>
     </aside>
