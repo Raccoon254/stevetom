@@ -149,7 +149,7 @@
                                             {#if project.githubUrl === '#'}
                                                 Demo
                                             {/if}
-                                            </span>
+                                        </span>
                                     </a>
                                     {#if project.githubUrl !== '#'}
                                         <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
