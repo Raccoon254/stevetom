@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import {
         Palette, Code, Smartphone, Lightbulb, Rocket, WandSparkles,
-        ArrowLeft, ArrowRight, Send, Plus, CheckCircle, TriangleAlert, Mail, Phone, MapPin
+        ArrowLeft, ArrowRight, Send, Plus, Flame, CheckCircle, TriangleAlert, Mail, Phone, MapPin, Star, Gem, Zap, Target
     } from 'lucide-svelte';
 
     export let mode: 'contact' | 'quote' = 'quote';
@@ -38,8 +38,8 @@
     const budgetRanges = ['< $100', '$100 - $500', '$500 - $1000', '$1000 - $2500', '$2500+', 'Let\'s discuss'];
     const timelineOptions = ['ASAP', '1 week', '2-3 weeks', '1 month', '2-3 months', '3+ months', 'Flexible'];
 
-    let captchaIcons = ['🔥', '🌟', '🚀', '💎', '⚡', '🎯'];
-    let correctCaptcha = '🔥';
+    let captchaIcons = [Flame, Star, Rocket, Gem, Zap, Target];
+    let correctCaptcha = 'Flame';
     let shuffledIcons = [...captchaIcons].sort(() => Math.random() - 0.5);
 
     onMount(async () => {
@@ -258,7 +258,12 @@
                                 <p class="mb-4">Select the <strong>fire</strong> emoji:</p>
                                 <div class="flex justify-center gap-3 flex-wrap">
                                     {#each shuffledIcons as icon}
-                                        <button class="btn btn-lg {formData.captcha === icon ? 'btn-primary' : 'btn-outline'}" on:click={() => handleCaptcha(icon)}>{icon}</button>
+                                        <button
+                                                class="px-6 py-4 text-2xl rounded-lg border transition-all {formData.captcha === icon.name ? 'bg-primary text-white border-primary' : 'border-base-300 hover:border-primary hover:bg-base-100'}"
+                                                on:click={() => handleCaptcha(icon.name)}
+                                        >
+                                            <svelte:component this={icon} />
+                                        </button>
                                     {/each}
                                 </div>
                             </div>
