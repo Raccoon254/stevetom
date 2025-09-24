@@ -5,7 +5,7 @@
     import Cursor from './components/Cursor.svelte';
     import InteractiveSphere from './components/InteractiveSphere.svelte'
     import MusicWave from './components/MusicWave.svelte'
-    import { Repeat } from 'lucide-svelte';
+    import {Repeat, Rotate3D} from 'lucide-svelte';
 
     let showSphere = true;
 
@@ -72,7 +72,7 @@
 
     <!-- Hero Section -->
     <div class="min-h-screen flex flex-col justify-center items-center px-4">
-        <div class="max-w-6xl w-full flex flex-col md:flex-row gap-8 items-center justify-between mb-12">
+        <div class="max-w-6xl w-full flex flex-col md:flex-row gap-2 items-center justify-between mb-12">
             <!-- Text Content -->
             <div class="w-full md:w-1/2 md:mt-0 space-y-6">
                 <div class="flex gap-2 items-center">
@@ -110,10 +110,10 @@
             <div class="w-96 h-96 hidden md:w-[30rem] md:h-[30rem] relative md:flex items-center justify-center">
                 <button
                     on:click={toggleVisualization}
-                    class="absolute bottom-4 right-4 z-10 btn btn-circle btn-sm btn-ghost"
+                    class="absolute bottom-4 right-4 border border-gray-700/20 z-10 btn btn-circle btn-sm btn-ghost"
                     aria-label="Toggle visualization"
                 >
-                    <Repeat size="16" />
+                    <Rotate3D size="16" />
                 </button>
 
                 {#if showSphere}
