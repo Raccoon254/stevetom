@@ -29,7 +29,28 @@ export const GET: RequestHandler = async ({ params }) => {
 export const PUT: RequestHandler = async ({ params, request }) => {
 	try {
 		const data = await request.json()
-		
+
+		if (data.featured) {
+			const currentProject = await prisma.project.findUnique({
+				where: { id: params.id }
+			})
+
+			if (!currentProject?.featured) {
+				const featuredCount = await prisma.project.count({
+					where: { featured: true }
+				})
+				if (featuredCount >= 4) {
+					return json(
+						{
+							success: false,
+							message: 'Maximum of 4 featured projects allowed'
+						},
+						{ status: 400 }
+					)
+				}
+			}
+		}
+
 		const project = await prisma.project.update({
 			where: { id: params.id },
 			data: {
@@ -42,7 +63,8 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 				year: data.year,
 				category: data.category,
 				features: data.features,
-				status: data.status?.toUpperCase() || 'DEVELOPMENT'
+				status: data.status?.toUpperCase() || 'DEVELOPMENT',
+				featured: data.featured || false
 			}
 		})
 
