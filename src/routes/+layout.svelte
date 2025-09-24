@@ -68,13 +68,13 @@
 							href="https://stevetom.vercel.app/"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="btn btn-primary btn-sm gap-2"
+							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-primary btn-sm gap-2"
 						>
 							<Briefcase size="16" /> Portfolio
 						</a>
 						<a
 							href="mailto:tomsteve187@gmail.com"
-							class="btn btn-warning btn-sm gap-2"
+							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-warning btn-sm gap-2"
 						>
 							<Mail size="16" /> Email
 						</a>
@@ -82,7 +82,7 @@
 							href="https://github.com/Raccoon254"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="btn btn-neutral btn-sm gap-2"
+							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-neutral btn-sm gap-2"
 						>
 							<Github size="16" /> GitHub
 						</a>
@@ -90,7 +90,7 @@
 							href="https://www.linkedin.com/in/steve-tom-822a81230/"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="btn btn-info btn-sm gap-2"
+							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-info btn-sm gap-2"
 						>
 							<Linkedin size="16" /> LinkedIn
 						</a>
@@ -98,7 +98,7 @@
 							href="https://wa.link/w1774n"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="btn btn-success btn-sm gap-2"
+							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-success btn-sm gap-2"
 						>
 							<MessageCircle size="16" /> WhatsApp
 						</a>
