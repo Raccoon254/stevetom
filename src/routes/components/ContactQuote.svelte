@@ -24,6 +24,7 @@
     let isSubmitting = false;
     let isSubmitted = false;
     let submitError = '';
+    let emailError = '';
     let availableServices: any[] = [];
 
     const services = [
@@ -64,6 +65,11 @@
     }
 
     function nextStep() {
+        if (currentStep === 2 && !validateEmail(formData.email)) {
+            emailError = 'Please enter a valid email address';
+            return;
+        }
+        emailError = '';
         if (currentStep < totalSteps) currentStep++;
     }
 
@@ -75,7 +81,20 @@
         formData.captcha = icon;
     }
 
+    function validateEmail(email: string): boolean {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+    }
+
     async function handleSubmit() {
+        // Validate email first
+        if (!validateEmail(formData.email)) {
+            emailError = 'Please enter a valid email address';
+            return;
+        } else {
+            emailError = '';
+        }
+
         if (mode === 'quote' && formData.captcha !== correctCaptcha) {
             alert('Please select the fire emoji to prove you\'re human');
             return;
@@ -210,6 +229,9 @@
                                 <div class="form-control">
                                     <label class="label"><span class="label-text">Email *</span></label>
                                     <input type="email" bind:value={formData.email} placeholder="john@example.com" class="input input-bordered" required />
+                                    {#if emailError}
+                                        <p class="text-sm text-error mt-1">{emailError}</p>
+                                    {/if}
                                 </div>
                                 <div class="form-control">
                                     <label class="label"><span class="label-text">Company</span></label>
