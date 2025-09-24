@@ -84,7 +84,7 @@
         <!-- Projects Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-4">
             {#each projects as project}
-                <div class="rounded-xl grid grid-cols-2 md:grid-cols-1 overflow-hidden bg-base-200/50 border border-base-300 dark:border-gray-50/10 hover:border-primary/10 transition-all ring-1 ring-offset-2 ring-offset-base-100 hover:ring-primary/20 ring-gray-900/5 dark:ring-gray-100/5 dark:ring-offset-base-100 shadow-sm hover:shadow-lg">
+                <div class="rounded-xl interactive grid grid-cols-2 md:grid-cols-1 overflow-hidden bg-base-200/50 border border-base-300 dark:border-gray-50/10 hover:border-primary/10 transition-all ring-1 ring-offset-2 ring-offset-base-100 hover:ring-primary/20 ring-gray-900/5 dark:ring-gray-100/5 dark:ring-offset-base-100 shadow-sm hover:shadow-lg">
                     <div class="card-body p-6">
                         <h3 class="card-title text-lg mb-4">{project.title}</h3>
 
@@ -106,7 +106,7 @@
 
         <!-- View All Link -->
         <div class="text-center mt-16">
-            <a href="/projects" class="inline-flex items-center gap-2 text-interactive py-2 px-4 border border-base-300 rounded-full ring-1 ring-offset-2 ring-gray-500/10 hover:bg-gray-100 dark:hover:bg-gray-800 dark:ring-offset-base-100 hover:ring-gray-500/20 dark:hover:ring-gray-400/20 transition-all duration-200">
+            <a href="/projects" class="inline-flex text-interactive items-center gap-2 text-interactive py-2 px-4 border border-base-300 rounded-full ring-1 ring-offset-2 ring-gray-500/10 hover:bg-gray-100 dark:hover:bg-gray-800 dark:ring-offset-base-100 hover:ring-gray-500/20 dark:hover:ring-gray-400/20 transition-all duration-200">
                 <span>Explore All Projects</span>
                 <ArrowRight size="16" />
             </a>

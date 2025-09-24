@@ -179,7 +179,7 @@
     <div class="container max-w-5xl mx-auto px-4 relative z-10">
         {#if !isSubmitted}
             <div class="text-center mb-12">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h1 class="text-4xl text-interactive md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     {mode === 'quote' ? 'Let\'s Build Something Amazing' : 'Get In Touch'}
                 </h1>
                 <p class="text-lg text-base-content/70">
