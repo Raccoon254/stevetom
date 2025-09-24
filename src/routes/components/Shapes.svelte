@@ -160,7 +160,7 @@
                 };
 
                 // Cycle through shapes
-                const shapes = [sphere, torus, cube, helix, doubleHelix, knot, star];
+                const shapes = [sphere, knot, torus, helix, doubleHelix, star];
                 const cycleSpeed = 0.3;
                 const shapeIndex = (time * cycleSpeed) % shapes.length;
                 const currentShapeIndex = Math.floor(shapeIndex);

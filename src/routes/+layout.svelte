@@ -21,7 +21,7 @@
 
 <button
 	on:click={toggleTheme}
-	class="absolute top-4 right-4 z-50 btn btn-circle btn-ghost"
+	class="fixed top-4 right-4 z-50 ring-1 ring-black/20 dark:ring-white/20 btn btn-circle btn-ghost"
 	aria-label="Toggle theme"
 >
 	{#if theme === 'light'}
