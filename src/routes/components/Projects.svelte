@@ -32,14 +32,15 @@
                 const liveProjects = data.data;
                 const featuredProjects = liveProjects.filter((p: Project) => p.featured);
 
-                if (featuredProjects.length >= 3) {
+                if (featuredProjects.length >= 4) {
                     projects = featuredProjects.slice(0, 4);
                 } else {
+                    const needed = 4 - featuredProjects.length;
                     const randomProjects = liveProjects
                         .filter((p: Project) => !p.featured)
                         .sort(() => Math.random() - 0.5)
-                        .slice(0, 4 - featuredProjects.length);
-                    projects = [...featuredProjects, ...randomProjects].slice(0, 4);
+                        .slice(0, needed);
+                    projects = [...featuredProjects, ...randomProjects];
                 }
             }
         } catch (error) {
