@@ -15,21 +15,20 @@
 	let animationId: number
 	let cube: THREE.Mesh
 	let isVisible = false
-	let isAnimating = false
 	let autoRotateTimer: ReturnType<typeof setInterval>
 
 	// 6 faces with 6 phrases
 	export const phrases = ['Think', 'Make', 'Solve', 'Create', 'Build', 'Dream']
 
-	// Track actual rotation state (continuous, not clamped)
+	// Track actual rotation state
 	let targetRotation = { x: 0, y: 0 }
 	let currentRotation = { x: 0, y: 0 }
-	let velocity = { x: 0, y: 0 }
 
-	// Physics constants
-	const DAMPING = 0.92
-	const SPRING = 0.08
-	const VELOCITY_THRESHOLD = 0.0001
+	// Animation timing
+	let animationStart = 0
+	let animationDuration = 600 // ms
+	let startRotation = { x: 0, y: 0 }
+	let isAnimating = false
 
 	let observer: IntersectionObserver
 
@@ -76,7 +75,7 @@
 	function startAutoRotate() {
 		if (autoRotateTimer || isManualMode) return
 		autoRotateTimer = setInterval(() => {
-			if (!isAnimating && !isManualMode) {
+			if (!isManualMode) {
 				autoRotateToNextFace()
 			}
 		}, 3500)
@@ -90,121 +89,104 @@
 	}
 
 	function autoRotateToNextFace() {
-		// Cycle through faces: 0->1->2->3->4->5->0
 		const nextFace = (currentFace + 1) % 6
 		smoothRotateToFace(nextFace)
 	}
 
-	// Get the rotation needed to show a specific face
+	// Ease-out with slight overshoot for natural feel
+	function easeOutBack(t: number): number {
+		const c1 = 1.70158
+		const c3 = c1 + 1
+		return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2)
+	}
+
+	// Start a new animation (accumulates with current position)
+	function startAnimation() {
+		startRotation = { ...currentRotation }
+		animationStart = performance.now()
+		animationDuration = 800 // slightly longer for natural motion
+		isAnimating = true
+	}
+
 	function getFaceRotation(face: number): { x: number; y: number } {
-		// Map face index to rotation
-		// 0: Front (Think), 1: Right (Make), 2: Back (Solve),
-		// 3: Left (Create), 4: Top (Build), 5: Bottom (Dream)
 		switch (face) {
 			case 0:
-				return { x: 0, y: 0 } // Front
+				return { x: 0, y: 0 }
 			case 1:
-				return { x: 0, y: -Math.PI / 2 } // Right
+				return { x: 0, y: -Math.PI / 2 }
 			case 2:
-				return { x: 0, y: -Math.PI } // Back
+				return { x: 0, y: -Math.PI }
 			case 3:
-				return { x: 0, y: -Math.PI * 1.5 } // Left
+				return { x: 0, y: -Math.PI * 1.5 }
 			case 4:
-				return { x: -Math.PI / 2, y: 0 } // Top
+				return { x: -Math.PI / 2, y: 0 }
 			case 5:
-				return { x: Math.PI / 2, y: 0 } // Bottom
+				return { x: Math.PI / 2, y: 0 }
 			default:
 				return { x: 0, y: 0 }
 		}
 	}
 
 	function smoothRotateToFace(faceIndex: number) {
-		if (isAnimating) return
-		isAnimating = true
 		currentFace = faceIndex
 
 		const faceRot = getFaceRotation(faceIndex)
 
-		// Calculate the shortest path to the target rotation
-		// Normalize current Y rotation to find shortest path
+		// Calculate shortest path
 		const currentY = currentRotation.y % (Math.PI * 2)
 		let targetY = faceRot.y
 
-		// Find shortest rotation path
 		const diff = targetY - currentY
 		if (Math.abs(diff) > Math.PI) {
 			targetY = diff > 0 ? targetY - Math.PI * 2 : targetY + Math.PI * 2
 		}
 
 		targetRotation = { x: faceRot.x, y: currentRotation.y + (targetY - currentY) }
+		startAnimation()
 
 		dispatch('faceChange', { face: faceIndex, phrase: phrases[faceIndex] })
 	}
 
-	// Exposed rotation functions - seamless continuous rotation
+	// Allow clicking multiple times - just add to target
 	export function rotateLeft() {
-		if (isAnimating) return
-		isAnimating = true
-
-		// Rotate Y by +90 degrees (counterclockwise)
 		targetRotation.y += Math.PI / 2
-
-		// Update current face based on new Y rotation
+		startAnimation()
 		updateFaceFromRotation()
 	}
 
 	export function rotateRight() {
-		if (isAnimating) return
-		isAnimating = true
-
-		// Rotate Y by -90 degrees (clockwise)
 		targetRotation.y -= Math.PI / 2
-
+		startAnimation()
 		updateFaceFromRotation()
 	}
 
 	export function rotateUp() {
-		if (isAnimating) return
-		isAnimating = true
-
-		// Rotate X by -90 degrees
 		targetRotation.x -= Math.PI / 2
-
+		startAnimation()
 		updateFaceFromRotation()
 	}
 
 	export function rotateDown() {
-		if (isAnimating) return
-		isAnimating = true
-
-		// Rotate X by +90 degrees
 		targetRotation.x += Math.PI / 2
-
+		startAnimation()
 		updateFaceFromRotation()
 	}
 
 	function updateFaceFromRotation() {
-		// Determine which face is showing based on rotation
 		const xNorm = ((targetRotation.x % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
 		const yNorm = ((targetRotation.y % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
 
-		// Determine face from normalized rotations
 		let face = 0
 
-		// Check X rotation first (top/bottom override)
 		if (Math.abs(xNorm - Math.PI / 2) < 0.1 || Math.abs(xNorm - Math.PI * 1.5) < 0.1) {
-			face = xNorm < Math.PI ? 5 : 4 // Bottom or Top
+			face = xNorm < Math.PI ? 5 : 4
 		} else if (Math.abs(xNorm - Math.PI * 0.5 * 3) < 0.1) {
-			face = 4 // Top
+			face = 4
 		} else {
-			// Y rotation determines front/right/back/left
-			if (yNorm < Math.PI / 4 || yNorm > (Math.PI * 7) / 4)
-				face = 0 // Front
-			else if (yNorm < (Math.PI * 3) / 4)
-				face = 3 // Left
-			else if (yNorm < (Math.PI * 5) / 4)
-				face = 2 // Back
-			else if (yNorm < (Math.PI * 7) / 4) face = 1 // Right
+			if (yNorm < Math.PI / 4 || yNorm > (Math.PI * 7) / 4) face = 0
+			else if (yNorm < (Math.PI * 3) / 4) face = 3
+			else if (yNorm < (Math.PI * 5) / 4) face = 2
+			else if (yNorm < (Math.PI * 7) / 4) face = 1
 		}
 
 		if (face !== currentFace) {
@@ -214,14 +196,9 @@
 	}
 
 	export function randomFace() {
-		if (isAnimating) return
-		isAnimating = true
-
-		// Add random spins
 		const spinsX = (Math.random() > 0.5 ? 1 : -1) * (1 + Math.floor(Math.random() * 2))
 		const spinsY = (Math.random() > 0.5 ? 1 : -1) * (1 + Math.floor(Math.random() * 2))
 
-		// Pick a random face
 		let newFace = currentFace
 		while (newFace === currentFace) {
 			newFace = Math.floor(Math.random() * 6)
@@ -229,12 +206,12 @@
 
 		const faceRot = getFaceRotation(newFace)
 
-		// Add extra spins for dramatic effect
 		targetRotation = {
 			x: faceRot.x + spinsX * Math.PI * 2,
 			y: faceRot.y + spinsY * Math.PI * 2,
 		}
 
+		startAnimation()
 		currentFace = newFace
 		dispatch('faceChange', { face: newFace, phrase: phrases[newFace] })
 	}
@@ -252,7 +229,6 @@
 			1000
 		)
 
-		// Isometric view
 		camera.position.set(20, 15, 20)
 		camera.lookAt(0, 0, 0)
 
@@ -262,7 +238,6 @@
 		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 		container.appendChild(renderer.domElement)
 
-		// Lighting matching hero cubes
 		const ambientLight = new THREE.AmbientLight(0xffffff, 0.9)
 		scene.add(ambientLight)
 
@@ -270,7 +245,6 @@
 		directionalLight.position.set(10, 20, 10)
 		scene.add(directionalLight)
 
-		// White cube with shaded sides (matching hero cubes)
 		const geometry = new THREE.BoxGeometry(5, 5, 5)
 
 		const paletteWhite = {
@@ -280,12 +254,12 @@
 		}
 
 		const materials = [
-			new THREE.MeshBasicMaterial({ color: paletteWhite.sideDark }), // right (Make)
-			new THREE.MeshBasicMaterial({ color: paletteWhite.sideDark }), // left (Create)
-			new THREE.MeshBasicMaterial({ color: paletteWhite.top }), // top (Build)
-			new THREE.MeshBasicMaterial({ color: paletteWhite.sideDark }), // bottom (Dream)
-			new THREE.MeshBasicMaterial({ color: paletteWhite.sideLight }), // front (Think)
-			new THREE.MeshBasicMaterial({ color: paletteWhite.sideLight }), // back (Solve)
+			new THREE.MeshBasicMaterial({ color: paletteWhite.sideDark }),
+			new THREE.MeshBasicMaterial({ color: paletteWhite.sideDark }),
+			new THREE.MeshBasicMaterial({ color: paletteWhite.top }),
+			new THREE.MeshBasicMaterial({ color: paletteWhite.sideDark }),
+			new THREE.MeshBasicMaterial({ color: paletteWhite.sideLight }),
+			new THREE.MeshBasicMaterial({ color: paletteWhite.sideLight }),
 		]
 
 		cube = new THREE.Mesh(geometry, materials)
@@ -308,35 +282,20 @@
 			return
 		}
 
-		// Physics-based animation
-		const dx = targetRotation.x - currentRotation.x
-		const dy = targetRotation.y - currentRotation.y
+		if (isAnimating) {
+			const elapsed = performance.now() - animationStart
+			const progress = Math.min(elapsed / animationDuration, 1)
+			const eased = easeOutBack(progress)
 
-		// Apply spring force
-		velocity.x += dx * SPRING
-		velocity.y += dy * SPRING
+			// Interpolate from start to target
+			currentRotation.x = startRotation.x + (targetRotation.x - startRotation.x) * eased
+			currentRotation.y = startRotation.y + (targetRotation.y - startRotation.y) * eased
 
-		// Apply damping
-		velocity.x *= DAMPING
-		velocity.y *= DAMPING
-
-		// Update position
-		currentRotation.x += velocity.x
-		currentRotation.y += velocity.y
-
-		// Check if animation is complete
-		if (
-			isAnimating &&
-			Math.abs(dx) < 0.01 &&
-			Math.abs(dy) < 0.01 &&
-			Math.abs(velocity.x) < VELOCITY_THRESHOLD &&
-			Math.abs(velocity.y) < VELOCITY_THRESHOLD
-		) {
-			currentRotation.x = targetRotation.x
-			currentRotation.y = targetRotation.y
-			velocity.x = 0
-			velocity.y = 0
-			isAnimating = false
+			if (progress >= 1) {
+				currentRotation.x = targetRotation.x
+				currentRotation.y = targetRotation.y
+				isAnimating = false
+			}
 		}
 
 		cube.rotation.x = currentRotation.x

@@ -2,10 +2,9 @@
 	import { MessageSquare, UnfoldVertical } from 'lucide-svelte'
 	import { createEventDispatcher } from 'svelte'
 	import Scene from './Scene.svelte'
+	import Counter from './Counter.svelte'
 
 	const dispatch = createEventDispatcher()
-
-	export let skillIcons: Record<string, { name: string; icon: string; color: string }[]>
 
 	function handleSceneLoaded() {
 		dispatch('sceneLoaded')
@@ -15,7 +14,10 @@
 		dispatch('skillEnter', { event, skill })
 	}
 
-	function handleSkillClick(event: MouseEvent, skill: 'design' | 'code' | 'animate') {
+	function handleSkillClick(
+		event: MouseEvent | KeyboardEvent,
+		skill: 'design' | 'code' | 'animate'
+	) {
 		dispatch('skillClick', { event, skill })
 	}
 </script>
@@ -24,7 +26,11 @@
 	class="screen min-h-screen overflow-y-hidden bg-transparent flex flex-col relative items-center justify-start overflow-x-hidden"
 >
 	<!-- Right panel background -->
-	<div class="w-[35%] h-full z-0 top-0 right-0 absolute bg-white"></div>
+	<div
+		class="w-[35%] h-full overflow-hidden flex items-center justify-center z-0 top-0 right-0 absolute bg-white"
+	>
+		<Counter />
+	</div>
 
 	<!-- 3D Scene container -->
 	<div class="w-full ml-[15%] z-10 h-screen absolute top-0 left-0">
@@ -56,6 +62,7 @@
 						class="highlight-word cursor-pointer transition-all duration-300 hover:scale-105 hover:brightness-125"
 						on:mouseenter={(e) => handleSkillEnter(e, 'design')}
 						on:click={(e) => handleSkillClick(e, 'design')}
+						on:keydown={(e) => e.key === 'Enter' && handleSkillClick(e, 'design')}
 						role="button"
 						tabindex="0"
 					>
@@ -66,6 +73,7 @@
 						class="highlight-word cursor-pointer transition-all duration-300 hover:scale-105 hover:brightness-125"
 						on:mouseenter={(e) => handleSkillEnter(e, 'code')}
 						on:click={(e) => handleSkillClick(e, 'code')}
+						on:keydown={(e) => e.key === 'Enter' && handleSkillClick(e, 'code')}
 						role="button"
 						tabindex="0"
 					>
@@ -76,6 +84,7 @@
 						class="highlight-word cursor-pointer transition-all duration-300 hover:scale-105 hover:brightness-125"
 						on:mouseenter={(e) => handleSkillEnter(e, 'animate')}
 						on:click={(e) => handleSkillClick(e, 'animate')}
+						on:keydown={(e) => e.key === 'Enter' && handleSkillClick(e, 'animate')}
 						role="button"
 						tabindex="0"
 					>
@@ -90,9 +99,18 @@
 
 			<!-- CTA Button -->
 			<button
-				class="bg-[#252525]/20 backdrop-blur-sm border border-white ring-1 ring-white ring-offset-2 ring-offset-[#252525] text-black pr-6 p-2 rounded-full mt-6 flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+				class="bg-[#252525]/80 border border-white ring-1 ring-white ring-offset-2 ring-offset-[#252525] text-black pr-6 p-2 rounded-full mt-6 flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
 			>
-				<span class="mr-2 bg-white/20 p-4 text-white rounded-full">
+				<span
+					class="mr-2 bg-white/20 p-4 ring-1 ring-white text-white rounded-full"
+					style="background-image: repeating-linear-gradient(
+					-45deg,
+					#252525,
+					#252525 2px,
+					#3a3a3a 2px,
+					#3a3a3a 4px
+				);"
+				>
 					<MessageSquare size={26} />
 				</span>
 				<span class="mr-1 text-white text-3xl font-semibold"> Hey </span>

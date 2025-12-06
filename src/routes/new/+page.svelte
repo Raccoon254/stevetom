@@ -3,7 +3,8 @@
 	import RadialMenu from './components/RadialMenu.svelte'
 	import HeroSection from './components/HeroSection.svelte'
 	import PhilosophySection from './components/PhilosophySection.svelte'
-	import SkillsOrbit from './components/SkillsOrbit.svelte'
+	import SkillGrid from './components/SkillGrid.svelte'
+	import BigName from './components/BigName.svelte'
 
 	let isLoading = true
 	let activeMenu: 'design' | 'code' | 'animate' | null = null
@@ -43,7 +44,7 @@
 
 	function openMenuForSkill(event: MouseEvent, skill: 'design' | 'code' | 'animate') {
 		if (autoCloseTimer) clearTimeout(autoCloseTimer)
-		menuPosition = { x: event.clientX, y: event.clientY }
+		menuPosition = { x: event.pageX, y: event.pageY }
 		activeMenu = skill
 		autoCloseTimer = setTimeout(closeMenu, 300000)
 	}
@@ -116,10 +117,13 @@
 		/>
 
 		<!-- Philosophy/Cube Section -->
-		<PhilosophySection />
+		<PhilosophySection {skillIcons} />
 
 		<!-- Skills Section -->
-		<SkillsOrbit />
+		<SkillGrid />
+
+		<!-- Big animated name -->
+		<BigName />
 	</main>
 </div>
 

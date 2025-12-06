@@ -3,12 +3,30 @@
 	import PhilosophyScene from './PhilosophyScene.svelte'
 	import ToggleSwitch from './ToggleSwitch.svelte'
 	import CubeControls from './CubeControls.svelte'
+	import BarMenu from './BarMenu.svelte'
 
 	const dispatch = createEventDispatcher()
+
+	export let skillIcons: Record<string, { name: string; icon: string; color: string }[]>
 
 	let cubeComponent: PhilosophyScene
 	let currentPhrase = 'Think'
 	let isManualMode = false
+	let isHoveringPhrase = false
+	let activeTools: { name: string; icon: string; color: string }[] = []
+	let hoverTimeout: ReturnType<typeof setTimeout>
+
+	// Map phrases to skill categories
+	$: {
+		const phrase = currentPhrase.toLowerCase()
+		if (phrase === 'think' || phrase === 'dream') {
+			activeTools = skillIcons?.design || []
+		} else if (phrase === 'make' || phrase === 'build') {
+			activeTools = skillIcons?.code || []
+		} else if (phrase === 'solve' || phrase === 'create') {
+			activeTools = skillIcons?.animate || []
+		}
+	}
 
 	function handleFaceChange(event: CustomEvent<{ face: number; phrase: string }>) {
 		currentPhrase = event.detail.phrase
@@ -17,11 +35,22 @@
 	function handleToggleChange() {
 		cubeComponent?.setManualMode(isManualMode)
 	}
+
+	function handleMouseEnter() {
+		clearTimeout(hoverTimeout)
+		isHoveringPhrase = true
+	}
+
+	function handleMouseLeave() {
+		hoverTimeout = setTimeout(() => {
+			isHoveringPhrase = false
+		}, 300) // 300ms delay to allow bridging the gap
+	}
 </script>
 
 <section
 	id="philosophy-section"
-	class="min-h-[70vh] relative border-b-[50px] mb-20 border-white overflow-hidden"
+	class="min-h-[70vh] relative border-b-[50px] border-white overflow-hidden"
 >
 	<!-- Triangle decoration -->
 	<div
@@ -36,14 +65,27 @@
 	<div class="relative z-10 h-full flex min-h-[70vh]">
 		<!-- Left side - Text content (65%) -->
 		<div class="w-[65%] flex flex-col items-center justify-center py-20 px-8">
-			<div class="max-w-xl text-center">
+			<div class="max-w-xl text-center relative">
 				<!-- Dynamic phrase display -->
-				<div class="min-h-[120px] flex items-center justify-center perspective-[1000px] mb-8">
+				<div
+					class="min-h-[120px] flex items-center justify-center perspective-[1000px] mb-8 relative z-20 cursor-pointer"
+					on:mouseenter={handleMouseEnter}
+					on:mouseleave={handleMouseLeave}
+					role="group"
+				>
 					{#key currentPhrase}
-						<span class="current-phrase">
+						<span class="current-phrase relative">
 							{currentPhrase}<span class="opacity-40">.</span>
 						</span>
 					{/key}
+
+					<!-- Bar Menu shows on hover -->
+					<BarMenu
+						items={activeTools}
+						visible={isHoveringPhrase}
+						on:menuenter={handleMouseEnter}
+						on:menuleave={handleMouseLeave}
+					/>
 				</div>
 
 				<!-- Toggle switch -->
@@ -55,12 +97,13 @@
 						on:change={handleToggleChange}
 					/>
 				</div>
-
-				<!-- Tagline -->
-				<p class="text-[#252525]/60 text-sm sm:text-base mt-10 font-light tracking-wider uppercase">
-					From concept to code, with care
-				</p>
 			</div>
+			<!-- Tagline -->
+			<p
+				class="text-[#252525]/60 absolute bottom-10 text-normal sm:text-base mt-10 font-thin tracking-wider uppercase"
+			>
+				From concept to code, with care
+			</p>
 		</div>
 
 		<!-- Right side - 3D Cube (35%) -->

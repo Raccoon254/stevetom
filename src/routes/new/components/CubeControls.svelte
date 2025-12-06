@@ -71,15 +71,15 @@
 		background: rgba(255, 255, 255, 0.1);
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		background-image: repeating-linear-gradient(
-			-25deg,
-			transparent,
-			transparent 2px,
-			rgba(255, 255, 255, 0.15) 2px,
-			rgba(255, 255, 255, 0.15) 4px
+			-45deg,
+			rgba(255, 255, 255, 0.1),
+			rgba(255, 255, 255, 0.1) 2px,
+			rgba(255, 255, 255, 0.2) 2px,
+			rgba(255, 255, 255, 0.2) 4px
 		);
-		background-position: 100%;
 		background-size: 200% 200%;
-		transition: all 0.3s ease;
+		transition: background-position 0.3s ease;
+		transform: scale(1);
 		cursor: pointer;
 		color: white;
 		display: flex;
@@ -89,7 +89,8 @@
 
 	.control-btn:hover {
 		background-position: 0;
-		transform: scale(1.1);
+		transform: scale(1.3);
+		transition: transform 0.3s ease;
 	}
 
 	.control-btn:active {

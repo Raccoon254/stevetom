@@ -13,7 +13,13 @@
 </script>
 
 {#if activeMenu}
-	<div class="radial-menu-overlay" on:click={closeMenu} role="button" tabindex="-1">
+	<div
+		class="radial-menu-overlay"
+		on:click={closeMenu}
+		on:keydown={(e) => e.key === 'Escape' && closeMenu()}
+		role="button"
+		tabindex="-1"
+	>
 		<div class="radial-menu" style="left: {menuPosition.x}px; top: {menuPosition.y}px;">
 			<!-- SVG for sectored wheel -->
 			<svg class="radial-wheel" viewBox="0 0 300 300" width="300" height="300">
@@ -153,17 +159,17 @@
 <style>
 	/* Radial Menu (GTA Style) */
 	.radial-menu-overlay {
-		position: fixed;
+		position: absolute;
 		top: 0;
 		left: 0;
-		width: 100vw;
-		height: 100vh;
+		width: 100%;
+		height: 100%;
 		z-index: 10000;
 		background: rgba(0, 0, 0, 0.4);
 	}
 
 	.radial-menu {
-		position: fixed;
+		position: absolute;
 		transform: translate(-50%, -50%);
 		pointer-events: auto;
 	}
