@@ -8,7 +8,13 @@
 	let camera: THREE.OrthographicCamera
 	let renderer: THREE.WebGLRenderer
 	let animationId: number
-	let cube: THREE.Mesh
+	let sceneObjects: {
+		topCube: THREE.Mesh
+		bottomCube: THREE.Mesh
+		bottomRightCube: THREE.Mesh
+		bottomLeftCube: THREE.Mesh
+		sphere: THREE.Mesh
+	}
 
 	onMount(() => {
 		init()
@@ -22,90 +28,136 @@
 		if (browser) window.removeEventListener('resize', onResize)
 	})
 
+	// Calculate responsive scale based on viewport
+	function getResponsiveScale() {
+		if (!container) return { d: 35, scale: 1 }
+		const width = container.clientWidth
+		const height = container.clientHeight
+
+		// Base dimensions (desktop)
+		const baseWidth = 1920
+		const baseHeight = 1080
+
+		// Calculate scale factor based on viewport size
+		const widthScale = width / baseWidth
+		const heightScale = height / baseHeight
+		const scale = Math.min(widthScale, heightScale)
+
+		// Adjust camera frustum based on aspect ratio
+		const aspect = width / height
+		let d = 35
+
+		// Adjust frustum for different aspect ratios
+		if (aspect < 1) {
+			// Portrait mode - increase frustum
+			d = 35 / aspect
+		} else if (aspect > 1.5) {
+			// Wide screens - adjust slightly
+			d = 35 * (aspect / 1.5) * 0.8
+		}
+
+		return { d, scale }
+	}
+
 	function init() {
 		if (!browser) return
 		// Scene setup
 		scene = new THREE.Scene()
-        // will be transparent
-		scene.background = new THREE.Color(0x00000)
+		// Transparent background to show HTML bg
+		scene.background = null
 
-		// Camera setup for Isometric view
+		// Camera setup for Isometric view with responsive frustum
+		const { d } = getResponsiveScale()
 		const aspect = container.clientWidth / container.clientHeight
-		const d = 40 // Increased scale slightly to fit 3 cubes comfortably
 		camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 1, 1000)
 
 		// Isometric angle: Look from a corner
 		camera.position.set(20, 15, 20)
 		camera.lookAt(scene.position)
 
-		// Renderer setup
-		renderer = new THREE.WebGLRenderer({ antialias: true })
+		// Renderer setup with transparency (no shadows needed)
+		renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+		renderer.setClearColor(0x000000, 0)
 		renderer.setSize(container.clientWidth, container.clientHeight)
 		renderer.setPixelRatio(Math.min(browser ? window.devicePixelRatio : 1, 2))
 		container.appendChild(renderer.domElement)
 
-		// Palettes
-		const palettePink = {
-			top: 0xffffff,
-			sideLight: 0xfce7f3, // Pale Pink
-			sideDark: 0xf9a8d4, // Pink
-		}
+		// Minimal lighting for sphere only (cubes use flat colors)
+		const ambientLight = new THREE.AmbientLight(0xffffff, 0.9)
+		scene.add(ambientLight)
 
-		const paletteBlue = {
-			top: 0xffffff,
-			sideLight: 0xe0e7ff, // Pale Lavender (Indigo-100)
-			sideDark: 0xa5b4fc, // Periwinkle (Indigo-300)
-		}
+		const directionalLight = new THREE.DirectionalLight(0xffffff, 2.1)
+		directionalLight.position.set(10, 20, 10)
+		scene.add(directionalLight)
 
-        const paletteRed = {
-            top: 0xffffff,
-            sideLight: 0xffe0e0, // Pale Red
-            sideDark: 0xff6b6b, // Red
-        }
+		// Color palette for 3D effect without lighting
+		const paletteWhite = {
+			top: 0xffffff, // Bright white top
+			sideLight: 0xe8e8e8, // Light gray for lighter sides
+			sideDark: 0xc0c0c0, // Medium gray for darker sides
+		}
 
 		// Cube geometry
 		const geometry = new THREE.BoxGeometry(7, 7, 7)
 
-		const createMaterials = (palette: typeof palettePink) => [
+		const createMaterials = (palette: typeof paletteWhite) => [
 			new THREE.MeshBasicMaterial({ color: palette.sideDark }), // right (x+)
 			new THREE.MeshBasicMaterial({ color: palette.sideDark }), // left (x-)
-			new THREE.MeshBasicMaterial({ color: palette.top }), // top (y+)
+			new THREE.MeshBasicMaterial({ color: palette.top }), // top (y+) - white
 			new THREE.MeshBasicMaterial({ color: palette.sideDark }), // bottom (y-)
 			new THREE.MeshBasicMaterial({ color: palette.sideLight }), // front (z+)
 			new THREE.MeshBasicMaterial({ color: palette.sideLight }), // back (z-)
 		]
 
-		// Top Cube (Pink)
-		const topCube = new THREE.Mesh(geometry, createMaterials(palettePink))
-        // will start from (7, 0, 7) and then move to (7, 10, 7)
-		topCube.position.set(7, 7, 7) // Up
+		// Top Cube (White with shaded sides)
+		const topCube = new THREE.Mesh(geometry, createMaterials(paletteWhite))
+		topCube.position.set(7, 7 + 13, -4 - 23.6)
 		scene.add(topCube)
 
-        // Bottom Cube (RED)
-		const bottomCube = new THREE.Mesh(geometry, createMaterials(paletteRed))
-		bottomCube.position.set(0, 0, 0) // Down
+		// Bottom Cube (White with shaded sides)
+		const bottomCube = new THREE.Mesh(geometry, createMaterials(paletteWhite))
+		bottomCube.position.set(0, 0 + 13, -11 - 23.6)
 		scene.add(bottomCube)
 
-		// Bottom Right Cube (Blue)
-		const bottomRightCube = new THREE.Mesh(geometry, createMaterials(paletteBlue))
-		bottomRightCube.position.set(7, 0, 0) // Right
+		// Bottom Right Cube (White with shaded sides)
+		const bottomRightCube = new THREE.Mesh(geometry, createMaterials(paletteWhite))
+		bottomRightCube.position.set(7, 0 + 13, -11 - 23.6)
 		scene.add(bottomRightCube)
 
-		// Bottom Left Cube (Blue)
-		const bottomLeftCube = new THREE.Mesh(geometry, createMaterials(paletteBlue))
-		bottomLeftCube.position.set(0, 0, 7) // Forward/Left
+		// Bottom Left Cube (White with shaded sides)
+		const bottomLeftCube = new THREE.Mesh(geometry, createMaterials(paletteWhite))
+		bottomLeftCube.position.set(0, 0 + 13, -4 - 23.6)
 		scene.add(bottomLeftCube)
+
+		// Sphere (White with 3D shading from lighting)
+		const sphereGeometry = new THREE.SphereGeometry(3.5, 32, 32)
+		const sphereMaterial = new THREE.MeshStandardMaterial({
+			color: 0xffffff, // White
+			roughness: 0.6,
+			metalness: 0.1,
+		})
+		const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+		sphere.position.set(7, -17 + 13, -4 - 23.6)
+		scene.add(sphere)
+
+		// Store references for resize handling
+		sceneObjects = { topCube, bottomCube, bottomRightCube, bottomLeftCube, sphere }
 	}
 
 	function onResize() {
 		if (!container || !camera || !renderer) return
+
+		const { d } = getResponsiveScale()
 		const aspect = container.clientWidth / container.clientHeight
-		const d = 10
+
+		// Update camera frustum
 		camera.left = -d * aspect
 		camera.right = d * aspect
 		camera.top = d
 		camera.bottom = -d
 		camera.updateProjectionMatrix()
+
+		// Update renderer size
 		renderer.setSize(container.clientWidth, container.clientHeight)
 	}
 
@@ -115,4 +167,4 @@
 	}
 </script>
 
-<div bind:this={container} class="w-full h-full min-h-[500px] relative"></div>
+<div bind:this={container} class="w-full h-full min-h-screen relative"></div>
