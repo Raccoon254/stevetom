@@ -1,22 +1,22 @@
 <script>
-	import '../app.css';
-   import { Briefcase, Mail, Github, Linkedin, MessageCircle, Moon, Sun } from 'lucide-svelte';
-   import { onMount } from 'svelte';
+	import '../app.css'
+	import { Briefcase, Mail, Github, Linkedin, MessageCircle, Moon, Sun } from 'lucide-svelte'
+	import { onMount } from 'svelte'
 
-   let theme = 'light';
+	let theme = 'light'
 
-   onMount(() => {
-		theme = localStorage.getItem('theme') || 'light';
-		document.documentElement.setAttribute('data-theme', theme);
-   });
+	onMount(() => {
+		theme = localStorage.getItem('theme') || 'light'
+		document.documentElement.setAttribute('data-theme', theme)
+	})
 
-   function toggleTheme() {
-      theme = theme === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-   }
+	function toggleTheme() {
+		theme = theme === 'light' ? 'dark' : 'light'
+		document.documentElement.setAttribute('data-theme', theme)
+		localStorage.setItem('theme', theme)
+	}
 
-	 let year = new Date().getFullYear();
+	let year = new Date().getFullYear()
 </script>
 
 <button
@@ -36,80 +36,73 @@
 		<slot />
 	</main>
 
-	<footer class="bg-base-200 text-base-content py-16 px-4 md:px-8">
-		<div class="max-w-7xl mx-auto">
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-				<!-- Logo & Image -->
-				<div class="text-center md:text-left flex flex-col items-center md:items-start">
-					<div class="relative mb-4">
-						<img
-							src="/ken.HEIC"
-							alt="Ken Tom"
-							class="rounded-full ring ring-primary/20 ring-offset-4 ring-offset-base-100 object-cover w-32 h-32"
-						/>
-					</div>
-					<img src="/namelogo.jpg" alt="KenTom logo" class="w-36 mb-2" />
-					<p class="text-sm text-base-content/60">All in one dev solutions</p>
-				</div>
+	<footer
+		class="footer-section bg-[#151515] text-white py-16 border-t border-white/5 relative overflow-hidden"
+	>
+		<div class="max-w-7xl mx-auto px-6 flex flex-col items-center text-center">
+			<!-- Logo/Brand -->
+			<div class="mb-8 relative group">
+				<div
+					class="absolute -inset-1 bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] rounded-full opacity-0 group-hover:opacity-50 transition duration-500 blur"
+				></div>
+				<img
+					src="/ken.HEIC"
+					alt="Ken Tom"
+					class="relative w-20 h-20 rounded-full object-cover border-2 border-[#252525] mx-auto"
+				/>
+			</div>
 
-				<!-- About Text -->
-				<div class="col-span-2 space-y-4">
-					<p class="text-base-content/70">
-						Hi, I'm KenTom[Steve Osoro Tom], the developer behind Projects like Status Saver, Jestorm, Cline, and
-						many more. I'm a passionate developer with a keen interest in technology and software
-					</p>
-					<p class="text-base-content/70">
-						This website is a showcase of my work and a platform to connect with me. Feel free to reach out to me for any queries or collaborations, I'm always open to new opportunities and challenges, and I'm looking forward to working with you. Thank you for visiting my website.
-					</p>
+			<!-- Big Call to Action (Minimal) -->
+			<h2 class="text-3xl md:text-4xl font-bold mb-4">
+				Let's build something <span class="text-[#ff6b35]">amazing.</span>
+			</h2>
+			<a
+				href="mailto:tomsteve187@gmail.com"
+				class="text-white/60 hover:text-white transition-colors mb-12">tomsteve187@gmail.com</a
+			>
 
-					<!-- Social Links -->
-					<div class="flex flex-wrap gap-3 mt-4">
-						<a
-							href="https://stevetom.vercel.app/"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-primary btn-sm gap-2"
-						>
-							<Briefcase size="16" /> Portfolio
-						</a>
-						<a
-							href="mailto:tomsteve187@gmail.com"
-							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-warning btn-sm gap-2"
-						>
-							<Mail size="16" /> Email
-						</a>
-						<a
-							href="https://github.com/Raccoon254"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-neutral btn-sm gap-2"
-						>
-							<Github size="16" /> GitHub
-						</a>
-						<a
-							href="https://www.linkedin.com/in/steve-tom-822a81230/"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-info btn-sm gap-2"
-						>
-							<Linkedin size="16" /> LinkedIn
-						</a>
-						<a
-							href="https://wa.link/w1774n"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="btn border-0 shadow-none rounded-full ring-1 ring-offset-2 ring-blue-300/20 btn-success btn-sm gap-2"
-						>
-							<MessageCircle size="16" /> WhatsApp
-						</a>
-					</div>
+			<!-- Navigation & Socials Grid -->
+			<div class="flex flex-col md:flex-row items-center gap-8 md:gap-16 mb-12">
+				<!-- Links -->
+				<nav class="flex gap-8 text-sm font-medium tracking-wide">
+					<a href="/" class="text-white/70 hover:text-[#ff6b35] transition-colors">Home</a>
+					<a href="/projects" class="text-white/70 hover:text-[#ff6b35] transition-colors"
+						>Projects</a
+					>
+					<a href="/about" class="text-white/70 hover:text-[#ff6b35] transition-colors">About</a>
+					<a href="/contact" class="text-white/70 hover:text-[#ff6b35] transition-colors">Contact</a
+					>
+				</nav>
+
+				<!-- Divider (Desktop) -->
+				<div class="hidden md:block w-px h-6 bg-white/10"></div>
+
+				<!-- Socials -->
+				<div class="flex gap-5">
+					<a
+						href="https://github.com/Raccoon254"
+						target="_blank"
+						class="text-white/60 hover:text-[#ff6b35] transition-colors"><Github size="20" /></a
+					>
+					<a
+						href="https://www.linkedin.com/in/steve-tom-822a81230/"
+						target="_blank"
+						class="text-white/60 hover:text-[#ff6b35] transition-colors"><Linkedin size="20" /></a
+					>
+					<a
+						href="https://wa.link/w1774n"
+						target="_blank"
+						class="text-white/60 hover:text-[#ff6b35] transition-colors"
+						><MessageCircle size="20" /></a
+					>
 				</div>
 			</div>
 
 			<!-- Copyright -->
-			<div class="mt-12 pt-8 border-t border-base-300 flex flex-col items-center gap-4">
-				<img src="/logo-light.png" alt="Ken Tom" class="w-16" />
-				<p class="text-sm text-base-content/50">&copy; {year} KenTom. All rights reserved.</p>
+			<div
+				class="text-xs text-white/30 font-light border-t border-white/5 pt-8 w-full max-w-2xl text-center"
+			>
+				<p>&copy; {year} KenTom. All rights reserved.</p>
 			</div>
 		</div>
 	</footer>

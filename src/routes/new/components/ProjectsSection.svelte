@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-svelte'
+	import { onMount } from 'svelte'
+	import { ArrowRight } from 'lucide-svelte'
 
 	type Project = {
 		id: string
@@ -254,14 +255,6 @@
 					{/each}
 				</div>
 			</div>
-
-			<!-- Navigation Buttons -->
-			<button class="nav-button prev" on:click={() => rotate('prev')}>
-				<ChevronLeft size={24} />
-			</button>
-			<button class="nav-button next" on:click={() => rotate('next')}>
-				<ChevronRight size={24} />
-			</button>
 		{:else}
 			<!-- Loading Skeleton -->
 			<div class="flex justify-center py-16 w-full">
@@ -383,34 +376,6 @@
 		opacity: 1;
 	}
 
-	/* Navigation Buttons */
-	.nav-button {
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		padding: 0.75rem;
-		background: white;
-		border-radius: 50%;
-		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-		color: #1f2937;
-		transition: all 0.2s;
-		z-index: 50;
-	}
-
-	.nav-button:hover {
-		background: #f3f4f6;
-	}
-
-	.nav-button.prev {
-		left: 25%;
-		transform: translate(-100%, -50%);
-	}
-
-	.nav-button.next {
-		right: 25%;
-		transform: translate(100%, -50%);
-	}
-
 	/* Services */
 	.services {
 		display: flex;
@@ -477,9 +442,6 @@
 			transform: none !important;
 			opacity: 1 !important;
 			pointer-events: auto !important;
-		}
-		.nav-button {
-			display: none;
 		}
 	}
 </style>
