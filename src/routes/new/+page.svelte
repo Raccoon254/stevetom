@@ -5,6 +5,7 @@
 	import PhilosophySection from './components/PhilosophySection.svelte'
 	import SkillGrid from './components/SkillGrid.svelte'
 	import BigName from './components/BigName.svelte'
+	import ProjectsSection from './components/ProjectsSection.svelte'
 
 	let isLoading = true
 	let activeMenu: 'design' | 'code' | 'animate' | null = null
@@ -124,6 +125,9 @@
 
 		<!-- Big animated name -->
 		<BigName />
+
+		<!-- Projects Section -->
+		<ProjectsSection />
 	</main>
 </div>
 
