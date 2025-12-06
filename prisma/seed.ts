@@ -248,11 +248,12 @@ async function main() {
         image: 'https://kentom.co.ke/dev-cleaner.png',
         projectUrl: '#',
         githubUrl: 'https://github.com/Raccoon254/Dev-Cleaner',
-        tech: ['Java', 'JavaFX'],
+        tech: ['Java', 'Css', 'SQLite', 'Xml', 'Intellij'],
         year: '2024',
         category: 'Desktop Application',
         features: ['Multi-platform Support', 'Batch Cleaning', 'Storage Analytics', 'Safe Deletion'],
-        status: 'LIVE'
+        status: 'LIVE',
+          featured: true
       }
     }),
 

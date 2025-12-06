@@ -78,7 +78,7 @@
                 <div class="flex gap-2 items-center">
                     <img src="/logo-light.png" alt="Steve Tom" class="w-10 interactive h-10 object-cover"/>
                     <h1 class="text-3xl text-interactive font-bold">kenTom</h1>
-                    <span class="text-xs opacity-50 font-thin">v2.1.5</span>
+                    <span class="text-xs opacity-50 font-thin">v2.5.3</span>
                 </div>
 
                 <p class="text-xl font-light text-base-content/80">
