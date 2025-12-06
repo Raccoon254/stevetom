@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { MessageSquare, UnfoldVertical } from 'lucide-svelte'
 	import Scene from './Scene.svelte'
+	import Loader from './Loader.svelte'
 
 	let isLoading = true
 	let activeMenu: 'design' | 'code' | 'animate' | null = null
@@ -33,17 +34,12 @@
 			{ name: 'After Effects', icon: 'devicon-aftereffects-plain', color: '#9999FF' },
 			{ name: 'Three.js', icon: 'devicon-threejs-original', color: '#000000' },
 			{ name: 'CSS3', icon: 'devicon-css3-plain', color: '#1572B6' },
-			{ name: 'GSAP', icon: '🎬', color: '#88CE02' },
-			{ name: 'Framer', icon: '🎨', color: '#0055FF' },
+			{ name: 'GSAP', icon: 'image-gsap.png', color: '#88CE02' },
+			{ name: 'Framer', icon: 'devicon-framermotion-plain', color: '#0055FF' },
 		],
 	}
 
-	function handleSkillEnter(event: MouseEvent, skill: 'design' | 'code' | 'animate') {
-		// Check if skill is on cooldown
-		if (cooldowns[skill]) {
-			return
-		}
-
+	function openMenuForSkill(event: MouseEvent, skill: 'design' | 'code' | 'animate') {
 		// Clear any existing timer
 		if (autoCloseTimer) {
 			clearTimeout(autoCloseTimer)
@@ -53,10 +49,25 @@
 		menuPosition = { x: event.clientX, y: event.clientY }
 		activeMenu = skill
 
-		// Start 10-second auto-close timer
+		// Start 5-minute auto-close timer
 		autoCloseTimer = setTimeout(() => {
 			closeMenu()
-		}, 10000)
+		}, 300000)
+	}
+
+	function handleSkillEnter(event: MouseEvent, skill: 'design' | 'code' | 'animate') {
+		// Check if skill is on cooldown
+		if (cooldowns[skill]) {
+			return
+		}
+
+		openMenuForSkill(event, skill)
+	}
+
+	function handleSkillClick(event: MouseEvent, skill: 'design' | 'code' | 'animate') {
+		// Force open by resetting cooldown
+		cooldowns[skill] = false
+		openMenuForSkill(event, skill)
 	}
 
 	function closeMenu() {
@@ -90,58 +101,166 @@
 	/>
 </svelte:head>
 
-<!-- Premium Loader -->
+<!-- Minimal Loader with Facts -->
 {#if isLoading}
-	<div class="loader-overlay">
-		<div class="loader-container">
-			<div class="loader-spinner"></div>
-			<p class="loader-text">Loading 3D Scene...</p>
-		</div>
-	</div>
+	<Loader />
 {/if}
+
+<!-- Devicon Preloader (hidden, forces fonts to load) -->
+<div class="devicon-preloader" aria-hidden="true">
+	{#each Object.values(skillIcons).flat() as tool}
+		{#if tool.icon.startsWith('devicon')}
+			<i class="{tool.icon} colored"></i>
+		{/if}
+	{/each}
+</div>
 
 <!-- Radial Menu (GTA Style) -->
 {#if activeMenu}
 	<div class="radial-menu-overlay" on:click={closeMenu} role="button" tabindex="-1">
 		<div class="radial-menu" style="left: {menuPosition.x}px; top: {menuPosition.y}px;">
+			<!-- SVG for sectored wheel -->
+			<svg class="radial-wheel" viewBox="0 0 300 300" width="300" height="300">
+				<defs>
+					<!-- Donut mask -->
+					<mask id="donut-mask">
+						<circle cx="150" cy="150" r="150" fill="white" />
+						<circle cx="150" cy="150" r="50" fill="black" />
+					</mask>
+				</defs>
+
+				<!-- Sectors -->
+				{#each skillIcons[activeMenu] as tool, index}
+					{@const totalSectors = skillIcons[activeMenu].length}
+					{@const anglePerSector = 360 / totalSectors}
+					{@const startAngle = index * anglePerSector - 90}
+					{@const endAngle = (index + 1) * anglePerSector - 90}
+					{@const largeArcFlag = anglePerSector > 180 ? 1 : 0}
+
+					{@const startRad = (startAngle * Math.PI) / 180}
+					{@const endRad = (endAngle * Math.PI) / 180}
+
+					{@const x1 = 150 + 150 * Math.cos(startRad)}
+					{@const y1 = 150 + 150 * Math.sin(startRad)}
+					{@const x2 = 150 + 150 * Math.cos(endRad)}
+					{@const y2 = 150 + 150 * Math.sin(endRad)}
+
+					{@const innerX1 = 150 + 50 * Math.cos(startRad)}
+					{@const innerY1 = 150 + 50 * Math.sin(startRad)}
+					{@const innerX2 = 150 + 50 * Math.cos(endRad)}
+					{@const innerY2 = 150 + 50 * Math.sin(endRad)}
+
+					{@const midAngle = (startAngle + endAngle) / 2}
+					{@const midRad = (midAngle * Math.PI) / 180}
+					{@const iconX = 150 + 100 * Math.cos(midRad)}
+					{@const iconY = 150 + 100 * Math.sin(midRad)}
+
+					<g class="sector-group" style="animation-delay: {index * 0.05}s;">
+						<!-- Sector path -->
+						<path
+							class="sector backdrop-blur-lg"
+							d="M {x1} {y1} A 150 150 0 {largeArcFlag} 1 {x2} {y2} L {innerX2} {innerY2} A 50 50 0 {largeArcFlag} 0 {innerX1} {innerY1} Z"
+							fill="rgba(37, 37, 37, 0.95)"
+							stroke="rgba(255, 255, 255, 0.3)"
+							stroke-width="1"
+							mask="url(#donut-mask)"
+							style="backdrop-filter: blur(10px)"
+						/>
+
+						<!-- Icon and text -->
+						<g class="sector-content" transform="translate({iconX}, {iconY})">
+							<text
+								class="sector-icon"
+								text-anchor="middle"
+								dominant-baseline="middle"
+								font-size="32"
+								fill="white"
+							>
+								{#if tool.icon.startsWith('image')}
+									<div class="sector-icon">
+										<img
+											src={'./new/' + tool.icon}
+											alt={tool.name}
+											style="width: 32px; height: 32px;"
+										/>
+									</div>
+								{:else if tool.icon.startsWith('devicon')}
+									<i class="{tool.icon} colored"></i>
+								{:else}
+									{tool.icon}
+								{/if}
+							</text>
+							<text
+								class="sector-label"
+								text-anchor="middle"
+								y="25"
+								font-size="12"
+								fill="white"
+								opacity="0.9"
+							>
+								{tool.name}
+							</text>
+						</g>
+					</g>
+				{/each}
+			</svg>
+
+			<!-- Overlay devicons (positioned absolutely) -->
+			{#each skillIcons[activeMenu] as tool, index}
+				{@const totalSectors = skillIcons[activeMenu].length}
+				{@const anglePerSector = 360 / totalSectors}
+				{@const midAngle = (index * anglePerSector + (index + 1) * anglePerSector) / 2 - 90}
+				{@const midRad = (midAngle * Math.PI) / 180}
+				{@const iconX = 100 * Math.cos(midRad)}
+				{@const iconY = 100 * Math.sin(midRad)}
+
+				{#if tool.icon.startsWith('devicon')}
+					<div
+						class="devicon-overlay"
+						style="
+							left: 50%;
+							top: 50%;
+							--x: {iconX}px;
+							--y: {iconY - 12}px;
+							animation-delay: {index * 0.05}s;
+						"
+					>
+						<i class="{tool.icon} colored" style="font-size: 2rem; color: {tool.color};"></i>
+					</div>
+				{:else if tool.icon.startsWith('image')}
+					<div
+						class="devicon-overlay"
+						style="
+							left: 50%;
+							top: 50%;
+							--x: {iconX}px;
+							--y: {iconY - 12}px;
+							animation-delay: {index * 0.05}s;
+						"
+					>
+						<img src={'./new/' + tool.icon} alt={tool.name} style="width: 32px; height: 32px;" />
+					</div>
+				{/if}
+			{/each}
+
+			<!-- backdrop circle exact size as the svg -->
+			<div class="backdrop-circle"></div>
+
 			<!-- Center circle with close button -->
 			<div class="radial-center">
 				<button class="close-btn" on:click={closeMenu}>✕</button>
 			</div>
-
-			<!-- Icons arranged in circle -->
-			{#each skillIcons[activeMenu] as tool, index}
-				{@const angle = (index / skillIcons[activeMenu].length) * 360}
-				{@const radius = 120}
-				{@const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius}
-				{@const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius}
-				<div
-					class="radial-item"
-					style="
-						transform: translate(-50%, -50%) translate({x}px, {y}px);
-						animation-delay: {index * 0.05}s;
-					"
-				>
-					<div class="icon-container" style="border-color: {tool.color};">
-						{#if tool.icon.startsWith('devicon')}
-							<i class="{tool.icon} colored" style="font-size: 2rem;"></i>
-						{:else}
-							<span style="font-size: 2rem;">{tool.icon}</span>
-						{/if}
-					</div>
-					<span class="tool-name">{tool.name}</span>
-				</div>
-			{/each}
 		</div>
 	</div>
 {/if}
 
-<main style="background-color: #252525">
+<div style="background: #252525 ">
+	<main class="hero-section">
 	<section
-		class="hero-section min-h-screen flex flex-col relative items-center justify-start overflow-x-hidden"
+		class="screen overflow-y-hidden bg-black/0 flex flex-col relative items-center justify-start overflow-x-hidden"
 	>
 		<!-- Rectangle with 25% bg-blue-500width -->
-		<div class="w-[35%] h-screen z-0 top-0 right-0 absolute bg-blue-50"></div>
+		<div class="w-[35%] h-full z-0 top-0 right-0 absolute bg-white"></div>
 
 		<!-- Container that locks background and 3D scene together -->
 		<div class="w-full ml-[15%] z-50 h-screen absolute top-0 left-0 z-0">
@@ -161,6 +280,7 @@
 						<span
 							class="highlight interactive-highlight"
 							on:mouseenter={(e) => handleSkillEnter(e, 'design')}
+							on:click={(e) => handleSkillClick(e, 'design')}
 							role="button"
 							tabindex="0"
 						>
@@ -170,6 +290,7 @@
 						<span
 							class="highlight interactive-highlight"
 							on:mouseenter={(e) => handleSkillEnter(e, 'code')}
+							on:click={(e) => handleSkillClick(e, 'code')}
 							role="button"
 							tabindex="0"
 						>
@@ -179,6 +300,7 @@
 						<span
 							class="highlight interactive-highlight"
 							on:mouseenter={(e) => handleSkillEnter(e, 'animate')}
+							on:click={(e) => handleSkillClick(e, 'animate')}
 							role="button"
 							tabindex="0"
 						>
@@ -210,98 +332,32 @@
 			</div>
 			<p class="scroll-text text-white font-medium tracking-wide">Scroll Down</p>
 		</div>
+
+		<!-- Triangle -->
+		<div class="triangle absolute rotate-45 -bottom-10 right-[calc(35%-10px)]"
+		style="
+		border-top: 60px solid transparent;
+		border-bottom: 60px solid transparent;
+		border-left: 60px solid white;
+		"
+		></div>
 	</section>
-	<section class="h-screen bg-white"></section>
+	<section class="h-screen relative border-t-[0px] border-white">
+		<!-- Triangle -->
+		<div class="triangle absolute rotate-45 -top-10 right-[calc(35%-50px)]"
+		style="
+		border-top: 60px solid transparent;
+		border-bottom: 60px solid transparent;
+		border-right: 60px solid white;
+		"
+		></div>
+				<!-- Rectangle with 25% bg-blue-500width -->
+		<div class="w-[65%] h-full z-0 top-0 left-0 absolute bg-white"></div>
+	</section>
 </main>
+</div>
 
 <style>
-	.loader-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background: rgba(37, 37, 37, 0.95);
-		backdrop-filter: blur(10px);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		z-index: 9999;
-		animation: fadeIn 0.3s ease-in-out;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-
-	.loader-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 2rem;
-		padding: 3rem;
-		background: rgba(255, 255, 255, 0.05);
-		border-radius: 24px;
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		backdrop-filter: blur(20px);
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-	}
-
-	.loader-spinner {
-		width: 80px;
-		height: 80px;
-		border: 4px solid rgba(255, 255, 255, 0.1);
-		border-top: 4px solid #ffffff;
-		border-radius: 50%;
-		animation: spin 1s linear infinite;
-		position: relative;
-	}
-
-	.loader-spinner::before {
-		content: '';
-		position: absolute;
-		top: -4px;
-		left: -4px;
-		right: -4px;
-		bottom: -4px;
-		border-radius: 50%;
-		border: 4px solid transparent;
-		border-top-color: rgba(255, 255, 255, 0.3);
-		animation: spin 2s linear infinite reverse;
-	}
-
-	@keyframes spin {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-
-	.loader-text {
-		color: #ffffff;
-		font-size: 1.125rem;
-		font-weight: 500;
-		letter-spacing: 0.05em;
-		animation: pulse 2s ease-in-out infinite;
-	}
-
-	@keyframes pulse {
-		0%,
-		100% {
-			opacity: 1;
-		}
-		50% {
-			opacity: 0.6;
-		}
-	}
-
 	.hero-section {
 		/* linear-gradient slanted lines repeated*/
 		background: repeating-linear-gradient(
@@ -389,6 +445,16 @@
 		text-transform: uppercase;
 		letter-spacing: 0.15em;
 		opacity: 0.8;
+	}
+
+	/* Devicon Preloader - Hidden but forces font loading */
+	.devicon-preloader {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		opacity: 0;
+		pointer-events: none;
+		overflow: hidden;
 	}
 
 	.bounce-animation {
@@ -482,13 +548,63 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: 10000;
-		cursor: crosshair;
+		background: rgba(0, 0, 0, 0.4);
 	}
 
 	.radial-menu {
 		position: fixed;
 		transform: translate(-50%, -50%);
+		pointer-events: auto;
+	}
+
+	.radial-wheel {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		z-index: 999;
+		transform: translate(-50%, -50%);
+		border-radius: 50%;
+		filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.3));
+		border: 2px solid rgba(255, 255, 255, 0.4);
+		animation: wheelAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+	}
+
+	.sector-group {
+		animation: sectorAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+	}
+
+	.sector {
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.sector:hover {
+		fill: rgba(37, 37, 37, 1);
+		stroke: rgba(255, 255, 255, 0.6);
+		stroke-width: 2;
+	}
+
+	.sector-content {
 		pointer-events: none;
+	}
+
+	.sector-icon {
+		font-weight: bold;
+		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+	}
+
+	.sector-label {
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+	}
+
+	.devicon-overlay {
+		position: absolute;
+		pointer-events: none;
+		z-index: 99999;
+		animation: iconAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 	}
 
 	.radial-center {
@@ -498,15 +614,27 @@
 		transform: translate(-50%, -50%);
 		width: 60px;
 		height: 60px;
-		background: rgba(255, 255, 255, 0.1);
+		z-index: 10000001;
+		background: rgba(37, 37, 37, 0.5);
 		backdrop-filter: blur(10px);
-		border: 2px solid rgba(255, 255, 255, 0.3);
+		border: 2px solid rgba(255, 255, 255, 0.4);
 		border-radius: 50%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		pointer-events: auto;
 		animation: radialPulse 2s ease-in-out infinite;
+		z-index: 10;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+		cursor: pointer !important;
+	}
+
+	.backdrop-circle {
+		width: 300px;
+		height: 300px;
+		border-radius: 50%;
+		mix-blend-mode: screen;
+		z-index: 9;
 	}
 
 	.close-btn {
@@ -514,63 +642,44 @@
 		border: none;
 		color: white;
 		font-size: 1.5rem;
-		cursor: pointer;
+		cursor: pointer !important;
 		transition: transform 0.2s ease;
 	}
 
 	.close-btn:hover {
-		transform: scale(1.2) rotate(90deg);
+		transform: scale(1.2) rotate(90deg) !important;
 	}
 
-	.radial-item {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.5rem;
-		pointer-events: auto;
-		animation: radialItemAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+	/* Animations */
+	@keyframes wheelAppear {
+		0% {
+			opacity: 0;
+			transform: translate(-50%, -50%) scale(0.8) rotate(-10deg);
+		}
+		100% {
+			opacity: 1;
+			transform: translate(-50%, -50%) scale(1) rotate(0deg);
+		}
 	}
 
-	.icon-container {
-		width: 70px;
-		height: 70px;
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(20px);
-		border: 3px solid;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-		cursor: pointer;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+	@keyframes sectorAppear {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 
-	.icon-container:hover {
-		transform: scale(1.2);
-		box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-	}
-
-	.tool-name {
-		color: white;
-		font-size: 0.875rem;
-		font-weight: 600;
-		text-align: center;
-		background: rgba(0, 0, 0, 0.7);
-		backdrop-filter: blur(10px);
-		padding: 0.25rem 0.75rem;
-		border-radius: 12px;
-		white-space: nowrap;
-		opacity: 0;
-		transition: opacity 0.3s ease;
-		pointer-events: none;
-	}
-
-	.radial-item:hover .tool-name {
-		opacity: 1;
+	@keyframes iconAppear {
+		0% {
+			opacity: 0;
+			transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0);
+		}
+		100% {
+			opacity: 1;
+			transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1);
+		}
 	}
 
 	@keyframes radialPulse {
@@ -587,6 +696,17 @@
 		0% {
 			opacity: 0;
 			transform: translate(-50%, -50%) scale(0);
+		}
+		100% {
+			opacity: 1;
+			transform: translate(-50%, -50%) scale(1);
+		}
+	}
+
+	@keyframes donutAppear {
+		0% {
+			opacity: 0;
+			transform: translate(-50%, -50%) scale(0.8);
 		}
 		100% {
 			opacity: 1;
