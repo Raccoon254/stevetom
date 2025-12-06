@@ -26,11 +26,12 @@
 		if (!browser) return
 		// Scene setup
 		scene = new THREE.Scene()
+        // will be transparent
 		scene.background = new THREE.Color(0x00000)
 
 		// Camera setup for Isometric view
 		const aspect = container.clientWidth / container.clientHeight
-		const d = 18 // Increased scale slightly to fit 3 cubes comfortably
+		const d = 40 // Increased scale slightly to fit 3 cubes comfortably
 		camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 1, 1000)
 
 		// Isometric angle: Look from a corner
@@ -56,6 +57,12 @@
 			sideDark: 0xa5b4fc, // Periwinkle (Indigo-300)
 		}
 
+        const paletteRed = {
+            top: 0xffffff,
+            sideLight: 0xffe0e0, // Pale Red
+            sideDark: 0xff6b6b, // Red
+        }
+
 		// Cube geometry
 		const geometry = new THREE.BoxGeometry(7, 7, 7)
 
@@ -70,8 +77,14 @@
 
 		// Top Cube (Pink)
 		const topCube = new THREE.Mesh(geometry, createMaterials(palettePink))
+        // will start from (7, 0, 7) and then move to (7, 10, 7)
 		topCube.position.set(7, 7, 7) // Up
 		scene.add(topCube)
+
+        // Bottom Cube (RED)
+		const bottomCube = new THREE.Mesh(geometry, createMaterials(paletteRed))
+		bottomCube.position.set(0, 0, 0) // Down
+		scene.add(bottomCube)
 
 		// Bottom Right Cube (Blue)
 		const bottomRightCube = new THREE.Mesh(geometry, createMaterials(paletteBlue))
