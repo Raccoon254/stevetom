@@ -6,6 +6,7 @@
         ArrowLeft, ArrowRight, ArrowUp, ArrowDown, MoreHorizontal,
         
         // Communication
+
         Mail, Phone, MessageSquare, MessageCircle, Send,
 
         // Location & Contact
