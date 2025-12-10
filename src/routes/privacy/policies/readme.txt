@@ -1,0 +1,1 @@
+This folder will contain the privacy policies for my projects, each will have a different route and styles. Each policy should be documented in a separate file for clarity and ease of access. Please ensure that all policies are up-to-date and comply with relevant legal requirements.
