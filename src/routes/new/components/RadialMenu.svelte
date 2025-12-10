@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
+	import type { SkillTool } from '../../../app.d.ts';
 
 	export let activeMenu: 'design' | 'code' | 'animate' | null = null
 	export let menuPosition = { x: 0, y: 0 }
-	export let skillIcons: Record<string, { name: string; icon: string; color: string }[]>
+	export let skillIcons: { design: SkillTool[]; code: SkillTool[]; animate: SkillTool[] }
 
 	const dispatch = createEventDispatcher()
 

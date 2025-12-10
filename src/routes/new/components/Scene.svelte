@@ -166,7 +166,7 @@
 
 		// Bottom Right Cube (White with shaded sides)
 		const bottomRightCube2= new THREE.Mesh(geometry, createMaterials(paletteWhite))
-		bottomRightCube2.position.set(7, 20, -27) // Right
+		bottomRightCube2.position.set(7, 20, -40) // Right
 		scene.add(bottomRightCube2)
 
 		// Sphere (White with 3D shading from lighting)

@@ -38,7 +38,7 @@
 		font-size: clamp(3rem, 12vw, 7rem);
 		font-weight: 900;
 		color: #252525;
-		display: inline-block;
+		display: none;
 	}
 
 	.counter {
@@ -55,7 +55,7 @@
 	}
 
 	.bit {
-		font-size: clamp(3rem, 12vw, 7rem);
+		font-size: clamp(4rem, 12vw, 10rem);
 		font-weight: 700;
 		color: rgba(37, 37, 37, 0.1);
 		-webkit-text-stroke: 1px rgb(37, 37, 37, 0.4);

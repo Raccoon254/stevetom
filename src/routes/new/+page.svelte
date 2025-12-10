@@ -6,6 +6,8 @@
 	import SkillGrid from './components/SkillGrid.svelte'
 	import BigName from './components/BigName.svelte'
 	import ProjectsSection from './components/ProjectsSection.svelte'
+	import DonationSection from './components/DonationSection.svelte'
+	import PaymentAssist from './components/PaymentAssist.svelte'
 
 	let isLoading = true
 	let activeMenu: 'design' | 'code' | 'animate' | null = null
@@ -17,8 +19,14 @@
 		animate: false,
 	}
 
+	type SkillTool = { name: string; icon: string; color: string }
+
 	// Skill icons data for radial menu
-	const skillIcons = {
+	const skillIcons: {
+		design: SkillTool[]
+		code: SkillTool[]
+		animate: SkillTool[]
+	} = {
 		design: [
 			{ name: 'Figma', icon: 'devicon-figma-plain', color: '#F24E1E' },
 			{ name: 'Adobe XD', icon: 'devicon-xd-plain', color: '#FF61F6' },
@@ -80,6 +88,10 @@
 	function handleSceneLoaded() {
 		isLoading = false
 	}
+
+	function isDevicon(tool: SkillTool) {
+		return tool.icon.startsWith('devicon')
+	}
 </script>
 
 <svelte:head>
@@ -97,7 +109,7 @@
 <!-- Devicon Preloader -->
 <div class="absolute w-px h-px opacity-0 pointer-events-none overflow-hidden" aria-hidden="true">
 	{#each Object.values(skillIcons).flat() as tool}
-		{#if tool.icon.startsWith('devicon')}
+		{#if isDevicon(tool)}
 			<i class="{tool.icon} colored"></i>
 		{/if}
 	{/each}
@@ -110,8 +122,7 @@
 <div class="bg-[#252525]">
 	<main class="hero-section mx-auto">
 		<!-- Hero Section -->
-		<HeroSection
-			{skillIcons}
+		<HeroSection {skillIcons}
 			on:sceneLoaded={handleSceneLoaded}
 			on:skillEnter={handleSkillEnter}
 			on:skillClick={handleSkillClick}
@@ -128,6 +139,12 @@
 
 		<!-- Projects Section -->
 		<ProjectsSection />
+
+		<!-- Donation Section -->
+		<DonationSection />
+
+		<!-- Payment Assist Section -->
+		<PaymentAssist />
 	</main>
 </div>
 

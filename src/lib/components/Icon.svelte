@@ -6,8 +6,8 @@
         ArrowLeft, ArrowRight, ArrowUp, ArrowDown, MoreHorizontal,
         
         // Communication
-        Mail, Phone, MessageSquare, MessageCircle, Send, PaperPlane,
-        
+        Mail, Phone, MessageSquare, MessageCircle, Send,
+
         // Location & Contact
         MapPin, Globe,
         
@@ -51,7 +51,8 @@
     export let className: string = '';
 
     // Icon mapping object
-    const iconMap = {
+    // Fix type error for iconMap lookup
+    const iconMap: Record<string, any> = {
         // Navigation & UI
         home: Home,
         user: User,
@@ -73,8 +74,7 @@
         message: MessageSquare,
         chat: MessageCircle,
         send: Send,
-        'paper-plane': PaperPlane,
-        
+
         // Location & Contact
         'map-pin': MapPin,
         location: MapPin,

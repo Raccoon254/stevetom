@@ -11,4 +11,6 @@ declare global {
 	}
 }
 
+export type SkillTool = { name: string; icon: string; color: string };
+
 export {};

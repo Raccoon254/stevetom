@@ -78,6 +78,29 @@
 
 	$: activeDisplaySkill = hoveredSkill || selectedSkill || cyclingSkill
 	$: isPersisted = !!selectedSkill
+
+	function formatSkillName(name: string) {
+		// only 8 chars
+		return name.length > 8 ? name.substring(0, 8) + '...' : name
+	}
+
+	let showAll = false
+	let isMobile = false
+
+	function checkMobile() {
+		isMobile = window.innerWidth < 640
+		if (!isMobile) {
+			showAll = false // Reset on desktop so if they go back to mobile it starts collapsed, or keep it?
+			// Better to just let isMobile control the view logic.
+		}
+	}
+
+	onMount(() => {
+		checkMobile()
+		window.addEventListener('resize', checkMobile)
+	})
+
+	$: visibleSkills = isMobile && !showAll ? skills.slice(0, 9) : skills
 </script>
 
 <section class="skills-section">
@@ -142,7 +165,7 @@
 
 		<!-- Right side - Grid of skills -->
 		<div class="skills-grid">
-			{#each skills as skill, index}
+			{#each visibleSkills as skill, index}
 				<button
 					class="skill-card"
 					style="--color: {skill.color}; --delay: {index * 0.05}s;"
@@ -155,7 +178,7 @@
 					class:selected={selectedSkill === skill}
 				>
 					<i class={skill.icon} style="color: {skill.color};"></i>
-					<span class="skill-label">{skill.name}</span>
+					<span class="skill-label">{formatSkillName(skill.name)}</span>
 
 					{#if selectedSkill === skill}
 						<div class="selected-badge">
@@ -165,6 +188,14 @@
 				</button>
 			{/each}
 		</div>
+
+		{#if isMobile && !showAll && skills.length > 9}
+			<div class="show-more-container">
+				<button class="show-more-btn" on:click={() => (showAll = true)}>
+					Show More ({skills.length - 9} more)
+				</button>
+			</div>
+		{/if}
 	</div>
 </section>
 
@@ -291,6 +322,7 @@
 		align-items: center;
 		justify-content: center;
 		gap: 0.5rem;
+		aspect-ratio: 1;
 		padding: 1.25rem 0.75rem;
 		background: rgba(255, 255, 255, 0.03);
 		border: 1px solid rgba(255, 255, 255, 0.08);
@@ -412,6 +444,31 @@
 
 		.stat-number {
 			font-size: 1.75rem;
+		}
+
+		.show-more-container {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			margin-top: 1.5rem;
+		}
+
+		.show-more-btn {
+			background: rgba(37, 37, 37, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			color: white;
+			padding: 0.75rem 2rem;
+			border-radius: 9999px;
+			font-size: 0.875rem;
+			font-weight: 500;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			backdrop-filter: blur(10px);
+		}
+
+		.show-more-btn:active {
+			transform: scale(0.95);
+			background: rgba(255, 255, 255, 0.15);
 		}
 	}
 </style>
