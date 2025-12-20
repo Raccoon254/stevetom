@@ -1,5 +1,5 @@
 @import '@fontsource/fira-mono';
-@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Figtree:ital,wght@0,300..900;1,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Playwrite+US+Trad+Guides&family=Sacramento&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,6 +8,12 @@
 :root {
 	--font-body: 'Figtree', sans-serif !important;
 	font-family: var(--font-body);
+}
+
+.pacifico-regular {
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-style: normal;
 }
 
 body {

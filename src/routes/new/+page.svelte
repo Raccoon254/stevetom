@@ -8,6 +8,7 @@
 	import ProjectsSection from './components/ProjectsSection.svelte'
 	import DonationSection from './components/DonationSection.svelte'
 	import PaymentAssist from './components/PaymentAssist.svelte'
+	import ImageShapeSection from './components/ImageShapeSection.svelte'
 
 	let isLoading = true
 	let activeMenu: 'design' | 'code' | 'animate' | null = null
@@ -137,14 +138,17 @@
 		<!-- Big animated name -->
 		<BigName />
 
+		<!-- Image Shape Section -->
+		<ImageShapeSection />
+
 		<!-- Projects Section -->
 		<ProjectsSection />
 
-		<!-- Donation Section -->
-		<DonationSection />
+<!--		&lt;!&ndash; Donation Section &ndash;&gt;-->
+<!--		<DonationSection />-->
 
-		<!-- Payment Assist Section -->
-		<PaymentAssist />
+<!--		&lt;!&ndash; Payment Assist Section &ndash;&gt;-->
+<!--		<PaymentAssist />-->
 	</main>
 </div>
 

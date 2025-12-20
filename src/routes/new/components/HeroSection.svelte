@@ -28,38 +28,40 @@
 <section
 	class="screen min-h-screen overflow-y-hidden bg-transparent flex flex-col relative items-center justify-start overflow-x-hidden"
 >
-	<!-- Right panel background -->
+	<!-- Right panel background (Hidden on mobile) -->
 	<div
-		class="w-[35%] h-full overflow-hidden flex items-center justify-center z-0 top-0 right-0 absolute bg-white"
+		class="hidden lg:flex lg:w-[35%] h-full overflow-hidden items-center justify-center z-0 top-0 right-0 absolute bg-white"
 	>
 		<Counter />
 	</div>
 
-	<!-- 3D Scene container -->
-	<div class="w-full ml-[15%] z-10 h-screen absolute top-0 left-0">
+	<!-- 3D Scene container (Full width on mobile, shifted on desktop) -->
+	<div
+		class="w-full lg:ml-[15%] z-10 h-screen absolute top-0 left-0 pointer-events-none lg:pointer-events-auto"
+	>
 		<Scene on:loaded={handleSceneLoaded} />
 	</div>
 
 	<!-- Text content -->
-	<div class="w-full z-20 flex items-center h-screen p-6 sm:p-12 md:p-24">
-		<div class="text-start">
+	<div class="w-full z-20 flex items-center h-screen p-6 sm:p-12 md:p-24 pointer-events-none">
+		<div class="text-start pointer-events-auto">
 			<!-- Intro -->
 			<div
-				class="text-white mb-2 sm:mb-4 text-xl font-light tracking-widest uppercase opacity-90 animate-fade-in"
+				class="text-white mb-2 sm:mb-4 text-sm sm:text-lg md:text-xl font-light tracking-widest uppercase opacity-90 animate-fade-in"
 			>
 				I am
 			</div>
 
 			<!-- Name -->
 			<h1
-				class="text-6xl sm:text-7xl md:text-8xl font-bold mb-4 text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.8)]"
+				class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.8)]"
 			>
 				kenTom
 			</h1>
 
 			<!-- Tagline -->
 			<div class="text-white mb-6 max-w-2xl animate-fade-in-delay">
-				<p class="text-2xl sm:text-3xl md:text-4xl font-light leading-relaxed">
+				<p class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed">
 					I
 					<span
 						class="highlight-word cursor-pointer transition-all duration-300 hover:scale-105 hover:brightness-125"
@@ -95,17 +97,17 @@
 					</span>
 					ideas into reality.
 				</p>
-				<p class="text-lg sm:text-xl md:text-2xl font-light mt-4 opacity-80">
+				<p class="text-base sm:text-lg md:text-xl lg:text-2xl font-light mt-4 opacity-80">
 					Responsive. Interactive. Beautiful. Everywhere.
 				</p>
 			</div>
 
 			<!-- CTA Button -->
 			<button
-				class="bg-[#252525]/80 border border-white ring-1 ring-white ring-offset-2 ring-offset-[#252525] text-black pr-6 p-2 rounded-full mt-6 flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+				class="bg-[#252525]/80 border border-white ring-1 ring-white ring-offset-2 ring-offset-[#252525] text-black pr-4 sm:pr-6 p-1.5 sm:p-2 rounded-full mt-6 flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
 			>
 				<span
-					class="mr-2 bg-white/20 p-4 ring-1 ring-white text-white rounded-full"
+					class="mr-2 bg-white/20 p-3 sm:p-4 ring-1 ring-white text-white rounded-full flex items-center justify-center"
 					style="background-image: repeating-linear-gradient(
 					-45deg,
 					#252525,
@@ -114,10 +116,10 @@
 					#3a3a3a 4px
 				);"
 				>
-					<MessageSquare size={26} />
+					<MessageSquare class="w-5 h-5 sm:w-6 sm:h-6" />
 				</span>
-				<span class="mr-1 text-white text-3xl font-semibold"> Hey </span>
-				<span class="mr-2 text-white text-3xl font-semibold animate-wiggle"> 👋 </span>
+				<span class="mr-1 text-white text-xl sm:text-3xl font-semibold"> Hey </span>
+				<span class="mr-2 text-white text-xl sm:text-3xl font-semibold animate-wiggle"> 👋 </span>
 			</button>
 		</div>
 	</div>
@@ -125,18 +127,20 @@
 	<!-- Scroll indicator -->
 	<div class="absolute bottom-5 left-5 px-6 sm:px-12 md:px-24 animate-fade-in-late">
 		<div
-			class="w-14 h-14 rounded-full bg-white z-50 flex items-center justify-center mb-3 animate-bounce shadow-lg hover:shadow-xl transition-shadow duration-300"
+			class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white z-50 flex items-center justify-center mb-3 animate-bounce shadow-lg hover:shadow-xl transition-shadow duration-300"
 		>
-			<UnfoldVertical size={26} class="text-[#252525]" />
+			<UnfoldVertical class="text-[#252525] w-5 h-5 sm:w-6 sm:h-6" />
 		</div>
-		<p class="text-white font-medium tracking-wide text-sm uppercase tracking-widest opacity-80">
+		<p
+			class="text-white font-medium tracking-wide text-xs sm:text-sm uppercase tracking-widest opacity-80"
+		>
 			Scroll Down
 		</p>
 	</div>
 
-	<!-- Triangle decoration -->
+	<!-- Triangle decoration (Desktop only) -->
 	<div
-		class="absolute rotate-[65deg] -bottom-36 right-[calc(35%-10px)]"
+		class="hidden lg:block absolute rotate-[65deg] -bottom-36 right-[calc(35%-10px)]"
 		style="border-top: 120px solid transparent; border-bottom: 120px solid transparent; border-left: 80px solid white;"
 	></div>
 </section>
