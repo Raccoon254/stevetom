@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import nodemailer from 'nodemailer';
+import { PrismaClient } from '@prisma/client';
 import {
 	SMTP_HOST,
 	SMTP_PORT,
@@ -9,24 +10,83 @@ import {
 	EMAIL_FROM
 } from '$env/static/private';
 
+const prisma = new PrismaClient();
+
 export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const data = await request.json();
 		const { name, email, company, phone, message, budget, timeline, service, mode } = data;
 
+		const isQuote = mode === 'quote';
+
+		// Get or create a default service for general inquiries
+		let defaultService = await prisma.service.findFirst({
+			where: { name: { contains: 'General', mode: 'insensitive' } }
+		});
+
+		if (!defaultService) {
+			// If no general service exists, get the first active service or create one
+			defaultService = await prisma.service.findFirst({
+				where: { isActive: true }
+			});
+
+			if (!defaultService) {
+				// Create a default service if none exists
+				defaultService = await prisma.service.create({
+					data: {
+						name: 'General Inquiry',
+						description: 'General contact and quote requests',
+						isActive: true,
+						technologies: []
+					}
+				});
+			}
+		}
+
+		// Parse budget if provided
+		let budgetValue: number | null = null;
+		if (budget) {
+			const budgetStr = budget.toString();
+			// Extract numbers from budget string like "$1000 - $2500" or "< $100"
+			const match = budgetStr.match(/\$?(\d+)/);
+			if (match) {
+				budgetValue = parseInt(match[1]);
+			}
+		}
+
+		// Save to database
+		const serviceRequest = await prisma.serviceRequest.create({
+			data: {
+				serviceId: defaultService.id,
+				clientName: name,
+				clientEmail: email,
+				clientPhone: phone || null,
+				company: company || null,
+				projectTitle: isQuote && service
+					? `${service} Project`
+					: 'General Contact Inquiry',
+				description: message || `${isQuote ? 'Quote request for' : 'Contact inquiry about'} ${service || 'general services'}`,
+				requirements: isQuote
+					? `Budget: ${budget || 'Not specified'}, Timeline: ${timeline || 'Not specified'}`
+					: null,
+				budget: budgetValue,
+				timeline: timeline || null,
+				status: 'PENDING'
+			}
+		});
+
 		// Create transporter
 		const transporter = nodemailer.createTransport({
 			host: SMTP_HOST,
 			port: parseInt(SMTP_PORT),
-			secure: true, // true for 465, false for other ports
+			secure: true,
 			auth: {
 				user: SMTP_USER,
 				pass: SMTP_PASS
 			}
 		});
 
-		// Prepare email content based on mode
-		const isQuote = mode === 'quote';
+		// Prepare email content
 		const subject = isQuote
 			? `New Quote Request from ${name}`
 			: `New Contact Message from ${name}`;
@@ -119,6 +179,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		htmlContent += `
 						<div class="footer">
 							<p>This ${isQuote ? 'quote request' : 'message'} was sent from your portfolio website contact form.</p>
+							<p><strong>Request ID:</strong> ${serviceRequest.id}</p>
 						</div>
 					</div>
 				</div>
@@ -129,21 +190,27 @@ export const POST: RequestHandler = async ({ request }) => {
 		// Send email
 		await transporter.sendMail({
 			from: EMAIL_FROM,
-			to: 'tomsteve187@gmail.com', // Your email where you want to receive messages
+			to: 'tomsteve187@gmail.com',
 			subject: subject,
 			html: htmlContent,
 			replyTo: email
 		});
 
-		return json({ success: true, message: 'Email sent successfully' });
+		return json({
+			success: true,
+			message: 'Request submitted successfully',
+			requestId: serviceRequest.id
+		});
 	} catch (error) {
-		console.error('Error sending email:', error);
+		console.error('Error processing request:', error);
 		return json(
 			{
 				success: false,
-				error: 'Failed to send email. Please try again later.'
+				error: 'Failed to submit request. Please try again later.'
 			},
 			{ status: 500 }
 		);
+	} finally {
+		await prisma.$disconnect();
 	}
 };

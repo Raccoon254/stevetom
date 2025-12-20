@@ -76,7 +76,11 @@
 					class="min-h-[100px] lg:min-h-[120px] flex items-center justify-center perspective-[1000px] mb-4 lg:mb-8 relative z-20 cursor-pointer"
 					on:mouseenter={handleMouseEnter}
 					on:mouseleave={handleMouseLeave}
-					role="group"
+					role="button"
+					tabindex="0"
+					on:keydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') handleMouseEnter()
+					}}
 				>
 					{#key currentPhrase}
 						<span class="current-phrase relative">
