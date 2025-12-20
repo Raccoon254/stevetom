@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte'
 	import Scene from './Scene.svelte'
 	import Counter from './Counter.svelte'
-	import type { SkillTool } from '../../../app.d.ts'
+	import type { SkillTool } from '../../app.d.ts'
 
 	const dispatch = createEventDispatcher()
 
@@ -37,7 +37,7 @@
 
 	<!-- 3D Scene container (Full width on mobile, shifted on desktop) -->
 	<div
-		class="w-full lg:ml-[15%] z-10 h-screen absolute top-0 left-0 pointer-events-none lg:pointer-events-auto"
+		class="w-full lg:ml-[15%] z-10 h-screen absolute top-0 left-0 pointer-events-none lg:pointer-events-auto opacity-20 lg:opacity-100 transition-opacity duration-300"
 	>
 		<Scene on:loaded={handleSceneLoaded} />
 	</div>
@@ -103,8 +103,9 @@
 			</div>
 
 			<!-- CTA Button -->
-			<button
-				class="bg-[#252525]/80 border border-white ring-1 ring-white ring-offset-2 ring-offset-[#252525] text-black pr-4 sm:pr-6 p-1.5 sm:p-2 rounded-full mt-6 flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+			<a
+				href="/contact"
+				class="bg-[#252525]/80 border border-white ring-1 ring-white ring-offset-2 ring-offset-[#252525] text-black pr-4 sm:pr-6 p-1.5 sm:p-2 rounded-full mt-6 inline-flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
 			>
 				<span
 					class="mr-2 bg-white/20 p-3 sm:p-4 ring-1 ring-white text-white rounded-full flex items-center justify-center"
@@ -120,7 +121,7 @@
 				</span>
 				<span class="mr-1 text-white text-xl sm:text-3xl font-semibold"> Hey </span>
 				<span class="mr-2 text-white text-xl sm:text-3xl font-semibold animate-wiggle"> 👋 </span>
-			</button>
+			</a>
 		</div>
 	</div>
 

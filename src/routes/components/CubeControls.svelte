@@ -14,12 +14,10 @@
 	export let onRandomFace: () => void
 </script>
 
-<div
-	class="manual-controls flex relative flex-col items-center gap-4 justify-center w-full aspect-square animate-controls-reveal"
->
+<div class="manual-controls absolute inset-0 w-full h-full animate-controls-reveal">
 	<!-- Random/Shuffle button (center) -->
 	<button
-		class="control-btn absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+		class="control-btn center absolute top-1/2 left-1/2"
 		on:click={onRandomFace}
 		aria-label="Random face"
 	>
@@ -28,7 +26,7 @@
 
 	<!-- Up -->
 	<button
-		class="control-btn absolute top-10 left-1/2 -translate-x-1/2"
+		class="control-btn top absolute top-4 sm:top-10 left-1/2"
 		on:click={onRotateUp}
 		aria-label="Rotate up"
 	>
@@ -37,7 +35,7 @@
 
 	<!-- Left -->
 	<button
-		class="control-btn absolute top-1/2 left-10 -translate-y-1/2"
+		class="control-btn left absolute top-1/2 left-4 sm:left-10"
 		on:click={onRotateLeft}
 		aria-label="Rotate left"
 	>
@@ -46,7 +44,7 @@
 
 	<!-- Right -->
 	<button
-		class="control-btn absolute top-1/2 right-10 -translate-y-1/2"
+		class="control-btn right absolute top-1/2 right-4 sm:right-10"
 		on:click={onRotateRight}
 		aria-label="Rotate right"
 	>
@@ -55,7 +53,7 @@
 
 	<!-- Down -->
 	<button
-		class="control-btn absolute bottom-10 left-1/2 -translate-x-1/2"
+		class="control-btn bottom absolute bottom-4 sm:bottom-10 left-1/2"
 		on:click={onRotateDown}
 		aria-label="Rotate down"
 	>
@@ -78,23 +76,48 @@
 			rgba(255, 255, 255, 0.2) 4px
 		);
 		background-size: 200% 200%;
-		transition: background-position 0.3s ease;
-		transform: scale(1);
+		transition:
+			background-position 0.3s ease,
+			transform 0.3s ease;
 		cursor: pointer;
 		color: white;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		z-index: 30;
 	}
 
-	.control-btn:hover {
+	/* Base Translations */
+	.control-btn.center {
+		transform: translate(-50%, -50%) scale(1);
+	}
+	.control-btn.top,
+	.control-btn.bottom {
+		transform: translateX(-50%) scale(1);
+	}
+	.control-btn.left,
+	.control-btn.right {
+		transform: translateY(-50%) scale(1);
+	}
+
+	/* Hover States - Maintaining Translations */
+	.control-btn.center:hover {
 		background-position: 0;
-		transform: scale(1.3);
-		transition: transform 0.3s ease;
+		transform: translate(-50%, -50%) scale(1.3);
+	}
+	.control-btn.top:hover,
+	.control-btn.bottom:hover {
+		background-position: 0;
+		transform: translateX(-50%) scale(1.3);
+	}
+	.control-btn.left:hover,
+	.control-btn.right:hover {
+		background-position: 0;
+		transform: translateY(-50%) scale(1.3);
 	}
 
 	.control-btn:active {
-		transform: scale(0.95);
+		opacity: 0.8;
 	}
 
 	.animate-controls-reveal {

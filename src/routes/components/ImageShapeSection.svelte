@@ -56,7 +56,7 @@
 </script>
 
 <section class="shape-section">
-  <div class="uppercase -mb-44  text-white/70 font-thin text-3xl">
+  <div class="uppercase px-4 -mb-44  text-white/70 font-thin text-3xl">
     We make your ideas
     <span class="text-yellow-500 pacifico-regular normal-case">
       Interactive

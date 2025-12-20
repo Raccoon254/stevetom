@@ -31,12 +31,16 @@
 	let isAnimating = false
 
 	let observer: IntersectionObserver
+	let resizeObserver: ResizeObserver
 
 	onMount(() => {
 		init()
 		animate()
+
+		// Handle window resize
 		window.addEventListener('resize', onResize)
 
+		// Create IntersectionObserver for visibility
 		observer = new IntersectionObserver(
 			(entries) => {
 				isVisible = entries[0].isIntersecting
@@ -50,6 +54,12 @@
 		)
 		observer.observe(container)
 
+		// Create ResizeObserver for container size changes
+		resizeObserver = new ResizeObserver(() => {
+			onResize()
+		})
+		resizeObserver.observe(container)
+
 		dispatch('faceChange', { face: 0, phrase: phrases[0] })
 	})
 
@@ -57,6 +67,7 @@
 		if (animationId) cancelAnimationFrame(animationId)
 		if (renderer) renderer.dispose()
 		if (observer) observer.disconnect()
+		if (resizeObserver) resizeObserver.disconnect()
 		stopAutoRotate()
 		if (browser) {
 			window.removeEventListener('resize', onResize)
@@ -229,7 +240,9 @@
 			1000
 		)
 
-		camera.position.set(20, 15, 20)
+		const isSmall = container.clientWidth < 768
+		const dist = isSmall ? 12 : 20
+		camera.position.set(dist, dist * 0.75, dist)
 		camera.lookAt(0, 0, 0)
 
 		renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
@@ -272,6 +285,12 @@
 		camera.aspect = container.clientWidth / container.clientHeight
 		camera.updateProjectionMatrix()
 		renderer.setSize(container.clientWidth, container.clientHeight)
+
+		// Adjust camera distance based on size
+		const isSmall = container.clientWidth < 768
+		const dist = isSmall ? 12 : 20
+		camera.position.set(dist, dist * 0.75, dist)
+		camera.lookAt(0, 0, 0)
 	}
 
 	function animate() {

@@ -4,7 +4,7 @@
 	import ToggleSwitch from './ToggleSwitch.svelte'
 	import CubeControls from './CubeControls.svelte'
 	import BarMenu from './BarMenu.svelte'
-	import type { SkillTool } from '../../../app.d.ts';
+	import type { SkillTool } from '../../app.d.ts'
 
 	const dispatch = createEventDispatcher()
 
@@ -51,25 +51,29 @@
 
 <section
 	id="philosophy-section"
-	class="min-h-[70vh] relative border-b-[50px] border-white overflow-hidden"
+	class="min-h-screen lg:min-h-[70vh] relative md:border-b-[50px] border-white overflow-hidden flex flex-col lg:block"
 >
-	<!-- Triangle decoration -->
+	<!-- Triangle decoration (Desktop only) -->
 	<div
-		class="absolute rotate-[65deg] -top-36 right-[calc(35%-80px)]"
+		class="hidden lg:block absolute rotate-[65deg] -top-36 right-[calc(35%-80px)]"
 		style="border-top: 120px solid transparent; border-bottom: 120px solid transparent; border-right: 80px solid white;"
 	></div>
 
-	<!-- Left side background -->
-	<div class="w-[65%] h-full z-0 top-0 left-0 absolute bg-white"></div>
+	<!-- Desktop Left Background (Hidden on mobile) -->
+	<div class="hidden lg:block w-[65%] h-full z-0 top-0 left-0 absolute bg-white"></div>
 
 	<!-- Main content wrapper -->
-	<div class="relative z-10 h-full flex min-h-[70vh]">
-		<!-- Left side - Text content (65%) -->
-		<div class="w-[65%] flex flex-col items-center justify-center py-20 px-8">
+	<div
+		class="relative z-10 w-full h-full flex flex-col lg:flex-row h-screen lg:h-auto lg:min-h-[70vh]"
+	>
+		<!-- Top Half - Text content (White BG on mobile) -->
+		<div
+			class="w-full h-[55vh] lg:h-auto lg:w-[65%] bg-white lg:bg-transparent flex flex-col items-center justify-center py-8 lg:py-20 px-8 relative z-20"
+		>
 			<div class="max-w-xl text-center relative">
 				<!-- Dynamic phrase display -->
 				<div
-					class="min-h-[120px] flex items-center justify-center perspective-[1000px] mb-8 relative z-20 cursor-pointer"
+					class="min-h-[100px] lg:min-h-[120px] flex items-center justify-center perspective-[1000px] mb-4 lg:mb-8 relative z-20 cursor-pointer"
 					on:mouseenter={handleMouseEnter}
 					on:mouseleave={handleMouseLeave}
 					role="group"
@@ -101,32 +105,34 @@
 			</div>
 			<!-- Tagline -->
 			<p
-				class="text-[#252525]/60 absolute bottom-10 text-normal sm:text-base mt-10 font-thin tracking-wider uppercase"
+				class="text-[#252525]/60 lg:absolute lg:bottom-10 text-sm sm:text-base mt-8 lg:mt-10 font-thin tracking-wider uppercase text-center"
 			>
 				From concept to code, with care
 			</p>
 		</div>
 
-		<!-- Right side - 3D Cube (35%) -->
-		<section class="w-[35%] h-full z-0 absolute right-0 flex items-center justify-center">
+		<!-- Bottom Half - 3D Cube (Dark BG) -->
+		<section
+			class="w-full h-[45vh] lg:h-full lg:w-[35%] lg:absolute lg:right-0 flex items-center justify-center relative z-10"
+		>
 			<div class="h-full z-0 relative w-full flex items-center justify-center">
 				<!-- Controls overlay -->
-				<div
-					class="cube-controls absolute w-full h-full inset-0 flex flex-col items-center justify-center gap-4"
-				>
+				<div class="cube-controls absolute w-full h-full inset-0 pointer-events-none z-20">
 					{#if isManualMode}
-						<CubeControls
-							onRotateUp={() => cubeComponent?.rotateUp()}
-							onRotateDown={() => cubeComponent?.rotateDown()}
-							onRotateLeft={() => cubeComponent?.rotateLeft()}
-							onRotateRight={() => cubeComponent?.rotateRight()}
-							onRandomFace={() => cubeComponent?.randomFace()}
-						/>
+						<div class="pointer-events-auto w-full h-full">
+							<CubeControls
+								onRotateUp={() => cubeComponent?.rotateUp()}
+								onRotateDown={() => cubeComponent?.rotateDown()}
+								onRotateLeft={() => cubeComponent?.rotateLeft()}
+								onRotateRight={() => cubeComponent?.rotateRight()}
+								onRandomFace={() => cubeComponent?.randomFace()}
+							/>
+						</div>
 					{/if}
 				</div>
 
 				<!-- 3D Cube -->
-				<div class="w-full h-full min-h-[400px]">
+				<div class="w-full h-full absolute inset-0">
 					<PhilosophyScene bind:this={cubeComponent} on:faceChange={handleFaceChange} />
 				</div>
 			</div>
