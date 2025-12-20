@@ -175,47 +175,40 @@
 		}
 
 		isSubmitting = true
+		submitError = ''
 
-		// Simulate submission
-		setTimeout(() => {
-			isSubmitting = false
-			isSubmitted = true
-		}, 1500)
+		try {
+			const emailData = {
+				name: formData.name,
+				email: formData.email,
+				company: formData.company,
+				phone: formData.phone,
+				message: formData.message,
+				budget: formData.budget,
+				timeline: formData.timeline,
+				service: mode === 'quote' ? getServiceName(selectedService) : null,
+				mode: mode
+			};
 
-		/* 
-        // Real submission logic retained
-        try {
-            const requestData = {
-                serviceId: mode === 'quote' && selectedService ? getServiceId(selectedService) : (availableServices[0]?.id || null),
-                clientName: formData.name,
-                clientEmail: formData.email,
-                clientPhone: formData.phone || null,
-                company: formData.company || null,
-                projectTitle: mode === 'quote' ? `${getServiceName(selectedService)} Project` : 'General Inquiry',
-                description: formData.message || `${mode === 'quote' ? 'Quote request for' : 'Contact inquiry about'} ${mode === 'quote' ? getServiceName(selectedService) : 'general services'}`,
-                requirements: mode === 'quote' ? `Budget: ${formData.budget || 'Not specified'}, Timeline: ${formData.timeline || 'Not specified'}` : null,
-                budget: mode === 'quote' && formData.budget ? parseBudget(formData.budget) : null,
-                timeline: formData.timeline || null,
-                status: 'PENDING'
-            };
+			const response = await fetch('/api/send-email', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(emailData)
+			});
 
-            const response = await fetch('/api/service-requests', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData)
-            });
+			const result = await response.json();
 
-            const result = await response.json();
-            if (!result.success) throw new Error(result.error || 'Failed to submit request');
+			if (!result.success) {
+				throw new Error(result.error || 'Failed to send message');
+			}
 
-            isSubmitted = true;
-        } catch (error) {
-            console.error('Error submitting request:', error);
-            submitError = error instanceof Error ? error.message : 'There was an error submitting your request. Please try again.';
-        } finally {
-            isSubmitting = false;
-        }
-        */
+			isSubmitted = true;
+		} catch (error) {
+			console.error('Error submitting:', error);
+			submitError = error instanceof Error ? error.message : 'There was an error submitting your request. Please try again.';
+		} finally {
+			isSubmitting = false;
+		}
 	}
 
 	function getServiceId(serviceKey: string): string {

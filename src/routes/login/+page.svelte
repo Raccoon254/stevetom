@@ -1,39 +1,122 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
+	import { Lock, ArrowLeft } from 'lucide-svelte';
 
 	export let form: ActionData;
 </script>
 
-<main class="min-h-screen flex flex-col justify-center items-center">
-    <div class="w-full max-w-md mx-auto">
-        <div class="flex gap-2 items-center h-16 overflow-clip mb-4 justify-center">
-            <img src="/logo-light.png" alt="Steve Tom" class="w-10 object-cover" />
-            <h1 class="text-3xl font-bold text-interactive">kenTom</h1>
-        </div>
+<svelte:head>
+	<title>Admin Login | KenTom</title>
+</svelte:head>
 
-        <div class="bg-gray-900/50 border border-gray-700 rounded-lg shadow-xl p-8">
-            <h2 class="text-2xl font-bold text-center text-white mb-6">Admin Login</h2>
-            <form method="POST" use:enhance class="space-y-6">
-                <div>
-                    <label for="password" class="text-sm font-medium text-gray-300">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        class="w-full px-3 py-2 mt-1 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-green-400"
-                        required
-                    />
-                </div>
-                {#if form?.error}
-                    <p class="text-red-500 text-sm font-bold text-center">{form.error}</p>
-                {/if}
-                <div>
-                    <button type="submit" class="w-full bg-gray-50 text-gray-900 px-4 py-2 rounded-full hover:bg-gray-300 transition duration-300 font-bold">
-                        Login
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</main>
+<div class="bg-[#252525] min-h-screen relative overflow-x-hidden flex items-center justify-center p-6">
+	<!-- Background Decorations -->
+	<div
+		class="hidden lg:block absolute rotate-[65deg] top-20 -left-20 opacity-10"
+		style="border-top: 120px solid transparent; border-bottom: 120px solid transparent; border-right: 80px solid white;"
+	></div>
+	<div
+		class="hidden lg:block absolute rotate-[-65deg] bottom-20 -right-20 opacity-10"
+		style="border-top: 120px solid transparent; border-bottom: 120px solid transparent; border-left: 80px solid white;"
+	></div>
+
+	<!-- Background Pattern -->
+	<div class="hero-section absolute inset-0"></div>
+
+	<!-- Login Container -->
+	<main class="relative z-10 w-full max-w-md">
+		<!-- Back Button -->
+		<a
+			href="/"
+			class="group inline-flex items-center gap-2 text-white/60 hover:text-white mb-8 transition-colors"
+		>
+			<ArrowLeft size="20" class="transition-transform group-hover:-translate-x-1" />
+			<span>Back to Home</span>
+		</a>
+
+		<!-- Login Card -->
+		<div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl overflow-hidden">
+			<!-- Header -->
+			<div class="bg-white/5 border-b border-white/10 p-8 text-center">
+				<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 border border-white/20 mb-4">
+					<Lock size="32" class="text-white" />
+				</div>
+				<h1 class="text-3xl font-bold text-white mb-2">Admin Access</h1>
+				<p class="text-white/60 text-sm">Enter your credentials to continue</p>
+			</div>
+
+			<!-- Form -->
+			<div class="p-8">
+				<form method="POST" use:enhance class="space-y-6">
+					<div>
+						<label for="password" class="block text-sm font-semibold text-white/80 mb-2">
+							Password
+						</label>
+						<input
+							type="password"
+							name="password"
+							id="password"
+							class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white/40 transition-all"
+							placeholder="Enter your password"
+							required
+							autocomplete="current-password"
+						/>
+					</div>
+
+					{#if form?.error}
+						<div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+							<p class="text-red-400 text-sm font-medium text-center">{form.error}</p>
+						</div>
+					{/if}
+
+					<button
+						type="submit"
+						class="w-full bg-white text-[#252525] px-6 py-3 rounded-full font-bold text-lg hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+					>
+						Sign In
+					</button>
+				</form>
+
+				<!-- Footer Info -->
+				<div class="mt-6 text-center">
+					<p class="text-white/40 text-xs">
+						Protected area • Authorized access only
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Hint Text -->
+		<div class="mt-6 text-center">
+			<p class="text-white/30 text-sm">
+				Tip: Press <kbd class="px-2 py-1 bg-white/10 border border-white/20 rounded text-xs">Shift</kbd> three times from anywhere to access this page
+			</p>
+		</div>
+	</main>
+</div>
+
+<style>
+	.hero-section {
+		background: repeating-linear-gradient(
+			-25deg,
+			transparent,
+			transparent 39px,
+			rgba(255, 255, 255, 0.05) 39px,
+			rgba(255, 255, 255, 0.05) 40px
+		);
+		background-position: 100%;
+		background-size: 150% 150%;
+		animation: gradient 15s linear infinite;
+		background-repeat: no-repeat;
+	}
+
+	@keyframes gradient {
+		0% {
+			background-position: 0% 0%;
+		}
+		100% {
+			background-position: 100% 100%;
+		}
+	}
+</style>
