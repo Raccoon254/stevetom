@@ -391,7 +391,6 @@
 							</p>
 							<p><strong>Platform:</strong> Google Meet</p>
 							<p><strong>Cohort Size:</strong> 20 students max</p>
-							<p><strong>Price:</strong> KES 15,000 for the full 8-week program</p>
 						</div>
 					</div>
 				</section>
@@ -441,9 +440,8 @@
 					</div>
 
 					<p class="text-white/70">
-						For example: A student might take a "JavaScript Fundamentals" course (self-paced, KES
-						3,000) to build basics, then join a live "React Bootcamp" cohort (8 weeks, KES 15,000)
-						for structured, interactive learning.
+						For example: A student might take a "JavaScript Fundamentals" course (self-paced)
+						to build basics, then join a live "React Bootcamp" cohort for structured, interactive learning.
 					</p>
 				</section>
 
@@ -575,88 +573,6 @@
 								</li>
 							</ul>
 						</div>
-					</div>
-				</section>
-
-				<!-- Revenue Model -->
-				<section class="mb-16">
-					<h2 class="mb-6 text-3xl font-bold">Realistic Revenue Projections</h2>
-
-					<div class="my-8 rounded-2xl border border-white/10 bg-white/5 p-8">
-						<h3 class="mb-6 text-2xl font-semibold">Month 1-2 (Pilot Phase)</h3>
-
-						<div class="mb-6 grid gap-6 md:grid-cols-2">
-							<div class="rounded-xl border border-white/10 bg-white/5 p-6">
-								<p class="mb-2 text-sm text-white/60">Sessions Per Week</p>
-								<p class="text-3xl font-bold">3-4 sessions</p>
-								<p class="mt-2 text-xs text-white/50">Testing different subjects and times</p>
-							</div>
-
-							<div class="rounded-xl border border-white/10 bg-white/5 p-6">
-								<p class="mb-2 text-sm text-white/60">Students Per Session</p>
-								<p class="text-3xl font-bold">8-12 students</p>
-								<p class="mt-2 text-xs text-white/50">Small cohorts for quality teaching</p>
-							</div>
-						</div>
-
-						<div class="rounded-xl border border-[#ff6b35]/30 bg-[#ff6b35]/10 p-6">
-							<div class="grid gap-4 md:grid-cols-3">
-								<div>
-									<p class="text-sm text-white/60">Price Per Session</p>
-									<p class="text-2xl font-bold">KES 1,000-2,000</p>
-								</div>
-								<div>
-									<p class="text-sm text-white/60">Weekly Revenue</p>
-									<p class="text-2xl font-bold">KES 30,000-55,000</p>
-								</div>
-								<div>
-									<p class="text-sm text-white/60">Monthly Revenue</p>
-									<p class="text-2xl font-bold text-[#ff6b35]">KES 120,000-220,000</p>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="my-8 rounded-2xl border border-white/10 bg-white/5 p-8">
-						<h3 class="mb-6 text-2xl font-semibold">Month 3-6 (Growth Phase)</h3>
-
-						<div class="mb-6 grid gap-6 md:grid-cols-2">
-							<div class="rounded-xl border border-white/10 bg-white/5 p-6">
-								<p class="mb-2 text-sm text-white/60">Sessions Per Week</p>
-								<p class="text-3xl font-bold">8-12 sessions</p>
-								<p class="mt-2 text-xs text-white/50">Multiple cohorts & subjects</p>
-							</div>
-
-							<div class="rounded-xl border border-white/10 bg-white/5 p-6">
-								<p class="mb-2 text-sm text-white/60">Average Students</p>
-								<p class="text-3xl font-bold">15 per session</p>
-								<p class="mt-2 text-xs text-white/50">Optimized cohort size</p>
-							</div>
-						</div>
-
-						<div class="rounded-xl border border-[#ff6b35]/30 bg-[#ff6b35]/10 p-6">
-							<div class="grid gap-4 md:grid-cols-2">
-								<div>
-									<p class="text-sm text-white/60">Weekly Revenue</p>
-									<p class="text-2xl font-bold">KES 120,000-180,000</p>
-								</div>
-								<div>
-									<p class="text-sm text-white/60">Monthly Revenue</p>
-									<p class="text-2xl font-bold text-[#ff6b35]">KES 480,000-720,000</p>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="rounded-lg border border-blue-500/30 bg-blue-500/10 p-5">
-						<p class="mb-2 text-sm font-semibold text-blue-300">Key Assumptions:</p>
-						<ul class="space-y-1 text-sm text-white/70">
-							<li>• No expensive course production costs</li>
-							<li>• Minimal platform fees (just Meet/Zoom subscription)</li>
-							<li>• Instructors paid per session (30-40% of revenue)</li>
-							<li>• Marketing through organic social media + word of mouth</li>
-							<li>• Focus on completion rates and student success for referrals</li>
-						</ul>
 					</div>
 				</section>
 
