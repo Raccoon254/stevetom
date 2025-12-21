@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css'
 	import Navbar from './components/Navbar.svelte'
-	import { Briefcase, Mail, Github, Linkedin, MessageCircle } from 'lucide-svelte'
+	import { Briefcase, Mail, Github, Linkedin, MessageCircle, Rocket } from 'lucide-svelte'
 	import { onMount, onDestroy } from 'svelte'
 	import { fly } from 'svelte/transition'
 	import { goto } from '$app/navigation'
@@ -91,7 +91,35 @@
 
 <Navbar />
 
-<div class="relative z-0 main-component min-h-screen mt-20">
+<!-- Announcement Bar -->
+<div class="mt-20 left-0 right-0 z-40 bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] text-white">
+	<div class="mx-auto max-w-7xl px-6 py-3">
+		<a href="/blog/kentom-2026-new-directions" class="flex items-center justify-center gap-3 group">
+			<span class="hidden sm:flex text-sm font-semibold items-center gap-2">
+				<Rocket size={16} />
+				New Business Plan:
+			</span>
+			<span class="text-sm font-medium">Kentom 2026 - Charting New Creative Directions</span>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="16"
+				height="16"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				class="transition-transform duration-300 group-hover:translate-x-1"
+			>
+				<path d="M5 12h14" />
+				<path d="m12 5 7 7-7 7" />
+			</svg>
+		</a>
+	</div>
+</div>
+
+<div class="relative z-0 main-component min-h-screen mt-[6.5rem]">
 	<main>
 		<slot />
 	</main>
@@ -198,7 +226,7 @@
 				<div class="md:col-span-3">
 					<h4 class="text-xs font-bold text-white/30 uppercase tracking-widest mb-6">Explore</h4>
 					<ul class="space-y-4">
-						{#each ['Home', 'Projects', 'About', 'Contact', 'Get a Quote'] as item}
+						{#each ['Home', 'Projects', 'About', 'Blog', 'Contact', 'Get a Quote'] as item}
 							<li>
 								<a
 									href={item === 'Home'
