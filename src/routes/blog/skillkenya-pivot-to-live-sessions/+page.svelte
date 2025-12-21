@@ -25,7 +25,7 @@
 	/>
 </svelte:head>
 
-<div class="min-h-screen bg-[#252525]/10 -mt-28 text-white">
+<div class="min-h-screen bg-[#252525]/10 -m text-white">
 	<!-- Header -->
 	<div class="border-b border-white/10 bg-[#151515]">
 		<div class="container mx-auto px-6 py-6">
@@ -146,7 +146,7 @@
 					<p class="text-lg italic text-white/70">
 						But here's the problem: <strong class="text-red-400"
 							>the traditional course model isn't working</strong
-						> for us—or our students.
+						> for us or our students.
 					</p>
 				</section>
 
@@ -229,7 +229,7 @@
 								</h4>
 								<p class="text-white/80">
 									Managing course platforms, payment systems, video hosting, student dashboards,
-									progress tracking—it's technically complex and expensive. We spend more time
+									progress tracking it's technically complex and expensive. We spend more time
 									maintaining infrastructure than teaching.
 								</p>
 							</div>
@@ -328,7 +328,7 @@
 								</div>
 								<p class="text-white/80">
 									Sessions are recorded and shared with enrolled students for review. But the focus
-									is on attending live—recordings are supplementary, not the primary learning
+									is on attending live recordings are supplementary, not the primary learning
 									method.
 								</p>
 							</div>
@@ -371,7 +371,7 @@
 					</h2>
 
 					<p class="mb-6 text-lg leading-relaxed text-white/80">
-						We're not completely abandoning courses—we're just being realistic about priorities.
+						We're not completely abandoning courses we're just being realistic about priorities.
 						Live sessions come first because they deliver better results and are faster to launch.
 					</p>
 
@@ -464,7 +464,7 @@
 								<li class="flex items-start gap-2">
 									<span class="text-orange-400">•</span>
 									<span
-										><strong>Market heavily:</strong> Instagram, TikTok, WhatsApp—emphasize live interaction
+										><strong>Market heavily:</strong> Instagram, TikTok, WhatsApp emphasize live interaction
 										benefit</span
 									>
 								</li>
@@ -675,7 +675,7 @@
 						<div class="rounded-xl border border-white/10 bg-white/5 p-6">
 							<h3 class="mb-3 text-xl font-semibold text-red-400">Always Current</h3>
 							<p class="text-white/80">
-								Teaching live means content updates happen in real-time. No outdated videos—every
+								Teaching live means content updates happen in real-time. No outdated videos every
 								session reflects the latest tools and techniques.
 							</p>
 						</div>
@@ -690,7 +690,7 @@
 						<h2 class="mb-6 text-3xl font-bold">The Path Forward</h2>
 
 						<p class="mb-4 text-lg leading-relaxed text-white/90">
-							We're not giving up on Skill Kenya—we're pivoting to a model that actually serves our
+							We're not giving up on Skill Kenya we're pivoting to a model that actually serves our
 							students and makes business sense. Pre-recorded courses sound great in theory, but
 							live sessions deliver real results.
 						</p>
