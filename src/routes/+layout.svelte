@@ -87,12 +87,55 @@
 
 <svelte:head>
 	<meta name="theme-color" content="#252525" />
+
+	<!-- Primary Meta Tags -->
+	<title>KenTom | Engineering Creative Solutions</title>
+	<meta name="title" content="KenTom | Engineering Creative Solutions" />
+	<meta
+		name="description"
+		content="Creative problem-solver and full-stack developer with 5+ years building apps that matter. From Status Saver to custom web solutions - I turn your vision into working code. Currently accepting new projects and ready to collaborate on your next big idea!"
+	/>
+	<meta
+		name="keywords"
+		content="KenTom, Steve Tom, Raccoon254, hire full-stack developer, React developer for hire, Laravel freelancer, Kotlin mobile developer, custom web development Kenya, JavaScript expert, problem solving developer, creative coding solutions, app development services, startup developer, freelance programmer, web app builder, mobile app creator, software consultant Kenya, Nairobi developer, available developer, project collaboration, innovative digital solutions, modern web technologies, Android app development, TypeScript developer, PHP specialist, Python automation, portfolio developer, tech consultant, Chuka University computer science, experienced freelancer, reliable developer Kenya"
+	/>
+	<meta name="author" content="Steve Osoro Tom (KenTom) - Full-Stack Developer" />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://stevetom.vercel.app/" />
+	<meta property="og:site_name" content="KenTom - Full-Stack Developer Available for Hire" />
+	<meta property="og:title" content="KenTom | Engineering Creative Solutions" />
+	<meta
+		property="og:description"
+		content="Creative problem-solver with 5+ years building apps that matter. From Status Saver to custom solutions - I turn your vision into working code. Currently accepting new projects! Let's build something incredible together."
+	/>
+	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+	<meta
+		property="og:image:alt"
+		content="KenTom - Creative Full-Stack Developer Available for Projects | React, Laravel, Kotlin Expert"
+	/>
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/" />
+	<meta
+		name="twitter:title"
+		content="KenTom | Creative Developer Ready to Build Your Next Big Idea 💻"
+	/>
+	<meta
+		name="twitter:description"
+		content="Full-stack developer with 5+ years turning ideas into reality. Status Saver, JeStorm, Scholarspace creator. Currently accepting projects - let's collaborate! ⚡"
+	/>
+	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
 <Navbar />
 
 <!-- Announcement Bar -->
-<div class="mt-20 hidden left-0 right-0 z-40 bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] text-white">
+<div
+	class="mt-20 hidden left-0 right-0 z-40 bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] text-white"
+>
 	<div class="mx-auto max-w-7xl px-6 py-3">
 		<a href="/blog/kentom-2026-new-directions" class="flex items-center justify-center gap-3 group">
 			<span class="hidden sm:flex text-sm font-semibold items-center gap-2">
