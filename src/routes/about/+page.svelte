@@ -13,7 +13,7 @@
 
 <Cursor />
 
-<div class="bg-[#252525] min-h-screen relative overflow-x-hidden text-white">
+<div class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden text-white">
 	<!-- Background decoration -->
 	<div
 		class="hidden lg:block absolute rotate-[65deg] top-20 -left-20 opacity-10 pointer-events-none"
@@ -37,7 +37,7 @@
 					<a href="/contact" class="nav-btn-primary">
 						Let's Talk <ArrowRight size="20" class="ml-2" />
 					</a>
-					<a href="/new" class="nav-btn-secondary"> View Work </a>
+					<a href="/projects" class="nav-btn-secondary"> View Work </a>
 				</div>
 			</div>
 			<div class="w-full md:w-1/2 relative">

@@ -7,6 +7,7 @@
 	import BigName from './components/BigName.svelte'
 	import ProjectsSection from './components/ProjectsSection.svelte'
 	import StartProjectSection from './components/StartProjectSection.svelte'
+	import SupportSection from './components/SupportSection.svelte'
 	import DonationSection from './components/DonationSection.svelte'
 	import PaymentAssist from './components/PaymentAssist.svelte'
 	import ImageShapeSection from './components/ImageShapeSection.svelte'
@@ -121,7 +122,7 @@
 <RadialMenu {activeMenu} {menuPosition} {skillIcons} on:close={closeMenu} />
 
 <!-- Main Content -->
-<div class="bg-[#252525]">
+<div class="bg-transparent">
 	<main class="hero-section mx-auto">
 		<!-- Hero Section -->
 		<HeroSection
@@ -140,6 +141,9 @@
 		<!-- Big animated name -->
 		<BigName />
 
+		<!-- Support Section -->
+		<SupportSection />
+
 		<!-- Image Shape Section -->
 		<ImageShapeSection />
 
@@ -156,29 +160,3 @@
 		<!--		<PaymentAssist />-->
 	</main>
 </div>
-
-<style>
-	.hero-section {
-		background: repeating-linear-gradient(
-			-25deg,
-			transparent,
-			transparent 39px,
-			rgba(255, 255, 255, 0.15) 39px,
-			rgba(255, 255, 255, 0.15) 40px
-		);
-		background-position: 100%;
-		background-size: 150% 150%;
-		animation: gradient 3s linear infinite;
-		background-repeat: no-repeat;
-		overflow: hidden;
-	}
-
-	@keyframes gradient {
-		0% {
-			background-position: 10px 39px;
-		}
-		100% {
-			background-position: 0px 0px;
-		}
-	}
-</style>

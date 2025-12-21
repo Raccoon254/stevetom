@@ -202,7 +202,6 @@
 <style>
 	.skills-section {
 		min-height: 100vh;
-		background: rgba(37, 37, 37, 0.9);
 		position: relative;
 		padding: 6rem 2rem;
 		overflow: hidden;

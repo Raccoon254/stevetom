@@ -3,7 +3,7 @@
     import { fade, fly } from 'svelte/transition';
     import { cubicInOut } from 'svelte/easing';
     import Cursor from "../components/Cursor.svelte";
-    import { ExternalLink, Github, Calendar, Sparkles } from 'lucide-svelte';
+    import { ExternalLink, Github, Calendar, Sparkles, Star } from 'lucide-svelte';
 
     type Project = {
         id: string
@@ -68,7 +68,7 @@
 
 <Cursor />
 
-<div class="bg-[#252525] min-h-screen relative overflow-x-hidden">
+<div class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden">
     <main class="hero-section mx-auto min-h-screen py-20">
         <!-- Background decoration -->
         <div
@@ -80,7 +80,7 @@
             <!-- Header -->
             <div class="text-center mb-16" in:fly={{ y: 30, duration: 800, easing: cubicInOut }}>
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/20 text-white/80 mb-6">
-                    <Sparkles size="16" class="animate-pulse" />
+                    <Star size="16" class="animate-pulse" />
                     <span class="text-sm font-semibold uppercase tracking-wider">Portfolio</span>
                 </div>
                 <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white">
@@ -210,28 +210,3 @@
         </div>
     </main>
 </div>
-
-<style>
-    .hero-section {
-        background: repeating-linear-gradient(
-            -25deg,
-            transparent,
-            transparent 39px,
-            rgba(255, 255, 255, 0.05) 39px,
-            rgba(255, 255, 255, 0.05) 40px
-        );
-        background-position: 100%;
-        background-size: 150% 150%;
-        animation: gradient 15s linear infinite;
-        background-repeat: no-repeat;
-    }
-
-    @keyframes gradient {
-        0% {
-            background-position: 0% 0%;
-        }
-        100% {
-            background-position: 100% 100%;
-        }
-    }
-</style>

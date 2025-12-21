@@ -12,7 +12,7 @@
 	})
 </script>
 
-<section class="name-section border-t border-gray-200/10">
+<section class="name-section border-y border-gray-200/10">
 	<div class="name-container">
 		<h1 class="name-display">
 			{#each letters as letter, i}
@@ -36,7 +36,7 @@
 <style>
 	.name-section {
 		min-height: 80vh;
-		background: rgba(37, 37, 37, 0.9);
+		background: rgba(37, 37, 37, 0.7);
 		display: flex;
 		align-items: center;
 		justify-content: center;

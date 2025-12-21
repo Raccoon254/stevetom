@@ -71,30 +71,6 @@
 </div>
 
 <style>
-	.hero-section {
-		background: repeating-linear-gradient(
-			-25deg,
-			transparent,
-			transparent 39px,
-			rgba(255, 255, 255, 0.15) 39px,
-			rgba(255, 255, 255, 0.15) 40px
-		);
-		background-position: 100%;
-		background-size: 150% 150%;
-		animation: gradient 3s linear infinite;
-		background-repeat: no-repeat;
-		overflow: hidden;
-	}
-
-	@keyframes gradient {
-		0% {
-			background-position: 10px 39px;
-		}
-		100% {
-			background-position: 0px 0px;
-		}
-	}
-
 	.highlight-word {
 		font-weight: 600;
 		background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
