@@ -9,6 +9,26 @@
 		name="description"
 		content="Get in touch with Steve Tom for your next web development project. Let's discuss your vision and bring it to life."
 	/>
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://stevetom.vercel.app/contact" />
+	<meta property="og:title" content="Contact | Steve Tom - Full-Stack Developer" />
+	<meta
+		property="og:description"
+		content="Get in touch with Steve Tom for your next web development project. Let's discuss your vision and bring it to life."
+	/>
+	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/contact" />
+	<meta name="twitter:title" content="Contact | Steve Tom - Full-Stack Developer" />
+	<meta
+		name="twitter:description"
+		content="Get in touch with Steve Tom for your next web development project. Let's discuss your vision and bring it to life."
+	/>
+	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
 <Cursor />

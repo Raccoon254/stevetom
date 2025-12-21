@@ -9,6 +9,26 @@
 		name="description"
 		content="Learn more about Steve Tom, a full-stack developer passionate about creating premium digital experiences."
 	/>
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="profile" />
+	<meta property="og:url" content="https://stevetom.vercel.app/about" />
+	<meta property="og:title" content="About | Steve Tom - Full-Stack Developer" />
+	<meta
+		property="og:description"
+		content="Learn more about Steve Tom, a full-stack developer passionate about creating premium digital experiences."
+	/>
+	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/about" />
+	<meta name="twitter:title" content="About | Steve Tom - Full-Stack Developer" />
+	<meta
+		name="twitter:description"
+		content="Learn more about Steve Tom, a full-stack developer passionate about creating premium digital experiences."
+	/>
+	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
 <Cursor />

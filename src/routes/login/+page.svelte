@@ -1,16 +1,33 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import type { ActionData } from './$types';
-	import { Lock, ArrowLeft } from 'lucide-svelte';
+	import { enhance } from '$app/forms'
+	import type { ActionData } from './$types'
+	import { Lock, ArrowLeft } from 'lucide-svelte'
 
-	export let form: ActionData;
+	export let form: ActionData
 </script>
 
 <svelte:head>
 	<title>Admin Login | KenTom</title>
+	<meta name="description" content="Authorized access only. Please sign in to continue." />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://stevetom.vercel.app/login" />
+	<meta property="og:title" content="Admin Login | KenTom" />
+	<meta property="og:description" content="Authorized access only. Please sign in to continue." />
+	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/login" />
+	<meta name="twitter:title" content="Admin Login | KenTom" />
+	<meta name="twitter:description" content="Authorized access only. Please sign in to continue." />
+	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
-<div class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden flex items-center justify-center p-6">
+<div
+	class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden flex items-center justify-center p-6"
+>
 	<!-- Background Decorations -->
 	<div
 		class="hidden lg:block absolute rotate-[65deg] top-20 -left-20 opacity-10"
@@ -36,10 +53,14 @@
 		</a>
 
 		<!-- Login Card -->
-		<div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl overflow-hidden">
+		<div
+			class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl overflow-hidden"
+		>
 			<!-- Header -->
 			<div class="bg-white/5 border-b border-white/10 p-8 text-center">
-				<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 border border-white/20 mb-4">
+				<div
+					class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 border border-white/20 mb-4"
+				>
 					<Lock size="32" class="text-white" />
 				</div>
 				<h1 class="text-3xl font-bold text-white mb-2">Admin Access</h1>
@@ -80,9 +101,7 @@
 
 				<!-- Footer Info -->
 				<div class="mt-6 text-center">
-					<p class="text-white/40 text-xs">
-						Protected area • Authorized access only
-					</p>
+					<p class="text-white/40 text-xs">Protected area • Authorized access only</p>
 				</div>
 			</div>
 		</div>
@@ -90,7 +109,9 @@
 		<!-- Hint Text -->
 		<div class="mt-6 text-center">
 			<p class="text-white/30 text-sm">
-				Tip: Press <kbd class="px-2 py-1 bg-white/10 border border-white/20 rounded text-xs">Shift</kbd> three times from anywhere to access this page
+				Tip: Press <kbd class="px-2 py-1 bg-white/10 border border-white/20 rounded text-xs"
+					>Shift</kbd
+				> three times from anywhere to access this page
 			</p>
 		</div>
 	</main>

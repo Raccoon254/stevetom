@@ -33,11 +33,31 @@
 </script>
 
 <svelte:head>
-	<title>Blog | Ken Tom - Insights on Development & Business</title>
+	<title>Blog | Kentom - Insights & Strategies</title>
 	<meta
 		name="description"
-		content="Read about web development, business strategy, and creative entrepreneurship from Ken Tom."
+		content="Read thoughts on technology, business strategy, and creative development from Steve Tom."
 	/>
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://stevetom.vercel.app/blog" />
+	<meta property="og:title" content="Blog | Kentom - Insights & Strategies" />
+	<meta
+		property="og:description"
+		content="Read thoughts on technology, business strategy, and creative development from Steve Tom."
+	/>
+	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/blog" />
+	<meta name="twitter:title" content="Blog | Kentom - Insights & Strategies" />
+	<meta
+		name="twitter:description"
+		content="Read thoughts on technology, business strategy, and creative development from Steve Tom."
+	/>
+	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
 <div class="min-h-screen text-white">
