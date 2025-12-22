@@ -1,32 +1,19 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { PAYSTACK_SECRET_KEY } from '$env/static/private';
-import fs from 'fs';
-import path from 'path';
+import { PrismaClient } from '@prisma/client';
 
-// Debug: Log if key is loaded (first 10 chars only for security)
-console.log('Paystack key loaded:', PAYSTACK_SECRET_KEY ? `${PAYSTACK_SECRET_KEY.substring(0, 10)}...` : 'NOT FOUND');
-
-function logDonationEvent(event: string, details: any) {
-  const logMsg = `[${new Date().toISOString()}] PAYSTACK ${event}: ${JSON.stringify(details)}\n`;
-  console.log(logMsg);
-  const logPath = path.resolve(process.cwd(), 'donation.log');
-  fs.appendFileSync(logPath, logMsg);
-}
+const prisma = new PrismaClient();
 
 // Initialize transaction endpoint
 export const POST: RequestHandler = async ({ request }) => {
   const { amount, email, currency } = await request.json();
 
-  logDonationEvent('Received donation request', { amount, email, currency });
-
   if (!amount || isNaN(amount) || amount < 1) {
-    logDonationEvent('Invalid donation amount', { amount });
     return json({ error: 'Invalid donation amount.' }, { status: 400 });
   }
 
   if (!email || !email.includes('@')) {
-    logDonationEvent('Invalid email', { email });
     return json({ error: 'Valid email is required.' }, { status: 400 });
   }
 
@@ -57,12 +44,24 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const data = await response.json();
 
-    logDonationEvent('Paystack initialization response', data);
-
     if (!response.ok || !data.status) {
-      logDonationEvent('Paystack initialization failed', data);
       return json({ error: data.message || 'Failed to initialize payment.' }, { status: 500 });
     }
+
+    // Create donation record in database
+    await prisma.donation.create({
+      data: {
+        email,
+        amount,
+        currency: currency || 'KES',
+        paystackReference: data.data.reference,
+        status: 'PENDING',
+        metadata: JSON.stringify({
+          accessCode: data.data.access_code,
+          authorizationUrl: data.data.authorization_url
+        })
+      }
+    });
 
     return json({
       authorizationUrl: data.data.authorization_url,
@@ -70,7 +69,7 @@ export const POST: RequestHandler = async ({ request }) => {
       accessCode: data.data.access_code
     });
   } catch (err: any) {
-    logDonationEvent('Paystack error', { error: err.message, stack: err.stack });
+    console.error('Paystack donation error:', err);
     return json({ error: err.message || 'Payment initialization error.' }, { status: 500 });
   }
 };
@@ -93,11 +92,34 @@ export const GET: RequestHandler = async ({ url }) => {
 
     const data = await response.json();
 
-    logDonationEvent('Paystack verification response', data);
-
     if (!response.ok || !data.status) {
       return json({ error: data.message || 'Verification failed.' }, { status: 500 });
     }
+
+    // Update donation status in database
+    const transactionStatus = data.data.status;
+    let donationStatus: 'SUCCESS' | 'FAILED' | 'PENDING' | 'CANCELLED' = 'PENDING';
+
+    if (transactionStatus === 'success') {
+      donationStatus = 'SUCCESS';
+    } else if (transactionStatus === 'failed') {
+      donationStatus = 'FAILED';
+    } else if (transactionStatus === 'abandoned') {
+      donationStatus = 'CANCELLED';
+    }
+
+    await prisma.donation.update({
+      where: {
+        paystackReference: reference
+      },
+      data: {
+        status: donationStatus,
+        metadata: JSON.stringify({
+          verificationData: data.data,
+          verifiedAt: new Date().toISOString()
+        })
+      }
+    });
 
     return json({
       status: data.data.status,
@@ -107,7 +129,7 @@ export const GET: RequestHandler = async ({ url }) => {
       reference: data.data.reference
     });
   } catch (err: any) {
-    logDonationEvent('Verification error', { error: err.message });
+    console.error('Verification error:', err);
     return json({ error: err.message || 'Verification error.' }, { status: 500 });
   }
 };
