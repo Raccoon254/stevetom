@@ -55,19 +55,20 @@
 </script>
 
 <nav
-	class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 {mobileMenuOpen
-		? 'translate-y-0'
-		: isScrollingDown
-			? '-translate-y-full'
-			: 'translate-y-0'}"
+	data-navbar="wrapper"
+	data-scrolled={isScrolled}
+	data-scrolling-down={isScrollingDown}
+	data-menu-open={mobileMenuOpen}
+	class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
 >
 	<div
-		class="navbar-container transition-all duration-300 {isScrolled || mobileMenuOpen
-			? 'bg-[#252525]/90 backdrop-blur-sm shadow-xs shadow-black/20'
-			: 'bg-transparent'}"
+		data-navbar="backdrop"
+		data-scrolled={isScrolled}
+		data-menu-open={mobileMenuOpen}
+		class="navbar-container transition-all duration-300"
 	>
-		<div class="mx-auto max-w-7xl px-6">
-			<div class="flex h-20 items-center justify-between">
+		<div data-navbar="content" class="mx-auto max-w-7xl px-6">
+			<div data-navbar="inner" class="flex h-20 items-center justify-between">
 				<!-- Logo Section -->
 				<a href="/" class="group relative flex items-center gap-3 z-10">
 					<div
