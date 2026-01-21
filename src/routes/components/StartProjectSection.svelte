@@ -35,7 +35,7 @@
 					<div
 						class="inline-flex md:items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-sm text-white border border-white/20 hover:border-white/40 transition-colors duration-300"
 					>
-						<WandSparkles size="16" class="animate-pulse" />
+						<WandSparkles size="16" class="animate-pulse mt-[2px]" />
 						<span class="text-sm font-bold uppercase tracking-widest">Let's Create Together</span>
 					</div>
 				</div>
