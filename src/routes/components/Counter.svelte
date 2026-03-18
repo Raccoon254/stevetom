@@ -37,7 +37,7 @@
 	.decimal-display {
 		font-size: clamp(3rem, 12vw, 7rem);
 		font-weight: 900;
-		color: #252525;
+		color: #0e0e0e;
 		display: none;
 	}
 

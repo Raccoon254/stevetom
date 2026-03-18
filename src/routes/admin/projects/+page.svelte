@@ -154,7 +154,7 @@
         </div>
         <button
             on:click={openAddForm}
-            class="px-6 py-3 bg-white text-[#252525] rounded-full font-bold flex items-center gap-2 hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg"
+            class="px-6 py-3 bg-white text-[#0e0e0e] rounded-full font-bold flex items-center gap-2 hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg"
         >
             <Plus size="20" />
             <span>Add Project</span>
@@ -185,7 +185,7 @@
                                 alt={project.title}
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#252525] via-transparent to-transparent opacity-60"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-transparent to-transparent opacity-60"></div>
                         </div>
 
                         <!-- Content -->
@@ -264,7 +264,7 @@
 <!-- Modal -->
 {#if showAddForm}
     <div
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#252525]/90 backdrop-blur-sm"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0e0e0e]/90 backdrop-blur-sm"
         on:click={() => (showAddForm = false)}
         transition:fade={{ duration: 200 }}
     >
@@ -274,7 +274,7 @@
             transition:fly={{ y: 20, duration: 300 }}
         >
             <!-- Modal Header -->
-            <div class="sticky top-0 bg-[#252525]/80 backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-center">
+            <div class="sticky top-0 bg-[#0e0e0e]/80 backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-center">
                 <h3 class="text-2xl font-bold text-white">
                     {editingProject ? 'Edit Project' : 'Add New Project'}
                 </h3>
@@ -405,7 +405,7 @@
                         <button
                             type="button"
                             on:click={addTech}
-                            class="px-6 py-3 bg-white text-[#252525] rounded-xl font-bold hover:bg-white/90 transition-all"
+                            class="px-6 py-3 bg-white text-[#0e0e0e] rounded-xl font-bold hover:bg-white/90 transition-all"
                         >
                             Add
                         </button>
@@ -439,7 +439,7 @@
                         <button
                             type="button"
                             on:click={addFeature}
-                            class="px-6 py-3 bg-white text-[#252525] rounded-xl font-bold hover:bg-white/90 transition-all"
+                            class="px-6 py-3 bg-white text-[#0e0e0e] rounded-xl font-bold hover:bg-white/90 transition-all"
                         >
                             Add
                         </button>
@@ -471,7 +471,7 @@
                     </button>
                     <button
                         type="submit"
-                        class="px-6 py-3 bg-white text-[#252525] rounded-xl font-bold hover:bg-white/90 hover:scale-105 transition-all shadow-lg"
+                        class="px-6 py-3 bg-white text-[#0e0e0e] rounded-xl font-bold hover:bg-white/90 hover:scale-105 transition-all shadow-lg"
                     >
                         {editingProject ? 'Update' : 'Create'} Project
                     </button>

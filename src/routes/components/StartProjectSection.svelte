@@ -79,7 +79,7 @@
 				<div class="flex flex-col w-full sm:flex-row gap-4 ">
 					<a
 						href="/quote"
-						class="group bg-white text-[#252525] px-8 w-fit py-4 rounded-full font-bold text-lg flex items-center gap-3 hover:scale-105 hover:shadow-[0_20px_50px_-10px_rgba(255,255,255,0.3)] transition-all duration-300"
+						class="group bg-white text-[#0e0e0e] px-8 w-fit py-4 rounded-full font-bold text-lg flex items-center gap-3 hover:scale-105 hover:shadow-[0_20px_50px_-10px_rgba(255,255,255,0.3)] transition-all duration-300"
 					>
 						<span>Start a Project</span>
 						<ArrowRight size="20" class="transition-transform duration-300 group-hover:translate-x-1" />

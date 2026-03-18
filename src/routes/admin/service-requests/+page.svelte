@@ -228,7 +228,7 @@
 <!-- Detail Modal -->
 {#if showDetailModal && selectedRequest}
 	<div
-		class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#252525]/90 backdrop-blur-sm"
+		class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0e0e0e]/90 backdrop-blur-sm"
 		on:click={() => (showDetailModal = false)}
 		transition:fade={{ duration: 200 }}
 	>
@@ -238,7 +238,7 @@
 			transition:fly={{ y: 20, duration: 300 }}
 		>
 			<!-- Modal Header -->
-			<div class="sticky top-0 bg-[#252525]/80 backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-center">
+			<div class="sticky top-0 bg-[#0e0e0e]/80 backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-center">
 				<h3 class="text-2xl font-bold text-white">Service Request Details</h3>
 				<button
 					on:click={() => (showDetailModal = false)}
@@ -361,7 +361,7 @@
 			</div>
 
 			<!-- Modal Actions -->
-			<div class="sticky bottom-0 bg-[#252525]/80 backdrop-blur-lg border-t border-white/10 p-6 flex flex-wrap gap-3 justify-between">
+			<div class="sticky bottom-0 bg-[#0e0e0e]/80 backdrop-blur-lg border-t border-white/10 p-6 flex flex-wrap gap-3 justify-between">
 				<div class="flex flex-wrap gap-3">
 					<a
 						href="mailto:{selectedRequest.clientEmail}"

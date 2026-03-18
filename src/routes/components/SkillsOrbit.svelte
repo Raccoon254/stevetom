@@ -173,7 +173,7 @@
 
 					{#if selectedSkill === skill}
 						<div
-							class="absolute -top-1 -right-1 bg-[#252525] rounded-full p-0.5 border border-white/20 z-20"
+							class="absolute -top-1 -right-1 bg-[#0e0e0e] rounded-full p-0.5 border border-white/20 z-20"
 						>
 							<Zap size={8} class="fill-yellow-400 text-yellow-400" />
 						</div>

@@ -26,7 +26,7 @@
 </svelte:head>
 
 <div
-	class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden flex items-center justify-center p-6"
+	class="bg-[#0e0e0e]/10 min-h-screen relative overflow-x-hidden flex items-center justify-center p-6"
 >
 	<!-- Background Decorations -->
 	<div
@@ -93,7 +93,7 @@
 
 					<button
 						type="submit"
-						class="w-full bg-white text-[#252525] px-6 py-3 rounded-full font-bold text-lg hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+						class="w-full bg-white text-[#0e0e0e] px-6 py-3 rounded-full font-bold text-lg hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
 					>
 						Sign In
 					</button>

@@ -11,7 +11,7 @@
     }
 </script>
 
-<div class="min-h-screen bg-[#252525] text-white relative overflow-hidden">
+<div class="min-h-screen bg-[#0e0e0e] text-white relative overflow-hidden">
     <!-- Background Pattern -->
     <div class="hero-section fixed inset-0 pointer-events-none"></div>
 
@@ -97,7 +97,7 @@
         <!-- Mobile Sidebar -->
         {#if mobileMenuOpen}
             <div
-                class="lg:hidden fixed inset-0 z-40 bg-[#252525]/95 backdrop-blur-md"
+                class="lg:hidden fixed inset-0 z-40 bg-[#0e0e0e]/95 backdrop-blur-md"
                 on:click={toggleMobileMenu}
                 transition:fade={{ duration: 300 }}
             >

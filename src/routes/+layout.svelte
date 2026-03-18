@@ -86,7 +86,7 @@
 </script>
 
 <svelte:head>
-	<meta name="theme-color" content="#252525" />
+	<meta name="theme-color" content="#0e0e0e" />
 </svelte:head>
 
 <main>

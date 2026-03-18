@@ -158,7 +158,7 @@
 		aria-modal="true"
 	>
 		<!-- Backdrop -->
-		<div class="absolute inset-0 bg-[#252525] backdrop-blur-xl"></div>
+		<div class="absolute inset-0 bg-[#0e0e0e] backdrop-blur-xl"></div>
 
 		<!-- Animated background circles -->
 		<div

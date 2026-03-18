@@ -19,7 +19,7 @@
 				<span
 					class="letter {i < 3 ? 'web' : 'design'}"
 					class:visible
-					style="--delay: {i * 0.1}s; --color: {i < 3 ? '#252525' : '#ffee01'};"
+					style="--delay: {i * 0.1}s; --color: {i < 3 ? '#0e0e0e' : '#ffee01'};"
 				>
 					{letter}
 				</span>

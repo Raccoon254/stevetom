@@ -58,7 +58,7 @@
 	<meta name="twitter:image" content="https://stevetom.vercel.app/blog/skillkenya-1.jpg" />
 </svelte:head>
 
-<div class="min-h-screen bg-[#252525]/10 -m text-white">
+<div class="min-h-screen bg-[#0e0e0e]/10 -m text-white">
 	<!-- Header -->
 	<div class="border-b border-white/10 bg-[#151515]">
 		<div class="container mx-auto px-6 py-6">
