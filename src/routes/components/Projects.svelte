@@ -145,7 +145,11 @@
                                     <a href={project.projectUrl} target="_blank" rel="noopener noreferrer"
                                        class="btn-primary">
                                         <ExternalLink size="16" />
-                                        <span>Live Demo</span>
+                                        <span>Live
+                                            {#if project.githubUrl === '#'}
+                                                Demo
+                                            {/if}
+                                            </span>
                                     </a>
                                     {#if project.githubUrl !== '#'}
                                         <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
