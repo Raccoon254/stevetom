@@ -110,7 +110,7 @@
             <div class="w-96 h-96 hidden md:w-[30rem] md:h-[30rem] relative md:flex items-center justify-center">
                 <button
                     on:click={toggleVisualization}
-                    class="absolute bottom-4 right-4 border border-gray-700/20 z-10 btn btn-circle btn-sm btn-ghost"
+                    class="absolute text-interactive bottom-4 right-4 border border-gray-700/20 z-10 btn btn-circle btn-sm btn-ghost"
                     aria-label="Toggle visualization"
                 >
                     <Rotate3D size="16" />

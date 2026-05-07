@@ -228,4 +228,4 @@
     });
 </script>
 
-<div bind:this={container} class="w-full h-full min-h-[400px]"></div>
+<div bind:this={container} class="w-full interactive h-full min-h-[400px]"></div>
