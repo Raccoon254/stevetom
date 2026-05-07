@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte'
+	import { onMount, onDestroy, createEventDispatcher } from 'svelte'
 	import { browser } from '$app/environment'
 	import * as THREE from 'three'
+
+	const dispatch = createEventDispatcher()
 
 	let container: HTMLDivElement
 	let scene: THREE.Scene
@@ -21,6 +23,11 @@
 
 		// Trigger initial load animations
 		animateOnLoad()
+
+		// Notify parent that scene is loaded
+		setTimeout(() => {
+			dispatch('loaded')
+		}, 100)
 	})
 
 	onDestroy(() => {
