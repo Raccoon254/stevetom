@@ -6,8 +6,12 @@ export const GET: RequestHandler = async ({ url }) => {
 	try {
 		const status = url.searchParams.get('status')
 		const limit = url.searchParams.get('limit')
-		
-		const where = status ? { status: status.toUpperCase() as any } : {}
+		const featured = url.searchParams.get('featured')
+
+		let where: any = {}
+		if (status) where.status = status.toUpperCase()
+		if (featured === 'true') where.featured = true
+
 		const take = limit ? parseInt(limit) : undefined
 
 		const projects = await prisma.project.findMany({
@@ -38,6 +42,21 @@ export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const data = await request.json()
 		
+		if (data.featured) {
+			const featuredCount = await prisma.project.count({
+				where: { featured: true }
+			})
+			if (featuredCount >= 4) {
+				return json(
+					{
+						success: false,
+						message: 'Maximum of 4 featured projects allowed'
+					},
+					{ status: 400 }
+				)
+			}
+		}
+
 		const project = await prisma.project.create({
 			data: {
 				title: data.title,
@@ -49,7 +68,8 @@ export const POST: RequestHandler = async ({ request }) => {
 				year: data.year,
 				category: data.category,
 				features: data.features,
-				status: data.status?.toUpperCase() || 'DEVELOPMENT'
+				status: data.status?.toUpperCase() || 'DEVELOPMENT',
+				featured: data.featured || false
 			}
 		})
 

@@ -19,6 +19,7 @@ model Project {
   category    String
   features    String[] // Array of key features
   status      ProjectStatus @default(DEVELOPMENT)
+  featured    Boolean       @default(false)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }

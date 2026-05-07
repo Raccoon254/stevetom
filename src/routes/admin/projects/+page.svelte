@@ -17,7 +17,8 @@
         year: new Date().getFullYear().toString(),
         category: '',
         features: [],
-        status: 'DEVELOPMENT'
+        status: 'DEVELOPMENT',
+        featured: false
     };
 
     let techInput = '';
@@ -64,7 +65,8 @@
             year: new Date().getFullYear().toString(),
             category: '',
             features: [],
-            status: 'DEVELOPMENT'
+            status: 'DEVELOPMENT',
+            featured: false
         };
         techInput = '';
         featureInput = '';
@@ -166,12 +168,17 @@
         <!-- Projects grid -->
         <div class="space-y-12">
             {#each projects as project, i (project.id)}
-                <div class="card lg:card-side bg-base-200/10 border-2 border-gray-800 shadow-xl hover:shadow-2xl transition-shadow duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                <div class="card lg:card-side bg-base-200/10 border-2 border-gray-800 shadow-xl transition-shadow duration-500 ease-in-out transform">
                     <figure class="lg:w-1/2 {i % 2 === 0 ? 'lg:order-last' : ''}"><img src={project.image} alt={project.title} class="w-full h-full object-cover" /></figure>
                     <div class="card-body lg:w-1/2">
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="card-title text-2xl">{project.title}</h3>
-                            <div class={`badge ${getStatusColor(project.status)}`}>{project.status}</div>
+                            <div class="flex gap-2">
+                                {#if project.featured}
+                                    <div class="badge badge-info">Featured</div>
+                                {/if}
+                                <div class={`badge ${getStatusColor(project.status)}`}>{project.status}</div>
+                            </div>
                         </div>
                         <p class="text-sm mb-3">{project.description}</p>
                         <div class="card-actions justify-start">
@@ -259,15 +266,23 @@
                     </div>
                 </div>
 
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Status</span>
-                    </label>
-                    <select bind:value={formData.status} class="select select-bordered">
-                        <option value="DEVELOPMENT">Development</option>
-                        <option value="LIVE">Live</option>
-                        <option value="ARCHIVED">Archived</option>
-                    </select>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text">Status</span>
+                        </label>
+                        <select bind:value={formData.status} class="select select-bordered">
+                            <option value="DEVELOPMENT">Development</option>
+                            <option value="LIVE">Live</option>
+                            <option value="ARCHIVED">Archived</option>
+                        </select>
+                    </div>
+                    <div class="form-control">
+                        <label class="label cursor-pointer justify-start gap-2">
+                            <input type="checkbox" bind:checked={formData.featured} class="checkbox checkbox-primary" />
+                            <span class="label-text">Featured Project (max 4)</span>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="form-control">

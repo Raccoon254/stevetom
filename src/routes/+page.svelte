@@ -1,269 +1,163 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-	import Projects from './components/Projects.svelte'
-	import Contact from './components/Contact.svelte'
-	import Cursor from './components/Cursor.svelte';
+    import {onMount} from 'svelte'
+    import Projects from './components/Projects.svelte'
     import ContactQuote from "./components/ContactQuote.svelte";
-    import { Mail, Download, Github } from 'lucide-svelte';
-	onMount(() => {
-		// Any necessary onMount logic can go here
-	})
+    import Cursor from './components/Cursor.svelte';
+    import InteractiveSphere from './components/InteractiveSphere.svelte'
+    import MusicWave from './components/MusicWave.svelte'
+    import { Repeat } from 'lucide-svelte';
 
-	interface Skill {
-		name: string
-		color: string
-	}
-	let skills: Skill[] = [
-		{ name: 'javascript', color: 'yellow' },
-		{ name: 'python', color: 'blue' },
-		{ name: 'react', color: 'cyan' },
-		{ name: 'nodejs', color: 'green' },
-		{ name: 'java', color: 'red' },
-		{ name: 'php', color: 'purple' },
-		{ name: 'css3', color: 'blue' },
-		{ name: 'html5', color: 'orange' },
-		{ name: 'git', color: 'red' },
-		{ name: 'mongodb', color: 'green' },
-		{ name: 'postgresql', color: 'blue' },
-		{ name: 'nextjs', color: 'yellow' },
-		{ name: 'docker', color: 'blue' },
-		{ name: 'linux', color: 'yellow' },
-		{ name: 'typescript', color: 'blue' },
-		{ name: 'svelte', color: 'red' },
-		{ name: 'rust', color: 'orange' },
-		{ name: 'kotlin', color: 'blue' },
-		{ name: 'android', color: 'green' },
-		{ name: 'firebase', color: 'yellow' },
-		{ name: 'azure', color: 'blue' },
-		{ name: 'heroku', color: 'purple' },
-		{ name: 'netlify', color: 'blue' },
-		{ name: 'vercel', color: 'green' },
-		{ name: 'nginx', color: 'blue' },
-		{ name: 'apache', color: 'red' },
-		{ name: 'spring', color: 'green' },
-		{ name: 'laravel', color: 'blue' },
-		{ name: 'wordpress', color: 'yellow' },
-		{ name: 'bootstrap', color: 'green' },
-		{ name: 'tailwindcss', color: 'blue' },
-		{ name: 'vuetify', color: 'purple' },
-		{ name: 'nuxtjs', color: 'blue' },
-	]
+    let showSphere = true;
 
-	// Duplicate skills to ensure smooth looping
-	skills = [...skills, ...skills]
+    function toggleVisualization() {
+        showSphere = !showSphere;
+    }
 
-	let scrollBar: HTMLElement
+    interface Skill {
+        name: string
+    }
 
-	onMount(() => {
-		scrollBar.addEventListener('mouseenter', () => {
-			scrollBar.style.animationPlayState = 'paused'
-		})
-		scrollBar.addEventListener('mouseleave', () => {
-			scrollBar.style.animationPlayState = 'running'
-		})
-	})
+    let skills: Skill[] = [
+        {name: 'javascript'},
+        {name: 'python'},
+        {name: 'react'},
+        {name: 'nodejs'},
+        {name: 'java'},
+        {name: 'php'},
+        {name: 'css3'},
+        {name: 'html5'},
+        {name: 'git'},
+        {name: 'mongodb'},
+        {name: 'postgresql'},
+        {name: 'nextjs'},
+        {name: 'docker'},
+        {name: 'linux'},
+        {name: 'typescript'},
+        {name: 'svelte'},
+        {name: 'rust'},
+        {name: 'kotlin'},
+        {name: 'android'},
+        {name: 'firebase'},
+        {name: 'azure'},
+        {name: 'heroku'},
+        {name: 'netlify'},
+        {name: 'vercel'},
+        {name: 'nginx'},
+        {name: 'apache'},
+        {name: 'spring'},
+        {name: 'laravel'},
+        {name: 'wordpress'},
+        {name: 'bootstrap'},
+        {name: 'tailwindcss'},
+        {name: 'vuetify'},
+        {name: 'nuxtjs'},
+    ]
+
+    skills = [...skills, ...skills]
+
+    let scrollBar: HTMLElement
+
+    onMount(() => {
+        scrollBar.addEventListener('mouseenter', () => {
+            scrollBar.style.animationPlayState = 'paused'
+        })
+        scrollBar.addEventListener('mouseleave', () => {
+            scrollBar.style.animationPlayState = 'running'
+        })
+    })
 </script>
 
-<main class="min-h-screen text-white flex flex-col justify-center items-center">
-	<Cursor />
-	<div class="mt-8 w-full flex flex-col justify-center items-center">
-		<div class="w-full h-screen flex flex-col justify-center items-center">
-            <div class="p-4 md:p-8 max-w-5xl flex flex-col gap-3 md:flex-row justify-between items-center mb-12">
-                <div class="p-4 md:p-0 md:w-1/2">
-                    <div data-aos="zoom-in" class="flex gap-2 items-center h-16 overflow-clip mb-2">
-                        <img src="/logo-light.png" alt="Steve Tom" class="w-10 interactive object-cover" />
-                        <h1 class="text-3xl font-bold text-interactive">kenTom</h1>
-                        <span class="text-xs pl-1 pb-10 opacity-50 font-thin interactive">v2.1.5</span>
-                    </div>
-                    <p data-aos="fade-left" class="text-xl font-thin mb-6">
-                        I am an indie developer with a passion for programming and technology. I am skilled in
-                        Java, Rust, JavaScript and many other programming languages.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a
-                                data-aos="fade-right"
-                                href="#contact"
-                                class="bg-gray-50 interactive text-gray-900 px-4 py-2 rounded-full hover:bg-gray-300 transition duration-300 ring-1 ring-offset-2 ring-offset-dark ring-green-400 gap-2 center"
-                        >
-                            <Mail size="16" />
-                            Hire Me
-                        </a>
-                        <a
-                                data-aos="fade-left"
-                                href="https://github.com/Raccoon254"
-                                target="_blank"
-                                rel="noopener"
-                                class="bg-transparent text-interactive border border-white px-4 py-2 rounded-full hover:bg-white hover:text-gray-900 center transition duration-300 ring-1 ring-offset-2 ring-offset-dark gap-2 ring-green-400"
-                        >
-                            <Github size="16" />
-                            GitHub
-                        </a>
-                    </div>
+<main class="min-h-screen bg-base-100 text-base-content">
+    <Cursor/>
+
+    <!-- Hero Section -->
+    <div class="min-h-screen flex flex-col justify-center items-center px-4">
+        <div class="max-w-6xl w-full flex flex-col md:flex-row gap-8 items-center justify-between mb-12">
+            <!-- Text Content -->
+            <div class="w-full md:w-1/2 md:mt-0 space-y-6">
+                <div class="flex gap-2 items-center">
+                    <img src="/logo-light.png" alt="Steve Tom" class="w-10 interactive h-10 object-cover"/>
+                    <h1 class="text-3xl text-interactive font-bold">kenTom</h1>
+                    <span class="text-xs opacity-50 font-thin">v2.1.5</span>
                 </div>
-                <div data-aos="fade-up" class="w-96 h-96 md:w-[30rem] rotate-2 center relative">
-                    <!-- Gradient behind the image  -->
-                    <section class="z-0 radial-gradient"></section>
-                    <img class="z-10 interactive user-image" src="/steve-tom-half-image.png" alt="Bloc logo" />
+
+                <p class="text-xl font-light text-base-content/80">
+                    I am an indie developer with a passion for programming and technology. I am skilled in
+                    Java, Rust, JavaScript and many other programming languages.
+                </p>
+
+                <div class="flex gap-4">
+                    <a
+                        href="#contact"
+                        class="text-interactive flex items-center justify-center gap-2 rounded-full ring-1 ring-offset-2 border border-base-300 ring-gray-500/10 px-4 md:px-6 dark:ring-offset-base-100 py-1 md:py-2 hover:bg-gray-100 transition-all duration-200 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white hover:ring-gray-500/20 dark:hover:ring-gray-400/20"
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                        Hire Me
+                    </a>
+                    <a
+                        href="https://github.com/Raccoon254"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-interactive bg-emerald-900 dark:bg-purple-900 text-white flex items-center justify-center gap-2 rounded-full ring-1 ring-offset-2 border border-base-300 ring-gray-500/10 px-4 md:px-6 py-2 hover:bg-emerald-800 dark:hover:bg-purple-800 transition-all duration-200 hover:ring-gray-500/20 dark:hover:ring-gray-100/80 dark:ring-offset-base-100"
+                    >
+                        <i class="devicon-github-original"></i>
+                        GitHub
+                    </a>
                 </div>
             </div>
 
-            <div class="mt-16 w-screen md:mt-32">
-                <div class="skills-scroll-container relative">
-                    <div
-                            class="end-l bg-gradient-to-r from-dark to-transparent absolute top-1/2 -translate-y-1/2 left-0"
-                    ></div>
-                    <div class="skills-scroll py-8" bind:this={scrollBar}>
-                        {#each skills as skill}
-                            <div
-                                    data-tip={skill.name}
-                                    class="skill-item text-interactive text-2xl mr-3 p-4 tooltip cursor-pointer rounded-lg border border-gray-400 border-opacity-40 ring-1 ring-offset-2 ring-offset-black ring-white ring-opacity-10 hover:scale-105 transition-all"
-                                    style="color: {skill.color}"
-                            >
-                                <i class={'devicon-' + skill.name + '-plain'}></i>
-                            </div>
-                        {/each}
-                    </div>
-                    <div
-                            class="end-r bg-gradient-to-l from-dark to-transparent absolute top-1/2 -translate-y-1/2 right-0"
-                    ></div>
-                </div>
+            <!-- Logo Image -->
+            <div class="w-96 h-96 hidden md:w-[30rem] md:h-[30rem] relative md:flex items-center justify-center">
+                <button
+                    on:click={toggleVisualization}
+                    class="absolute bottom-4 right-4 z-10 btn btn-circle btn-sm btn-ghost"
+                    aria-label="Toggle visualization"
+                >
+                    <Repeat size="16" />
+                </button>
+
+                {#if showSphere}
+                    <InteractiveSphere/>
+                {:else}
+                    <MusicWave/>
+                {/if}
             </div>
         </div>
 
-		<div class="mb-32">
-            <Projects />
-		</div>
-
-<!--        <div class="p-4 md:p-8 max-w-5xl">-->
-<!--            <Contact />-->
-<!--        </div>-->
-
-        <div class="">
-            <ContactQuote />
+        <!-- Skills Scroll -->
+        <div class="w-full overflow-hidden mt-16 md:mt-32">
+            <div class="flex animate-scroll py-3" bind:this={scrollBar}>
+                {#each skills as skill}
+                    <div class="flex-shrink-0 ring-gray-900/5 dark:ring-gray-100/5 ring-1 ring-offset-2 text-interactive aspect-square mx-3 flex items-center justify-center px-3 border border-base-300 dark:border-white/10 dark:ring-offset-base-100 rounded-lg hover:scale-105 transition-transform cursor-pointer">
+                        <i class={'devicon-' + skill.name + '-plain text-2xl'}></i>
+                    </div>
+                {/each}
+            </div>
         </div>
-	</div>
+    </div>
+
+    <!-- Projects Section -->
+    <div class="mb-32">
+        <Projects/>
+    </div>
+
+    <!-- Contact Section -->
+    <div id="contact">
+        <ContactQuote/>
+    </div>
 </main>
 
 <style>
-/* Custom cursor */
+    @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
 
-	.radial-gradient {
-		width: 300px;
-		height: 300px;
-		background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 70%);
-		/* Blur */
-		filter: blur(100px);
-		z-index: 700;
-		animation: wobble 5s infinite;
-	}
-	.user-image {
-		border-radius: 50%;
-		z-index: 800;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
-	@keyframes wobble {
-		0% {
-			transform: translateX(0%);
-		}
-		15% {
-			transform: translateY(-25%) rotate(-5deg);
-		}
-		30% {
-			transform: translateX(20%) rotate(3deg);
-		}
-		45% {
-			transform: translateX(-15%) rotate(-3deg);
-		}
-		60% {
-			transform: translateX(10%) rotate(2deg);
-		}
-		75% {
-			transform: translateX(-5%) rotate(-1deg);
-		}
-		100% {
-			transform: translateX(0%);
-		}
-	}
-	.skills-scroll-container {
-		overflow: hidden;
-		white-space: nowrap;
-		width: 100%;
-	}
+    .animate-scroll {
+        animation: scroll 40s linear infinite;
+    }
 
-	.skills-scroll {
-		display: inline-block;
-		animation: scroll 40s linear infinite;
-	}
-
-	.skill-item {
-		display: inline-flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	@keyframes scroll {
-		0% {
-			transform: translateX(0);
-		}
-		100% {
-			transform: translateX(-50%);
-		}
-	}
-
-	.end-l {
-		z-index: 1000;
-		width: 100px;
-		height: 49%;
-	}
-
-	.end-r {
-		z-index: 1000;
-		width: 100px;
-		height: 49%;
-	}
-
-	.radial-gradient {
-		width: 300px;
-		height: 300px;
-		background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 70%);
-		filter: blur(200px);
-		z-index: 700;
-		animation: wobble 5s infinite;
-	}
-
-	.user-image {
-		border-radius: 50%;
-		z-index: 800;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
-
-	@keyframes wobble {
-		0% {
-			transform: translateX(0%);
-		}
-		15% {
-			transform: translateY(-25%) rotate(-5deg);
-		}
-		30% {
-			transform: translateX(20%) rotate(3deg);
-		}
-		45% {
-			transform: translateX(-15%) rotate(-3deg);
-		}
-		60% {
-			transform: translateX(10%) rotate(2deg);
-		}
-		75% {
-			transform: translateX(-5%) rotate(-1deg);
-		}
-		100% {
-			transform: translateX(0%);
-		}
-	}
+    .animate-scroll:hover {
+        animation-play-state: paused;
+    }
 </style>
