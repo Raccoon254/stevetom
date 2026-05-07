@@ -33,7 +33,6 @@
 	"dependencies": {
 		"@paypal/checkout-server-sdk": "^1.0.3",
 		"@prisma/client": "^6.15.0",
-		"@rollup/rollup-darwin-arm64": "^4.53.3",
 		"aos": "^2.3.4",
 		"lucide-svelte": "^0.542.0",
 		"prisma": "^6.15.0",
