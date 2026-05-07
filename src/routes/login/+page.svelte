@@ -97,24 +97,7 @@
 </div>
 
 <style>
-	.hero-section {
-		background: repeating-linear-gradient(
-			-25deg,
-			transparent,
-			transparent 39px,
-			rgba(255, 255, 255, 0.05) 39px,
-			rgba(255, 255, 255, 0.05) 40px
-		);
-		background-position: 100%;
-		background-size: 150% 150%;
-		animation: gradient 15s linear infinite;
-		background-repeat: no-repeat;
-	}
 
-	@keyframes gradient {
-		0% {
-			background-position: 0% 0%;
-		}
 		100% {
 			background-position: 100% 100%;
 		}

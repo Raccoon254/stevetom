@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css'
+	import Navbar from './components/Navbar.svelte'
 	import { Briefcase, Mail, Github, Linkedin, MessageCircle } from 'lucide-svelte'
 	import { onMount, onDestroy } from 'svelte'
 	import { fly } from 'svelte/transition'
@@ -88,7 +89,9 @@
 	<meta name="theme-color" content="#252525" />
 </svelte:head>
 
-<div class="min-h-screen bg-base-100">
+<Navbar />
+
+<div class="relative z-0 main-component min-h-screen mt-20">
 	<main>
 		<slot />
 	</main>
