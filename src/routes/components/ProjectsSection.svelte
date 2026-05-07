@@ -210,7 +210,7 @@
 		<span class="inline-block text-md font-thin mb-4" style="color: {customOrange}">
 			Behind the Code
 		</span>
-		<h2 class="text-3xl md:text-5xl font-extrabold text-[#252525] leading-tight mb-5">
+		<h2 class="text-3xl md:text-5xl font-extrabold text-[#0e0e0e] leading-tight mb-5">
 			Curious What Else I’ve Built?
 		</h2>
 		<p class="text-base text-gray-600/50 font-medium mb-8">
@@ -219,13 +219,13 @@
 
 		<a
 			href="/projects"
-			class="group inline-flex items-center gap-3 p-3 pr-2 pl-6 bg-white border border-gray-200 rounded-full font-medium text-gray-800 transition-all duration-300 hover:border-transparent bg-[#252525] text-white ring-1 ring-[#252525] ring-offset-2 ring-offset-white border-2 border-[#252525] hover:border-gray-800/30"
+			class="group inline-flex items-center gap-3 p-3 pr-2 pl-6 bg-white border border-gray-200 rounded-full font-medium text-gray-800 transition-all duration-300 hover:border-transparent bg-[#0e0e0e] text-white ring-1 ring-[#0e0e0e] ring-offset-2 ring-offset-white border-2 border-[#0e0e0e] hover:border-gray-800/30"
 			style="
 			 background: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(37, 37, 37, 0.3) 2px, rgba(37, 37, 37, 0.3) 4px);
 			"
 		>
 			<span
-				class="font-bold text-[#252525] text-2xl"
+				class="font-bold text-[#0e0e0e] text-2xl"
 				style="
 			">More Projects</span
 			>

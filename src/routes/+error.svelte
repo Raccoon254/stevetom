@@ -7,7 +7,7 @@
 	<title>{$page.status} - Page Not Found</title>
 </svelte:head>
 
-<div class="error-page bg-[#252525]/10 min-h-screen flex flex-col">
+<div class="error-page bg-[#0e0e0e]/10 min-h-screen flex flex-col">
 	<main class="hero-section min-h-screen flex items-center justify-center p-6 sm:p-12">
 		<div class="text-center max-w-4xl mx-auto">
 			<!-- Error Code -->
@@ -41,14 +41,14 @@
 			<div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-late">
 				<a
 					href="/"
-					class="group bg-[#252525]/80 border border-white ring-1 ring-white ring-offset-2 ring-offset-[#252525] text-white pr-6 p-3 rounded-full flex items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+					class="group bg-[#0e0e0e]/80 border border-white ring-1 ring-white ring-offset-2 ring-offset-[#0e0e0e] text-white pr-6 p-3 rounded-full flex items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
 				>
 					<span
 						class="bg-white/20 p-3 ring-1 ring-white text-white rounded-full flex items-center justify-center transition-transform duration-300 group-hover:rotate-[-10deg]"
 						style="background-image: repeating-linear-gradient(
 							-45deg,
-							#252525,
-							#252525 2px,
+							#0e0e0e,
+							#0e0e0e 2px,
 							#3a3a3a 2px,
 							#3a3a3a 4px
 						);"

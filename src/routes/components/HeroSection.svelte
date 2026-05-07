@@ -105,14 +105,14 @@
 			<!-- CTA Button -->
 			<a
 				href="/contact"
-				class="bg-[#252525]/80 border border-white ring-1 ring-white ring-offset-2 ring-offset-[#252525] text-black pr-4 sm:pr-6 p-1.5 sm:p-2 rounded-full mt-6 inline-flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+				class="bg-[#0e0e0e]/80 border border-white ring-1 ring-white ring-offset-2 ring-offset-[#0e0e0e] text-black pr-4 sm:pr-6 p-1.5 sm:p-2 rounded-full mt-6 inline-flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
 			>
 				<span
 					class="mr-2 bg-white/20 p-3 sm:p-4 ring-1 ring-white text-white rounded-full flex items-center justify-center"
 					style="background-image: repeating-linear-gradient(
 					-45deg,
-					#252525,
-					#252525 2px,
+					#0e0e0e,
+					#0e0e0e 2px,
 					#3a3a3a 2px,
 					#3a3a3a 4px
 				);"
@@ -130,7 +130,7 @@
 		<div
 			class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white z-50 flex items-center justify-center mb-3 animate-bounce shadow-lg hover:shadow-xl transition-shadow duration-300"
 		>
-			<UnfoldVertical class="text-[#252525] w-5 h-5 sm:w-6 sm:h-6" />
+			<UnfoldVertical class="text-[#0e0e0e] w-5 h-5 sm:w-6 sm:h-6" />
 		</div>
 		<p
 			class="text-white font-medium tracking-wide text-xs sm:text-sm uppercase tracking-widest opacity-80"

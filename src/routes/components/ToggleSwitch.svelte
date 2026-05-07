@@ -17,7 +17,7 @@
 	<span
 		class="text-sm font-semibold uppercase tracking-widest transition-all duration-300 flex items-center gap-2"
 		class:opacity-100={!checked}
-		class:text-[#252525]={!checked}
+		class:text-[#0e0e0e]={!checked}
 		class:opacity-40={checked}
 	>
 		{leftLabel}
@@ -28,7 +28,7 @@
 
 		<!-- Track -->
 		<div
-			class="w-24 h-12 rounded-full border border-[#252525]/20 shadow-inner transition-colors duration-300 peer-checked:bg-[#252525]/5 bg-[#252525]/5"
+			class="w-24 h-12 rounded-full border border-[#0e0e0e]/20 shadow-inner transition-colors duration-300 peer-checked:bg-[#0e0e0e]/5 bg-[#0e0e0e]/5"
 		></div>
 
 		<!-- Thumb -->
@@ -38,8 +38,8 @@
 			style="
 				background-image: repeating-linear-gradient(
 					-45deg,
-					#252525,
-					#252525 2px,
+					#0e0e0e,
+					#0e0e0e 2px,
 					#3a3a3a 2px,
 					#3a3a3a 4px
 				);
@@ -56,7 +56,7 @@
 	<span
 		class="text-sm font-semibold uppercase tracking-widest transition-all duration-300 flex items-center gap-2"
 		class:opacity-100={checked}
-		class:text-[#252525]={checked}
+		class:text-[#0e0e0e]={checked}
 		class:opacity-40={!checked}
 	>
 		{rightLabel}

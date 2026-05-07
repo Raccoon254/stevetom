@@ -287,7 +287,7 @@
 	/* Custom scrollbar */
 	:global(body) {
 		scrollbar-width: thin;
-		scrollbar-color: #ff6b35 #252525;
+		scrollbar-color: #ff6b35 #0e0e0e;
 	}
 
 	:global(body::-webkit-scrollbar) {
@@ -295,7 +295,7 @@
 	}
 
 	:global(body::-webkit-scrollbar-track) {
-		background: #252525;
+		background: #0e0e0e;
 	}
 
 	:global(body::-webkit-scrollbar-thumb) {

@@ -92,7 +92,7 @@
 
 <Cursor />
 
-<div class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden">
+<div class="bg-[#0e0e0e]/10 min-h-screen relative overflow-x-hidden">
 	<main class="hero-section mx-auto min-h-screen pb-20">
 		<!-- Background decoration -->
 		<div
@@ -153,7 +153,7 @@
 
 								<!-- Gradient Overlay -->
 								<div
-									class="absolute inset-0 bg-gradient-to-t from-[#252525] via-[#252525]/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+									class="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"
 								></div>
 
 								<!-- Action Buttons Overlay -->
@@ -164,7 +164,7 @@
 										href={project.projectUrl}
 										target="_blank"
 										rel="noopener noreferrer"
-										class="px-6 py-3 bg-white text-[#252525] rounded-full flex items-center gap-2 font-bold hover:bg-white/90 transition-all transform translate-y-4 group-hover:translate-y-0 shadow-lg hover:shadow-xl hover:scale-105"
+										class="px-6 py-3 bg-white text-[#0e0e0e] rounded-full flex items-center gap-2 font-bold hover:bg-white/90 transition-all transform translate-y-4 group-hover:translate-y-0 shadow-lg hover:shadow-xl hover:scale-105"
 									>
 										<ExternalLink size="18" />
 										<span>View Live</span>
@@ -195,7 +195,7 @@
 								<!-- Year Badge -->
 								<div class="absolute top-4 right-4">
 									<span
-										class="px-3 py-1.5 text-xs font-semibold rounded-full bg-[#252525]/80 backdrop-blur-md border border-white/20 text-white flex items-center gap-1.5"
+										class="px-3 py-1.5 text-xs font-semibold rounded-full bg-[#0e0e0e]/80 backdrop-blur-md border border-white/20 text-white flex items-center gap-1.5"
 									>
 										<Calendar size="12" />
 										{project.year}
@@ -233,7 +233,7 @@
 												<i class={`devicon-${getTechName(tech)}-plain colored text-base`}></i>
 											</div>
 											<div
-												class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#252525] border border-white/20 rounded text-xs text-white whitespace-nowrap opacity-0 group-hover/tech:opacity-100 transition-opacity pointer-events-none"
+												class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#0e0e0e] border border-white/20 rounded text-xs text-white whitespace-nowrap opacity-0 group-hover/tech:opacity-100 transition-opacity pointer-events-none"
 											>
 												{tech}
 											</div>

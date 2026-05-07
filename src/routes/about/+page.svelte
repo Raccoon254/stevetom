@@ -33,7 +33,7 @@
 
 <Cursor />
 
-<div class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden text-white">
+<div class="bg-[#0e0e0e]/10 min-h-screen relative overflow-x-hidden text-white">
 	<!-- Background decoration -->
 	<div
 		class="hidden lg:block absolute rotate-[65deg] top-20 -left-20 opacity-10 pointer-events-none"
@@ -281,7 +281,7 @@
 		top: 0;
 		width: 32px;
 		height: 32px;
-		background: #252525;
+		background: #0e0e0e;
 		border: 2px solid #ffee01;
 		border-radius: 50%;
 		display: flex;

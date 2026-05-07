@@ -368,7 +368,7 @@
 		position: absolute;
 		top: -4px;
 		right: -4px;
-		background: #252525;
+		background: #0e0e0e;
 		border-radius: 50%;
 		padding: 3px;
 		border: 1px solid rgba(255, 255, 255, 0.2);

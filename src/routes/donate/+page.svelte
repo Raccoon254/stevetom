@@ -145,7 +145,7 @@
 	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
-<div class="min-h-screen bg-[#252525]/10 text-white">
+<div class="min-h-screen bg-[#0e0e0e]/10 text-white">
 	<!-- Hero Section -->
 	<section class="relative overflow-hidden py-20 md:py-32">
 		<!-- Animated Background Circles -->
@@ -474,7 +474,7 @@
 	/* Custom scrollbar */
 	:global(body) {
 		scrollbar-width: thin;
-		scrollbar-color: #ff6b35 #252525;
+		scrollbar-color: #ff6b35 #0e0e0e;
 	}
 
 	:global(body::-webkit-scrollbar) {
@@ -482,7 +482,7 @@
 	}
 
 	:global(body::-webkit-scrollbar-track) {
-		background: #252525;
+		background: #0e0e0e;
 	}
 
 	:global(body::-webkit-scrollbar-thumb) {

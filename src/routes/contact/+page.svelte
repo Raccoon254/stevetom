@@ -33,7 +33,7 @@
 
 <Cursor />
 
-<div class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden">
+<div class="bg-[#0e0e0e]/10 min-h-screen relative overflow-x-hidden">
 	<main class="hero-section mx-auto min-h-screen flex flex-col items-center justify-center py-20">
 		<!-- Background decoration -->
 		<div

@@ -109,7 +109,7 @@
 			</div>
 			<!-- Tagline -->
 			<p
-				class="text-[#252525]/60 lg:absolute lg:bottom-10 text-sm sm:text-base mt-8 lg:mt-10 font-thin tracking-wider uppercase text-center"
+				class="text-[#0e0e0e]/60 lg:absolute lg:bottom-10 text-sm sm:text-base mt-8 lg:mt-10 font-thin tracking-wider uppercase text-center"
 			>
 				From concept to code, with care
 			</p>
@@ -149,7 +149,7 @@
 		font-size: clamp(4rem, 12vw, 8rem);
 		font-weight: 900;
 		color: transparent;
-		-webkit-text-stroke: 2px #252525;
+		-webkit-text-stroke: 2px #0e0e0e;
 		display: inline-block;
 		animation: phraseChange 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
@@ -168,7 +168,7 @@
 	@media (max-width: 768px) {
 		.current-phrase {
 			font-size: clamp(2.5rem, 14vw, 5rem);
-			-webkit-text-stroke: 1.5px #252525;
+			-webkit-text-stroke: 1.5px #0e0e0e;
 		}
 	}
 </style>

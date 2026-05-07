@@ -18,7 +18,7 @@
 
 html{
     scroll-behavior: smooth;
-    background: #252525;
+    background: #0e0e0e;
 }
 
 body {
@@ -27,7 +27,7 @@ body {
 	font: 1rem/1.5 var(--font-body);
     font-family: 'Figtree', sans-serif !important;
     -webkit-font-smoothing: antialiased;
-    background: #252525;
+    background: #0e0e0e;
     position: relative;
 }
 
