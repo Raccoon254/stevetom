@@ -173,11 +173,6 @@
 
 <style>
 
-        100% {
-            background-position: 100% 100%;
-        }
-    }
-
     .nav-link {
         display: flex;
         align-items: center;

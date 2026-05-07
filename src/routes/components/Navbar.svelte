@@ -13,6 +13,7 @@
 		{ name: 'Home', href: '/' },
 		{ name: 'Projects', href: '/projects' },
 		{ name: 'About', href: '/about' },
+		{ name: 'Blog', href: '/blog' },
 		{ name: 'Contact', href: '/contact' },
 		{ name: 'Donate', href: '/donate' },
 	]
@@ -54,12 +55,14 @@
 </script>
 
 <nav
-	class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 {isScrollingDown
-		? '-translate-y-full'
-		: 'translate-y-0'}"
+	class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 {mobileMenuOpen
+		? 'translate-y-0'
+		: isScrollingDown
+			? '-translate-y-full'
+			: 'translate-y-0'}"
 >
 	<div
-		class="navbar-container transition-all duration-300 {isScrolled
+		class="navbar-container transition-all duration-300 {isScrolled || mobileMenuOpen
 			? 'bg-[#252525]/90 backdrop-blur-sm shadow-xs shadow-black/20'
 			: 'bg-transparent'}"
 	>
@@ -142,61 +145,65 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Mobile Menu -->
-	{#if mobileMenuOpen}
-		<div
-			class="mobile-menu fixed inset-0 z-[9999] md:hidden overflow-y-auto"
-			on:click={closeMobileMenu}
-			on:keydown={(e) => e.key === 'Escape' && closeMobileMenu()}
-		>
-			<!-- Backdrop -->
-			<div class="absolute inset-0 bg-[#252525] backdrop-blur-xl"></div>
-
-			<!-- Animated background circles -->
-			<div
-				class="pointer-events-none absolute left-1/4 top-1/4 h-96 w-96 animate-pulse-slow rounded-full bg-[#ff6b35]/10 blur-[100px]"
-			></div>
-			<div
-				class="pointer-events-none absolute bottom-1/4 right-1/4 h-96 w-96 animate-pulse-slow-delay rounded-full bg-[#ff8c5a]/10 blur-[100px]"
-			></div>
-
-			<!-- Menu Content -->
-			<div class="relative z-10 min-h-full flex flex-col items-center justify-center gap-4 px-8 py-20 sm:py-24">
-				{#each navLinks as link, i}
-					<a
-						href={link.href}
-						on:click={closeMobileMenu}
-						class="mobile-nav-link group relative text-3xl sm:text-4xl font-bold text-white transition-all duration-300 hover:text-[#ff6b35] {isActive(
-							link.href
-						)
-							? 'active'
-							: ''}"
-						style="animation-delay: {i * 50}ms"
-					>
-						<span class="relative z-10">{link.name}</span>
-						{#if isActive(link.href)}
-							<div
-								class="absolute -bottom-2 left-0 h-1 w-full rounded-full bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a]"
-							></div>
-						{/if}
-					</a>
-				{/each}
-
-				<!-- Mobile CTA -->
-				<a
-					href="/quote"
-					on:click={closeMobileMenu}
-					class="mt-8 flex items-center gap-3 rounded-full bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] px-8 py-4 text-lg font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#ff6b35]/30"
-					style="animation-delay: {navLinks.length * 50}ms"
-				>
-					<Sparkles size={20} />
-					<span>Get a Quote</span>
-				</a>
-			</div>
-		</div>
-	{/if}
 </nav>
+
+<!-- Mobile Menu -->
+{#if mobileMenuOpen}
+	<div
+		class="mobile-menu fixed inset-0 z-40 md:hidden overflow-y-auto"
+		on:click|self={closeMobileMenu}
+		on:keydown={(e) => e.key === 'Escape' && closeMobileMenu()}
+		role="dialog"
+		aria-modal="true"
+	>
+		<!-- Backdrop -->
+		<div class="absolute inset-0 bg-[#252525] backdrop-blur-xl"></div>
+
+		<!-- Animated background circles -->
+		<div
+			class="pointer-events-none absolute left-1/4 top-1/4 h-96 w-96 animate-pulse-slow rounded-full bg-[#ff6b35]/10 blur-[100px]"
+		></div>
+		<div
+			class="pointer-events-none absolute bottom-1/4 right-1/4 h-96 w-96 animate-pulse-slow-delay rounded-full bg-[#ff8c5a]/10 blur-[100px]"
+		></div>
+
+		<!-- Menu Content -->
+		<div
+			class="relative z-10 min-h-full flex flex-col items-center justify-center gap-8 px-8 py-24 sm:py-32"
+		>
+			{#each navLinks as link, i}
+				<a
+					href={link.href}
+					on:click={closeMobileMenu}
+					class="mobile-nav-link group relative text-4xl sm:text-5xl font-bold text-white transition-all duration-300 hover:text-[#ff6b35] {isActive(
+						link.href
+					)
+						? 'active'
+						: ''}"
+					style="animation-delay: {i * 50}ms"
+				>
+					<span class="relative z-10">{link.name}</span>
+					{#if isActive(link.href)}
+						<div
+							class="absolute -bottom-2 left-0 h-1 w-full rounded-full bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a]"
+						></div>
+					{/if}
+				</a>
+			{/each}
+
+			<!-- Mobile CTA -->
+			<a
+				href="/quote"
+				on:click={closeMobileMenu}
+				class="mt-8 flex items-center gap-3 rounded-full bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] px-10 py-5 text-xl font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#ff6b35]/30 mobile-nav-link"
+				style="animation-delay: {navLinks.length * 50}ms"
+			>
+				<Sparkles size={24} />
+				<span>Get a Quote</span>
+			</a>
+		</div>
+	</div>
+{/if}
 
 <style>
 	.navbar-container {

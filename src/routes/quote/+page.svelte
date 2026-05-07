@@ -21,11 +21,3 @@
 		<ContactQuote mode="quote" />
 	</main>
 </div>
-
-<style>
-
-		100% {
-			background-position: 100% 100%;
-		}
-	}
-</style>

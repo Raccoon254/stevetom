@@ -1,0 +1,6 @@
+macbook = https://images.pexels.com/photos/303383/pexels-photo-303383.jpeg
+iphone = https://images.pexels.com/photos/14666032/pexels-photo-14666032.jpeg
+coding = https://images.pexels.com/photos/3888151/pexels-photo-3888151.jpeg
+coding = https://images.pexels.com/photos/34803979/pexels-photo-34803979.jpeg
+plan = https://images.pexels.com/photos/7947843/pexels-photo-7947843.jpeg
+plan desk = https://images.pexels.com/photos/39578/imac-ipad-computer-tablet-39578.jpeg

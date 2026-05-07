@@ -74,3 +74,11 @@ enum ServiceRequestStatus {
   COMPLETED
   REJECTED
 }
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
