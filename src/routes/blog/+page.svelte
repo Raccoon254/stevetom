@@ -80,7 +80,7 @@
 					class="group mb-16 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 transition-all duration-300 hover:border-[#ff6b35]/30"
 					in:fade={{ duration: 600 }}
 				>
-					<a href="/blog/{post.slug}" class="block flex">
+					<a href="/blog/{post.slug}" class="block md:flex">
 						<!-- Featured Image -->
 						<div class="relative overflow-hidden aspect-video md:aspect-[21/9]">
 							<img
