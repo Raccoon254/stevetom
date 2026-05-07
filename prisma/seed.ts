@@ -207,6 +207,69 @@ async function main() {
         features: ['Client Dashboard', 'Invoice Generation', 'Project Tracking', 'Communication Hub'],
         status: 'DEVELOPMENT'
       }
+    }),
+
+    prisma.project.create({
+      data: {
+        title: 'ZidiPlay',
+        description: 'The ultimate peer-to-peer gaming rental platform. Rent the latest gaming gear or earn by lending yours. From consoles to accessories, with bank-level security and instant delivery.',
+        image: 'https://kentom.co.ke/zidiplay.png',
+        projectUrl: 'https://zidiplay.vercel.app/',
+        githubUrl: '#',
+        tech: ['React', 'NextJs', 'Tailwind', 'Vercel'],
+        year: '2025',
+        category: 'Gaming Platform',
+        features: ['P2P Rental System', 'Secure Payment', 'Instant Delivery', 'Gear Marketplace'],
+        status: 'LIVE',
+        featured: true
+      }
+    }),
+
+    prisma.project.create({
+      data: {
+        title: 'Qailly',
+        description: 'Ship apps that actually work. Connect with verified testers worldwide. Get professional app testing from $49, or earn money by testing the latest apps from top developers.',
+        image: 'https://kentom.co.ke/qailly.png',
+        projectUrl: 'https://qailly.vercel.app/',
+        githubUrl: '#',
+        tech: ['React', 'NextJs', 'TypeScript', 'TailwindCSS'],
+        year: '2025',
+        category: 'Testing Platform',
+        features: ['AI-Powered Matching', 'Video Evidence', 'Global Tester Network', '24hr Turnaround'],
+        status: 'LIVE',
+        featured: true
+      }
+    }),
+
+    prisma.project.create({
+      data: {
+        title: 'Dev Cleaner',
+        description: 'A cross-platform JavaFX application to manage project storage by cleaning build artifacts like node_modules, target directories, and other unnecessary files to free up disk space.',
+        image: 'https://kentom.co.ke/dev-cleaner.png',
+        projectUrl: '#',
+        githubUrl: 'https://github.com/Raccoon254/Dev-Cleaner',
+        tech: ['Java', 'JavaFX'],
+        year: '2024',
+        category: 'Desktop Application',
+        features: ['Multi-platform Support', 'Batch Cleaning', 'Storage Analytics', 'Safe Deletion'],
+        status: 'LIVE'
+      }
+    }),
+
+    prisma.project.create({
+      data: {
+        title: 'InvenTree',
+        description: 'Complete inventory management solution for small to medium businesses. Track stock, manage sales, and get detailed analytics - all for free. Multi-shop support with secure data protection.',
+        image: 'https://kentom.co.ke/inventree.png',
+        projectUrl: 'https://inventreez.vercel.app/',
+        githubUrl: 'https://github.com/Raccoon254/stockmanager',
+        tech: ['React', 'NextJs', 'Prisma', 'PostgreSQL'],
+        year: '2025',
+        category: 'Business Management',
+        features: ['Inventory Tracking', 'Sales Management', 'Analytics & Reports', 'Multi-Shop Support'],
+        status: 'LIVE',
+        featured: true
+      }
     })
   ])
 
