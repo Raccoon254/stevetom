@@ -16,6 +16,11 @@
     font-style: normal;
 }
 
+html{
+    scroll-behavior: smooth;
+    background: #252525;
+}
+
 body {
 	min-height: 100vh;
 	margin: 0;
@@ -70,4 +75,48 @@ body::before {
   .dark\:bg-base-100 {
     @apply bg-black; /* or your custom color */
   }
+}
+
+@media (prefers-color-scheme: light) {
+  .dark\:bg-base-100 {
+    @apply bg-black; /* or your custom color */
+  }
+}
+
+/* Navbar data attribute styling */
+[data-navbar="wrapper"] {
+    /* Outer wrapper - default visible */
+    transform: translateY(0);
+}
+
+/* Hide navbar when scrolling down (unless menu is open) */
+[data-navbar="wrapper"][data-scrolling-down="true"]:not([data-menu-open="true"]) {
+    transform: translateY(-100%);
+}
+
+/* Ensure navbar shows when menu is open */
+[data-navbar="wrapper"][data-menu-open="true"] {
+    transform: translateY(0);
+}
+
+[data-navbar="backdrop"] {
+    /* Backdrop default - transparent */
+    background: transparent;
+}
+
+/* Add background, blur, and shadow when scrolled or menu open */
+[data-navbar="backdrop"][data-scrolled="true"],
+[data-navbar="backdrop"][data-menu-open="true"] {
+    background: rgba(37, 37, 37, 0.9) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+[data-navbar="content"] {
+    /* Content container styles */
+}
+
+[data-navbar="inner"] {
+    /* Inner flex container styles */
 }
