@@ -10,7 +10,7 @@
 	<title>Admin Login | KenTom</title>
 </svelte:head>
 
-<div class="bg-[#252525] min-h-screen relative overflow-x-hidden flex items-center justify-center p-6">
+<div class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden flex items-center justify-center p-6">
 	<!-- Background Decorations -->
 	<div
 		class="hidden lg:block absolute rotate-[65deg] top-20 -left-20 opacity-10"
@@ -95,11 +95,3 @@
 		</div>
 	</main>
 </div>
-
-<style>
-
-		100% {
-			background-position: 100% 100%;
-		}
-	}
-</style>
