@@ -9,6 +9,33 @@
 		name="description"
 		content="Exploring realistic paths for Kentom's expansion into physical creative services, from apparel printing to digital marketing."
 	/>
+	<meta name="author" content="Steve Osoro Tom" />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="https://stevetom.vercel.app/blog/kentom-2026-new-directions" />
+	<meta
+		property="og:title"
+		content="Kentom 2026: Charting New Creative Directions | Business Strategy"
+	/>
+	<meta
+		property="og:description"
+		content="Exploring realistic paths for Kentom's expansion into physical creative services, from apparel printing to digital marketing."
+	/>
+	<meta property="og:image" content="https://stevetom.vercel.app/blog/plan.jpg" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/blog/kentom-2026-new-directions" />
+	<meta
+		name="twitter:title"
+		content="Kentom 2026: Charting New Creative Directions | Business Strategy"
+	/>
+	<meta
+		name="twitter:description"
+		content="Exploring realistic paths for Kentom's expansion into physical creative services, from apparel printing to digital marketing."
+	/>
+	<meta name="twitter:image" content="https://stevetom.vercel.app/blog/plan.jpg" />
 </svelte:head>
 
 <div class="min-h-screen bg-[#252525]/10 --28 text-white">

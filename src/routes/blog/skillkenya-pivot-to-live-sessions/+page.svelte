@@ -23,6 +23,39 @@
 		name="description"
 		content="Why we're transitioning from pre-recorded courses to interactive live sessions for better engagement and real-time learning."
 	/>
+	<meta name="author" content="Steve Osoro Tom" />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="article" />
+	<meta
+		property="og:url"
+		content="https://stevetom.vercel.app/blog/skillkenya-pivot-to-live-sessions"
+	/>
+	<meta
+		property="og:title"
+		content="Skill Kenya's Pivot: From Courses to Live Sessions | Business Strategy"
+	/>
+	<meta
+		property="og:description"
+		content="Why we're transitioning from pre-recorded courses to interactive live sessions for better engagement and real-time learning."
+	/>
+	<meta property="og:image" content="https://stevetom.vercel.app/blog/skillkenya-1.jpg" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta
+		name="twitter:url"
+		content="https://stevetom.vercel.app/blog/skillkenya-pivot-to-live-sessions"
+	/>
+	<meta
+		name="twitter:title"
+		content="Skill Kenya's Pivot: From Courses to Live Sessions | Business Strategy"
+	/>
+	<meta
+		name="twitter:description"
+		content="Why we're transitioning from pre-recorded courses to interactive live sessions for better engagement and real-time learning."
+	/>
+	<meta name="twitter:image" content="https://stevetom.vercel.app/blog/skillkenya-1.jpg" />
 </svelte:head>
 
 <div class="min-h-screen bg-[#252525]/10 -m text-white">
