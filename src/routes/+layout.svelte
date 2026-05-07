@@ -2,6 +2,7 @@
 	import '../app.css';
 	import 'aos/dist/aos.css';
    import AOS from "aos";
+   import { Briefcase, Mail, Github, Linkedin, MessageCircle } from 'lucide-svelte';
 
    import { onMount } from 'svelte';
 
@@ -55,13 +56,13 @@
 							  rel="noopener noreferrer"
 							  class="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ring-1 ring-white ring-offset-2 ring-offset-custom ring-opacity-10 hover:ring-opacity-100 hover:ring-green transition-colors duration-300 ease-in-out"
 							>
-							  <i class="fas fa-briefcase mr-2"></i> Portfolio
+							  <Briefcase size="16" class="mr-2" /> Portfolio
 							</a>
 							<a
 							  href="mailto:tomsteve187@gmail.com"
 							  class="flex items-center bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full ring-1 ring-white ring-offset-2 ring-offset-custom ring-opacity-10 hover:ring-opacity-100 hover:ring-green transition-colors duration-300 ease-in-out"
 							>
-							  <i class="fas fa-envelope mr-2"></i> Email
+							  <Mail size="16" class="mr-2" /> Email
 							</a>
 							<a
 							  href="https://github.com/Raccoon254"
@@ -69,7 +70,7 @@
 							  rel="noopener noreferrer"
 							  class="flex items-center bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-full ring-1 ring-white ring-offset-2 ring-offset-custom ring-opacity-10 hover:ring-opacity-100 hover:ring-green transition-colors duration-300 ease-in-out"
 							>
-							  <i class="fab fa-github mr-2"></i> GitHub
+							  <Github size="16" class="mr-2" /> GitHub
 							</a>
 							<a
 							  href="https://www.linkedin.com/in/steve-tom-822a81230/"
@@ -77,7 +78,7 @@
 							  rel="noopener noreferrer"
 							  class="flex items-center bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full ring-1 ring-white ring-offset-2 ring-offset-custom ring-opacity-10 hover:ring-opacity-100 hover:ring-green transition-colors duration-300 ease-in-out"
 							>
-							  <i class="fab fa-linkedin mr-2"></i> LinkedIn
+							  <Linkedin size="16" class="mr-2" /> LinkedIn
 							</a>
 							<a
 							  href="https://wa.link/w1774n"
@@ -85,7 +86,7 @@
 							  rel="noopener noreferrer"
 							  class="flex items-center bg-green hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full ring-1 ring-white ring-offset-2 ring-offset-custom ring-opacity-10 hover:ring-opacity-100 hover:ring-green transition-colors duration-300 ease-in-out"
 							>
-							  <i class="fab fa-whatsapp mr-2"></i> WhatsApp
+							  <MessageCircle size="16" class="mr-2" /> WhatsApp
 							</a>
 						  </div>
 					</div>

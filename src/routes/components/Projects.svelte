@@ -1,8 +1,11 @@
 <script lang="ts">
     import {onMount} from 'svelte';
+    import Cursor from "./Cursor.svelte";
+    import { ExternalLink, Github, ArrowRight } from 'lucide-svelte';
 
     // Define a type for our project objects
     type Project = {
+        id: string
         title: string
         description: string
         image: string
@@ -12,173 +15,62 @@
         year: string
         category: string
         features: string[]
-        status: 'live' | 'development' | 'archived'
+        status: 'LIVE' | 'DEVELOPMENT' | 'ARCHIVED'
     }
 
-    const projects: Project[] = [
-        {
-            title: "Skillkenya",
-            description: "Join thousands of Kenyans learning in-demand tech skills from industry experts. Start your journey to a brighter future today.",
-            image: 'skillkenya.png',
-            projectUrl: 'https://www.skillkenya.com/',
-            githubUrl: '#',
-            tech: ['React', 'NodeJs', 'MySQL', 'NextJs', 'Prisma'],
-            year: '2024',
-            category: 'Education Platform',
-            features: ['Video Streaming', 'Payment Integration', 'User Analytics', 'Course Management'],
-            status: 'live'
-        },
-        {
-            title: 'Status Saver',
-            description: 'An android kotlin application that allows users to save statuses from WhatsApp. It also allows users to share statuses with friends and manage saved statuses.',
-            image: 'status-saver.png',
-            projectUrl: 'https://status-saver.vercel.app',
-            githubUrl: 'https://github.com/Raccoon254/status-saver-docs',
-            tech: ['Kotlin', 'Android Studio', 'SQLite', 'Material Design'],
-            year: '2023',
-            category: 'Mobile Application',
-            features: ['Auto-detection', 'Batch Operations', 'Auto Refresh', 'Share Integration'],
-            status: 'live'
-        },
-        {
-            title: 'JeStorm',
-            description: 'A project management tool for developers. Features include real-time chat, payment processing, and notification systems.',
-            image: 'jestorm.png',
-            projectUrl: 'https://jestorm.vercel.app',
-            githubUrl: 'https://github.com/Raccoon254/',
-            tech: ['NextJs', 'TypeScript', 'Prisma', 'Socket.io'],
-            year: '2024',
-            category: 'Project Management',
-            features: ['Real-time Collaboration', 'Task Automation', 'Time Tracking', 'Team Analytics'],
-            status: 'development'
-        },
-        {
-            title: 'Scholarspace',
-            description: 'A Laravel-based web application facilitating assignment help services. Features include real-time chat, payment processing, and notification systems.',
-            image: 'scholarspace.png',
-            projectUrl: 'https://scholarspace.me',
-            githubUrl: 'https://github.com/Raccoon254/Scholarspace.io',
-            tech: ['Laravel', 'PHP', 'MySQL', 'Livewire'],
-            year: '2023',
-            category: 'Academic Platform',
-            features: ['Assignment Matching', 'Secure Payments', 'Live Chat', 'Document Management'],
-            status: 'development'
-        },
-        {
-            title: 'Project InternLink',
-            description: 'A revolutionary platform connecting students with internship opportunities. Simplifies the application process and bridges students with their future careers.',
-            image: 'internlink.png',
-            projectUrl: 'https://intern.co.ke',
-            githubUrl: 'https://github.com/FutureSpace-Kenya/InternLink',
-            tech: ['React', 'NextJs', 'PostgreSQL', 'Vercel'],
-            year: '2024',
-            category: 'Career Platform',
-            features: ['Application Tracking', 'Interview Scheduling', 'Portfolio Builder'],
-            status: 'development'
-        },
-        {
-            title: 'FutureSpace',
-            description: "A digital innovation company focusing on solving today's challenges. Services include digital innovation, automation, cybersecurity, and web development.",
-            image: 'futurespace.png',
-            projectUrl: 'https://futurespace.vercel.app/',
-            githubUrl: 'https://github.com/FutureSpace-Kenya',
-            tech: ['NextJs', 'Tailwind', 'HTML', 'Vercel'],
-            year: '2024',
-            category: 'Corporate Website',
-            features: ['Interactive Animations', 'Service Showcase', 'Contact Forms', 'Portfolio Gallery'],
-            status: 'live'
-        },
-        {
-            title: 'Crown Chambers',
-            description: 'Transform your legal challenges into opportunities with our comprehensive and reliable legal expertise. We provide trusted counsel that builds confidence in complex legal matters.',
-            image: 'crown-chambers.png',
-            projectUrl: 'https://crown-chambers.vercel.app/',
-            githubUrl: 'https://github.com/Raccoon254/',
-            tech: ['React', 'TypeScript', 'Vercel', 'TailwindCSS'],
-            year: '2025',
-            category: 'Legal Services',
-            features: ['Case Management', 'Client Portal', 'Document Templates', 'Appointment Booking'],
-            status: 'live'
-        },
-        {
-            title: 'Cline',
-            description: 'A comprehensive client management tool for freelancers. Streamlines operations, improves efficiency, and enhances communication with clients.',
-            image: 'cline.png',
-            projectUrl: '#',
-            githubUrl: 'https://github.com/Raccoon254/cline',
-            tech: ['Laravel', 'Livewire', 'MySQL', 'TailwindCSS'],
-            year: '2023',
-            category: 'Business Tool',
-            features: ['Client Dashboard', 'Invoice Generation', 'Project Tracking', 'Communication Hub'],
-            status: 'development'
-        }
-    ]
+    let projects: Project[] = [];
+    let loading = true;
+    let carouselContainer: HTMLElement;
 
-    let hoveredProject: number | null = null;
-    let scrollY: number = 0;
-    let projectsContainer: HTMLElement;
-
-    onMount(() => {
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                }
-            });
-        }, {threshold: 0.1});
-
-        document.querySelectorAll('.project-card').forEach((card) => {
-            observer.observe(card);
-        });
-
-        return () => observer.disconnect();
+    onMount(async () => {
+        await fetchProjects();
     });
+
+    async function fetchProjects() {
+        try {
+            const response = await fetch('/api/projects');
+            const data = await response.json();
+            if (data.success) {
+                const liveProjects = data.data.filter((p: Project) => p.status === 'LIVE');
+                // Duplicate projects for seamless infinite scroll (like skills scroll)
+                projects = [...liveProjects, ...liveProjects];
+            }
+        } catch (error) {
+            console.error('Error fetching projects:', error);
+        } finally {
+            loading = false;
+        }
+    }
 
     function getStatusDot(status: string) {
         switch (status) {
-            case 'live':
+            case 'LIVE':
                 return '🟢';
-            case 'development':
+            case 'DEVELOPMENT':
                 return '🟡';
-            case 'archived':
+            case 'ARCHIVED':
                 return '🔴';
             default:
                 return '⚪';
         }
     }
 
-    function getTechName(name: string){
-        //remove spaces and make it lowercase
-        if (name == "Tailwind"){
-            return 'tailwindcss';
-        }
-        if (name == "HTML"){
-            return 'html5';
-        }
+    function getTechName(name: string) {
+        if (name === "Tailwind") return 'tailwindcss';
+        if (name === "HTML") return 'html5';
+        if (name === "Material Design") return 'materialui';
         return name.toLowerCase().replace(/\s+/g, '');
     }
 
-    function handleProjectHover(index: number) {
-        hoveredProject = index;
-    }
-
-    function handleProjectLeave() {
-        hoveredProject = null;
+    function formatDescription(description: string) {
+        if (description.length > 70) {
+            return description.slice(0, 70) + '...';
+        }
+        return description;
     }
 </script>
 
-<svelte:window bind:scrollY/>
-
 <section class="pt-16 md:pt-32 relative overflow-hidden">
-    <!-- Floating background elements -->
-    <div class="absolute inset-0 pointer-events-none">
-        <div class="floating-element" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
-        <div class="floating-element" style="top: 30%; right: 15%; animation-delay: 2s;"></div>
-        <div class="floating-element" style="top: 60%; left: 20%; animation-delay: 4s;"></div>
-        <div class="floating-element" style="top: 80%; right: 25%; animation-delay: 6s;"></div>
-    </div>
-
     <!-- Section Header -->
     <div class="text-center mb-16 md:mb-24 relative z-10">
         <div class="header-animation">
@@ -188,158 +80,107 @@
             </h2>
             <div class="subtitle-container" data-aos="fade-in" data-aos-delay="200">
                 <p class="text-lg interactive text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-                    A curated collection of my digital creations, each telling a unique story of innovation,
-                    problem-solving, and technical excellence. Hover to explore the details.
+                    A curated collection of my live digital creations, showcasing innovation,
+                    problem-solving, and technical excellence in action.
                 </p>
-                <div class="text-xs my-4 text-gray-500 italic opacity-70">
-                    Fiverr and Upwork projects are not included here, but you can find SOME of them in my github
-                </div>
                 <div class="decorative-line"></div>
             </div>
         </div>
     </div>
 
-    <!-- Projects Grid -->
-    <div class="projects-container" bind:this={projectsContainer}>
-        {#each projects as project, index}
-            <div
-                    role="article"
-                    class="project-card"
-                    style="--delay: {index * 0.1}s"
-                    on:mouseenter={() => handleProjectHover(index)}
-                    on:mouseleave={handleProjectLeave}
-                    class:is-hovered={hoveredProject === index}
-                    class:is-adjacent={hoveredProject !== null && Math.abs(hoveredProject - index) === 1}
-            >
-                <!-- Project Status Indicator -->
-                <div class="status-indicator">
-                    <span class="status-dot">{getStatusDot(project.status)}</span>
-                    <span class="status-text">{project.status}</span>
-                </div>
-
-                <!-- Project Year Badge -->
-                <div class="year-badge">{project.year}</div>
-
-                <!-- Main Card Content -->
-                <div class="card-inner" class:flipped={hoveredProject === index}>
-                    <!-- Front of card -->
-                    <div class="card-front">
-                        <div class="image-container">
-                            <img
-                                    src={project.image}
-                                    alt={project.title}
-                                    class="project-image"
-                                    loading="lazy"
-                            />
-                            <div class="image-overlay">
-                                <div class="overlay-content">
-                                    <span class="category-tag">{project.category}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="content-section">
-                            <h3 class="project-title">{project.title}</h3>
-                            <p class="project-description">{project.description}</p>
-
-                            <!-- Tech Stack -->
-                            <div class="tech-stack">
-                                {#each project.tech.slice(0, 3) as tech}
-                                    <span class="tech-tag flex items-center justify-center gap-1">
-                                        <i class={`devicon-${getTechName(tech)}-plain colored`}></i>
-                                        {tech}
-                                    </span>
-                                {/each}
-                                {#if project.tech.length > 3}
-                                    <span class="tech-more">+{project.tech.length - 3}</span>
-                                {/if}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Back of card (revealed on hover) -->
-                    <div class="card-back">
-                        <div class="back-content">
-                            <h4 class="back-title">Key Features</h4>
-                            <ul class="features-list">
-                                {#each project.features as feature}
-                                    <li class="feature-item">
-                                        <span class="feature-icon">→</span>
-                                        {feature}
-                                    </li>
-                                {/each}
-                            </ul>
-
-                            <div class="full-tech-stack">
-                                <h5 class="tech-title">Tech Stack</h5>
-                                <div class="tech-grid">
-                                    {#each project.tech as tech}
-                                        <span class="tech-pill">{tech}</span>
-                                    {/each}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="action-buttons">
-                    <a
-                            href={project.githubUrl}
-                            class="action-btn github-btn"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                    >
-                        <i class="fab fa-github"></i>
-                        <span>Code</span>
-                        <div class="btn-glow"></div>
-                    </a>
-                    <a
-                            href={project.projectUrl}
-                            class="action-btn demo-btn"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                    >
-                        <i class="fas fa-link"></i>
-                        <span>Live Demo</span>
-                        <div class="btn-glow"></div>
-                    </a>
-                </div>
-
-                <!-- Hover Effects -->
-                <div class="card-glow"></div>
-                <div class="particle-system">
-                    {#each Array(6) as _, i}
-                        <div class="particle" style="--i: {i}"></div>
-                    {/each}
-                </div>
-            </div>
-        {/each}
-    </div>
-
-    <!-- Loading Section -->
-    <div class="text-center mt-16 relative z-10">
-        <div class="loading-section">
-            <p class="loading-text">
-                <span class="typewriter">This section is evolving...</span>
-            </p>
-            <span class="loading opacity-30 mt-2 loading-spinner"></span>
-            <p class="coming-soon">More innovative projects launching soon</p>
+    {#if loading}
+        <div class="text-center py-20">
+            <div class="loading-spinner-custom mx-auto mb-4"></div>
+            <p class="text-gray-400">Loading amazing projects...</p>
         </div>
-    </div>
+    {:else if projects.length === 0}
+        <div class="text-center py-20">
+            <p class="text-gray-400">No live projects to display at the moment.</p>
+        </div>
+    {:else}
+        <!-- Projects Carousel -->
+        <div class="projects-scroll-container" bind:this={carouselContainer}>
+            <div class="projects-scroll">
+                {#each projects as project, index}
+                    <div class="project-slide">
+                        <div class="project-card-carousel" data-aos="fade-up" data-aos-delay={index * 50}>
+                            <!-- Project Header -->
+                            <div class="project-header">
+                                <div class="status-indicator">
+                                    <span class="status-dot">{getStatusDot(project.status)}</span>
+                                    <span class="status-text">{project.status}</span>
+                                </div>
+                                <div class="year-badge">{project.year}</div>
+                            </div>
+
+                            <!-- Project Image -->
+                            <div class="project-image-container">
+                                <img src={project.image} alt={project.title} class="project-image" loading="lazy"/>
+                                <div class="image-overlay">
+                                    <div class="overlay-content">
+                                        <span class="category-tag">{project.category}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project Content -->
+                            <div class="project-content">
+                                <h3 class="project-title">{project.title}</h3>
+                                <p class="project-description">{formatDescription(project.description)}</p>
+
+                                <!-- Tech Stack -->
+                                <div class="tech-stack">
+                                    {#each project.tech.slice(0, 4) as tech}
+                                            <span class="tech-tag">
+                                                <i class={`devicon-${getTechName(tech)}-plain colored`}></i>
+                                            </span>
+                                    {/each}
+                                    {#if project.tech.length > 4}
+                                        <span class="tech-more">+{project.tech.length - 4}</span>
+                                    {/if}
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="action-buttons">
+                                    <a href={project.projectUrl} target="_blank" rel="noopener noreferrer"
+                                       class="btn-primary">
+                                        <ExternalLink size="16" />
+                                        <span>Live Demo</span>
+                                    </a>
+                                    {#if project.githubUrl !== '#'}
+                                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+                                           class="btn-secondary">
+                                            <Github size="16" />
+                                            <span>Code</span>
+                                        </a>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/each}
+            </div>
+        </div>
+
+        <!-- View All Projects Link -->
+        <div class="text-center interactive mt-16 relative z-10">
+            <a
+                    href="/projects"
+                    class="view-all-btn interactive"
+                    data-aos="fade-up"
+                    data-aos-delay="300"
+            >
+                <span>Explore All Projects</span>
+                <ArrowRight size="16" />
+            </a>
+            <p class="text-gray-500 text-sm mt-4">
+                Discover my complete portfolio of web, mobile, and desktop applications
+            </p>
+        </div>
+    {/if}
 </section>
 
 <style>
-    /* Floating background elements */
-    .floating-element {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        animation: float 8s infinite ease-in-out;
-    }
-
     @keyframes float {
         0%, 100% {
             transform: translateY(0px) rotate(0deg);
@@ -353,6 +194,326 @@
         75% {
             transform: translateY(-30px) rotate(270deg);
         }
+    }
+
+    /* Loading Spinner */
+    .loading-spinner-custom {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top: 3px solid rgba(74, 222, 128, 0.8);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Projects Infinite Scroll Styles */
+    .projects-scroll-container {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        max-width: 100vw;
+        position: relative;
+    }
+
+    .projects-scroll {
+        display: inline-block;
+        animation: projectsScroll 30s linear infinite;
+    }
+
+    .projects-scroll-container:hover .projects-scroll {
+        animation-play-state: paused;
+    }
+
+    .project-slide {
+        display: inline-block;
+        margin-right: 2rem;
+        white-space: normal;
+        vertical-align: top;
+        width: 380px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .project-slide {
+            width: 320px;
+            margin-right: 1.5rem;
+        }
+
+        .projects-scroll {
+            animation: projectsScroll 20s linear infinite;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .project-slide {
+            width: 280px;
+            margin-right: 1rem;
+        }
+
+        .projects-scroll {
+            animation: projectsScroll 15s linear infinite;
+        }
+    }
+
+    @keyframes projectsScroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    .project-card-carousel {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 380px;
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .project-card-carousel:hover {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .project-header {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 20;
+    }
+
+    .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        color: white;
+    }
+
+    .status-dot {
+        font-size: 0.75rem;
+    }
+
+    .year-badge {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 0.5rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.875rem;
+        color: white;
+        font-weight: 600;
+    }
+
+    .project-image-container {
+        position: relative;
+        height: 180px;
+        overflow: hidden;
+    }
+
+    .project-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .project-card-carousel:hover .project-image {
+        transform: scale(1.05);
+    }
+
+    .image-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+                135deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.7)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .project-card-carousel:hover .image-overlay {
+        opacity: 1;
+    }
+
+    .category-tag {
+        background: rgba(255, 255, 255, 0.9);
+        color: #000;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transform: translateY(20px);
+        transition: transform 0.3s ease 0.1s;
+    }
+
+    .project-card-carousel:hover .category-tag {
+        transform: translateY(0);
+    }
+
+    .project-content {
+        padding: 1.5rem;
+        background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.04),
+                rgba(255, 255, 255, 0.02)
+        );
+    }
+
+    .project-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 0.75rem;
+        line-height: 1.3;
+    }
+
+    .project-description {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .tech-tag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 25px;
+        width: 25px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .tech-tag:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .tech-more {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.5rem 0.75rem;
+        border-radius: 16px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.625rem 1rem;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.75rem;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px 0 rgba(59, 130, 246, 0.6);
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px 0 rgba(255, 255, 255, 0.1);
+    }
+
+
+    /* View All Button */
+    .view-all-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .view-all-btn:hover {
+        transform: translateY(-3px) scale(1.02);
+    }
+
+    .view-all-btn:hover i {
+        transform: translateX(4px);
+    }
+
+    .view-all-btn i {
+        transition: transform 0.3s ease;
     }
 
     /* Header Animations */
@@ -397,8 +558,8 @@
     }
 
     .decorative-line {
-        width: 100px;
-        height: 2px;
+        width: 200px;
+        height: 1px;
         background: linear-gradient(90deg, transparent, white, transparent);
         margin: 20px auto;
         animation: expand 2s ease-out;
@@ -409,57 +570,8 @@
             width: 0;
         }
         to {
-            width: 100px;
+            width: 200px;
         }
-    }
-
-    /* Projects Container */
-    .projects-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 3rem;
-        perspective: 1000px;
-    }
-
-    @media (max-width: 768px) {
-        .projects-container {
-            grid-template-columns: 1fr;
-            gap: 5rem;
-        }
-        .image-container{
-            height: 50% !important;
-        }
-        .project-card {
-            position: relative;
-            height: 400px !important;
-        }
-        .content-section{
-            height: 50% !important;
-        }
-    }
-
-    /* Project Cards */
-    .project-card {
-        position: relative;
-        height: 500px;
-        transform-style: preserve-3d;
-        transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        opacity: 0;
-        transform: translateY(50px) rotateX(10deg);
-        animation: slideInUp 0.8s ease-out calc(var(--delay) + 0.2s) forwards;
-    }
-
-    .project-card.animate-in {
-        opacity: 1;
-        transform: translateY(0) rotateX(0deg);
-    }
-
-    .project-card:hover {
-        transform: translateY(-15px) rotateX(5deg) rotateY(5deg);
-    }
-
-    .project-card.is-adjacent {
-        transform: translateY(-5px) scale(1.02);
     }
 
     @keyframes slideInUp {

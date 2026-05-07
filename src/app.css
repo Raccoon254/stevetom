@@ -1,12 +1,12 @@
 @import '@fontsource/fira-mono';
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-	--font-body: 'Nunito Sans', sans-serif;
+	--font-body: 'Figtree', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
 	--color-bg-0: rgb(202, 216, 228);
 	--color-bg-1: hsl(209, 36%, 86%);

@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { Folder, Settings, Mail, Clock, Inbox, Plus, Database } from 'lucide-svelte';
     
     let stats = {
         projects: 0,
@@ -77,7 +78,7 @@
                             <p class="text-2xl font-semibold">{stats.projects}</p>
                         </div>
                         <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-folder text-white"></i>
+                            <Folder size="20" class="text-white" />
                         </div>
                     </div>
                 </div>
@@ -91,7 +92,7 @@
                             <p class="text-2xl font-semibold">{stats.services}</p>
                         </div>
                         <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-cogs text-white"></i>
+                            <Settings size="20" class="text-white" />
                         </div>
                     </div>
                 </div>
@@ -105,7 +106,7 @@
                             <p class="text-2xl font-semibold">{stats.serviceRequests}</p>
                         </div>
                         <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-envelope text-white"></i>
+                            <Mail size="20" class="text-white" />
                         </div>
                     </div>
                 </div>
@@ -119,7 +120,7 @@
                             <p class="text-2xl font-semibold {stats.pendingRequests > 0 ? 'text-yellow-400' : ''}">{stats.pendingRequests}</p>
                         </div>
                         <div class="w-12 h-12 {stats.pendingRequests > 0 ? 'bg-yellow-500' : 'bg-gray-600'} rounded-lg flex items-center justify-center">
-                            <i class="fas fa-clock text-white"></i>
+                            <Clock size="20" class="text-white" />
                         </div>
                     </div>
                 </div>
@@ -139,7 +140,7 @@
                 {#if recentRequests.length === 0}
                     <div class="text-center py-12">
                         <div class="w-16 h-16 bg-base-300 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-inbox"></i>
+                            <Inbox size="24" />
                         </div>
                         <h3 class="font-medium mb-2">No requests yet</h3>
                         <p class="text-sm">When clients submit service requests, they'll appear here</p>
@@ -195,7 +196,7 @@
                 <a href="/admin/projects" class="card bg-base-200/10 border border-gray-900 shadow-xl hover:shadow-2xl transition-shadow">
                     <div class="card-body items-center text-center">
                         <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fas fa-plus text-white"></i>
+                            <Plus size="20" class="text-white" />
                         </div>
                         <h3 class="card-title">Add New Project</h3>
                         <p class="text-sm">Showcase your latest work</p>
@@ -205,7 +206,7 @@
                 <a href="/admin/services" class="card bg-base-200/10 border border-gray-900 shadow-xl hover:shadow-2xl transition-shadow">
                     <div class="card-body items-center text-center">
                         <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fas fa-plus text-white"></i>
+                            <Plus size="20" class="text-white" />
                         </div>
                         <h3 class="card-title">Add New Service</h3>
                         <p class="text-sm">Expand your offerings</p>
@@ -215,7 +216,7 @@
                 <a href="/api/test" target="_blank" class="card bg-base-200/10 border border-gray-900 shadow-xl hover:shadow-2xl transition-shadow">
                     <div class="card-body items-center text-center">
                         <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fas fa-database text-white"></i>
+                            <Database size="20" class="text-white" />
                         </div>
                         <h3 class="card-title">Test Database</h3>
                         <p class="text-sm">Check system connectivity</p>

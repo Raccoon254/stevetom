@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { fade, scale, fly } from 'svelte/transition';
+    import { Plus } from 'lucide-svelte';
 
     let projects: any[] = [];
     let loading = true;
@@ -152,7 +153,7 @@
                 on:click={openAddForm}
                 class="btn btn-primary"
         >
-            <i class="fas fa-plus mr-2"></i>Add Project
+            <Plus size="16" class="mr-2" />Add Project
         </button>
     </div>
 
@@ -163,26 +164,20 @@
         </div>
     {:else}
         <!-- Projects grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="space-y-12">
             {#each projects as project, i (project.id)}
-                <div
-                        in:fade={{ duration: 400, delay: i * 80 }}
-                        class="card bg-base-200/10 border border-gray-900 shadow-xl hover:shadow-2xl transition-shadow"
-                >
-                    <figure><img src={project.image} alt={project.title} class="w-full h-48 object-cover" /></figure>
-                    <div class="card-body">
+                <div class="card lg:card-side bg-base-200/10 border-2 border-gray-800 shadow-xl hover:shadow-2xl transition-shadow duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                    <figure class="lg:w-1/2 {i % 2 === 0 ? 'lg:order-last' : ''}"><img src={project.image} alt={project.title} class="w-full h-full object-cover" /></figure>
+                    <div class="card-body lg:w-1/2">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="card-title">{project.title}</h3>
+                            <h3 class="card-title text-2xl">{project.title}</h3>
                             <div class={`badge ${getStatusColor(project.status)}`}>{project.status}</div>
                         </div>
-                        <p class="text-sm mb-3 line-clamp-2">{project.description}</p>
+                        <p class="text-sm mb-3">{project.description}</p>
                         <div class="card-actions justify-start">
-                            {#each project.tech.slice(0, 3) as tech}
+                            {#each project.tech as tech}
                                 <div class="badge badge-outline">{tech}</div>
                             {/each}
-                            {#if project.tech.length > 3}
-                                <div class="badge badge-outline">+{project.tech.length - 3}</div>
-                            {/if}
                         </div>
                         <div class="card-actions justify-end">
                             <button
