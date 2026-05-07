@@ -39,7 +39,7 @@
         </div>
 
         <!-- Title -->
-        <h2 class="mb-6 text-4xl font-bold leading-tight text-white md:text-6xl lg:text-7xl">
+        <h2 class="mb-6 text-3xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
           Love What I Do?
           <br />
           <span class="highlight-gradient">Help Keep It Going!</span>
@@ -52,30 +52,30 @@
         </p>
 
         <!-- Feature Pills -->
-        <div class="mb-12 flex flex-wrap gap-4">
+        <div class="mb-12 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
           <div
-            class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-white/80 transition-all duration-300 hover:border-[#ff6b35]/30 hover:bg-[#ff6b35]/10"
+            class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pr-2 md:pr-4 px-4 py-2 text-white/80 transition-all duration-300 hover:border-[#ff6b35]/30 hover:bg-[#ff6b35]/10"
           >
             <Code2 size="16" />
-            <span class="text-sm font-medium">Open Source Projects</span>
+            <span class="text-[13px] md:text-sm font-medium">Open Source Projects</span>
           </div>
           <div
-            class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-white/80 transition-all duration-300 hover:border-[#ff6b35]/30 hover:bg-[#ff6b35]/10"
+            class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pr-2 md:pr-4 px-4 py-2 text-white/80 transition-all duration-300 hover:border-[#ff6b35]/30 hover:bg-[#ff6b35]/10"
           >
             <BookOpen size="16" />
-            <span class="text-sm font-medium">Educational Content</span>
+            <span class="text-[13px] md:text-sm font-medium">Educational Content</span>
           </div>
           <div
-            class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-white/80 transition-all duration-300 hover:border-[#ff6b35]/30 hover:bg-[#ff6b35]/10"
+            class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pr-2 md:pr-4 px-4 py-2 text-white/80 transition-all duration-300 hover:border-[#ff6b35]/30 hover:bg-[#ff6b35]/10"
           >
             <Rocket size="16" />
-            <span class="text-sm font-medium">Innovation & Tools</span>
+            <span class="text-[13px] md:text-sm font-medium">Innovation & Tools</span>
           </div>
           <div
-            class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-white/80 transition-all duration-300 hover:border-[#ff6b35]/30 hover:bg-[#ff6b35]/10"
+            class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pr-2 md:pr-4 px-4 py-2 text-white/80 transition-all duration-300 hover:border-[#ff6b35]/30 hover:bg-[#ff6b35]/10"
           >
             <Coffee size="16" />
-            <span class="text-sm font-medium">Fuel for Late Nights</span>
+            <span class="text-[13px] md:text-sm font-medium">Fuel for Late Nights</span>
           </div>
         </div>
 
