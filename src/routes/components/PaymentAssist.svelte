@@ -1,5 +1,5 @@
 <script lang="ts">
-import Icon from '../../../lib/components/Icon.svelte';
+import Icon from '../../lib/components/Icon.svelte';
 let amount: number = 5;
 let donorEmail: string = '';
 let status: 'idle' | 'loading' | 'success' | 'error' = 'idle';

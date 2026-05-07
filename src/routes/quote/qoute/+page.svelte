@@ -1,13 +1,13 @@
 <script lang="ts">
-	import ContactQuote from '../components/ContactQuote.svelte'
-	import Cursor from '../components/Cursor.svelte'
+	import ContactQuote from '../../components/ContactQuote.svelte'
+	import Cursor from '../../components/Cursor.svelte'
 </script>
 
 <svelte:head>
-	<title>Contact | Steve Tom - Full-Stack Developer</title>
+	<title>Request a Quote | Steve Tom - Full-Stack Developer</title>
 	<meta
 		name="description"
-		content="Get in touch with Steve Tom for your next web development project. Let's discuss your vision and bring it to life."
+		content="Ready to build something amazing? Request a quote for your web design, development, or mobile app project."
 	/>
 </svelte:head>
 
@@ -21,7 +21,7 @@
 			style="border-top: 120px solid transparent; border-bottom: 120px solid transparent; border-right: 80px solid white;"
 		></div>
 
-		<ContactQuote mode="contact" />
+		<ContactQuote mode="quote" />
 	</main>
 </div>
 

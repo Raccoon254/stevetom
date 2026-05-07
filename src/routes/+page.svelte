@@ -1,163 +1,184 @@
 <script lang="ts">
-    import {onMount} from 'svelte'
-    import Projects from './components/Projects.svelte'
-    import ContactQuote from "./components/ContactQuote.svelte";
-    import Cursor from './components/Cursor.svelte';
-    import InteractiveSphere from './components/InteractiveSphere.svelte'
-    import Shapes from './components/Shapes.svelte'
-    import {Rotate3D} from 'lucide-svelte';
+	import Loader from './components/Loader.svelte'
+	import RadialMenu from './components/RadialMenu.svelte'
+	import HeroSection from './components/HeroSection.svelte'
+	import PhilosophySection from './components/PhilosophySection.svelte'
+	import SkillGrid from './components/SkillGrid.svelte'
+	import BigName from './components/BigName.svelte'
+	import ProjectsSection from './components/ProjectsSection.svelte'
+	import StartProjectSection from './components/StartProjectSection.svelte'
+	import DonationSection from './components/DonationSection.svelte'
+	import PaymentAssist from './components/PaymentAssist.svelte'
+	import ImageShapeSection from './components/ImageShapeSection.svelte'
 
-    let showSphere = true;
+	let isLoading = true
+	let activeMenu: 'design' | 'code' | 'animate' | null = null
+	let menuPosition = { x: 0, y: 0 }
+	let autoCloseTimer: ReturnType<typeof setTimeout> | null = null
+	let cooldowns: Record<'design' | 'code' | 'animate', boolean> = {
+		design: false,
+		code: false,
+		animate: false,
+	}
 
-    function toggleVisualization() {
-        showSphere = !showSphere;
-    }
+	type SkillTool = { name: string; icon: string; color: string }
 
-    interface Skill {
-        name: string
-    }
+	// Skill icons data for radial menu
+	const skillIcons: {
+		design: SkillTool[]
+		code: SkillTool[]
+		animate: SkillTool[]
+	} = {
+		design: [
+			{ name: 'Figma', icon: 'devicon-figma-plain', color: '#F24E1E' },
+			{ name: 'Adobe XD', icon: 'devicon-xd-plain', color: '#FF61F6' },
+			{ name: 'Sketch', icon: 'devicon-sketch-line', color: '#F7B500' },
+			{ name: 'Photoshop', icon: 'devicon-photoshop-plain', color: '#31A8FF' },
+			{ name: 'Illustrator', icon: 'devicon-illustrator-plain', color: '#FF9A00' },
+		],
+		code: [
+			{ name: 'VS Code', icon: 'devicon-vscode-plain', color: '#007ACC' },
+			{ name: 'JavaScript', icon: 'devicon-javascript-plain', color: '#F7DF1E' },
+			{ name: 'TypeScript', icon: 'devicon-typescript-plain', color: '#3178C6' },
+			{ name: 'React', icon: 'devicon-react-original', color: '#61DAFB' },
+			{ name: 'Svelte', icon: 'devicon-svelte-plain', color: '#FF3E00' },
+			{ name: 'Node.js', icon: 'devicon-nodejs-plain', color: '#339933' },
+		],
+		animate: [
+			{ name: 'After Effects', icon: 'devicon-aftereffects-plain', color: '#9999FF' },
+			{ name: 'Three.js', icon: 'devicon-threejs-original', color: '#000000' },
+			{ name: 'CSS3', icon: 'devicon-css3-plain', color: '#1572B6' },
+			{ name: 'GSAP', icon: 'image-gsap.png', color: '#88CE02' },
+			{ name: 'Framer', icon: 'devicon-framermotion-plain', color: '#0055FF' },
+		],
+	}
 
-    let skills: Skill[] = [
-        {name: 'javascript'},
-        {name: 'python'},
-        {name: 'react'},
-        {name: 'nodejs'},
-        {name: 'java'},
-        {name: 'php'},
-        {name: 'css3'},
-        {name: 'html5'},
-        {name: 'git'},
-        {name: 'mongodb'},
-        {name: 'postgresql'},
-        {name: 'nextjs'},
-        {name: 'docker'},
-        {name: 'linux'},
-        {name: 'typescript'},
-        {name: 'svelte'},
-        {name: 'rust'},
-        {name: 'kotlin'},
-        {name: 'android'},
-        {name: 'firebase'},
-        {name: 'azure'},
-        {name: 'heroku'},
-        {name: 'netlify'},
-        {name: 'vercel'},
-        {name: 'nginx'},
-        {name: 'apache'},
-        {name: 'spring'},
-        {name: 'laravel'},
-        {name: 'wordpress'},
-        {name: 'bootstrap'},
-        {name: 'tailwindcss'},
-        {name: 'vuetify'},
-        {name: 'nuxtjs'},
-    ]
+	function openMenuForSkill(event: MouseEvent, skill: 'design' | 'code' | 'animate') {
+		if (autoCloseTimer) clearTimeout(autoCloseTimer)
+		menuPosition = { x: event.pageX, y: event.pageY }
+		activeMenu = skill
+		autoCloseTimer = setTimeout(closeMenu, 300000)
+	}
 
-    skills = [...skills, ...skills]
+	function handleSkillEnter(
+		event: CustomEvent<{ event: MouseEvent; skill: 'design' | 'code' | 'animate' }>
+	) {
+		if (cooldowns[event.detail.skill]) return
+		openMenuForSkill(event.detail.event, event.detail.skill)
+	}
 
-    let scrollBar: HTMLElement
+	function handleSkillClick(
+		event: CustomEvent<{ event: MouseEvent; skill: 'design' | 'code' | 'animate' }>
+	) {
+		cooldowns[event.detail.skill] = false
+		openMenuForSkill(event.detail.event, event.detail.skill)
+	}
 
-    onMount(() => {
-        scrollBar.addEventListener('mouseenter', () => {
-            scrollBar.style.animationPlayState = 'paused'
-        })
-        scrollBar.addEventListener('mouseleave', () => {
-            scrollBar.style.animationPlayState = 'running'
-        })
-    })
+	function closeMenu() {
+		if (activeMenu) {
+			const skill = activeMenu
+			cooldowns[skill] = true
+			setTimeout(() => (cooldowns[skill] = false), 4000)
+		}
+		activeMenu = null
+		if (autoCloseTimer) {
+			clearTimeout(autoCloseTimer)
+			autoCloseTimer = null
+		}
+	}
+
+	function handleSceneLoaded() {
+		isLoading = false
+	}
+
+	function isDevicon(tool: SkillTool) {
+		return tool.icon.startsWith('devicon')
+	}
 </script>
 
-<main class="min-h-screen bg-base-100 text-base-content">
-    <Cursor/>
+<svelte:head>
+	<link
+		rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+	/>
+</svelte:head>
 
-    <!-- Hero Section -->
-    <div class="min-h-screen flex flex-col justify-center items-center px-4">
-        <div class="max-w-6xl w-full flex flex-col md:flex-row gap-2 items-center justify-between mb-12">
-            <!-- Text Content -->
-            <div class="w-full md:w-1/2 md:mt-0 space-y-6">
-                <div class="flex gap-2 items-center">
-                    <img src="/logo-light.png" alt="Steve Tom" class="w-10 interactive h-10 object-cover"/>
-                    <h1 class="text-3xl text-interactive font-bold">kenTom</h1>
-                    <span class="text-xs opacity-50 font-thin">v2.5.3</span>
-                </div>
+<!-- Loader -->
+{#if isLoading}
+	<Loader />
+{/if}
 
-                <p class="text-xl font-light text-base-content/80">
-                    I am an indie developer with a passion for programming and technology. I am skilled in
-                    Java, Rust, JavaScript and many other programming languages.
-                </p>
+<!-- Devicon Preloader -->
+<div class="absolute w-px h-px opacity-0 pointer-events-none overflow-hidden" aria-hidden="true">
+	{#each Object.values(skillIcons).flat() as tool}
+		{#if isDevicon(tool)}
+			<i class="{tool.icon} colored"></i>
+		{/if}
+	{/each}
+</div>
 
-                <div class="flex gap-4">
-                    <a
-                        href="#contact"
-                        class="text-interactive flex items-center justify-center gap-2 rounded-full ring-1 ring-offset-2 border border-base-300 ring-gray-500/10 px-4 md:px-6 dark:ring-offset-base-100 py-1 md:py-2 hover:bg-gray-100 transition-all duration-200 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white hover:ring-gray-500/20 dark:hover:ring-gray-400/20"
-                    >
-                        <i class="fas fa-paper-plane"></i>
-                        Hire Me
-                    </a>
-                    <a
-                        href="https://github.com/Raccoon254"
-                        target="_blank"
-                        rel="noopener"
-                        class="text-interactive bg-emerald-900 dark:bg-purple-900 text-white flex items-center justify-center gap-2 rounded-full ring-1 ring-offset-2 border border-base-300 ring-gray-500/10 px-4 md:px-6 py-2 hover:bg-emerald-800 dark:hover:bg-purple-800 transition-all duration-200 hover:ring-gray-500/20 dark:hover:ring-gray-100/80 dark:ring-offset-base-100"
-                    >
-                        <i class="devicon-github-original"></i>
-                        GitHub
-                    </a>
-                </div>
-            </div>
+<!-- Radial Menu -->
+<RadialMenu {activeMenu} {menuPosition} {skillIcons} on:close={closeMenu} />
 
-            <!-- Logo Image -->
-            <div class="w-96 h-96 hidden md:w-[30rem] md:h-[30rem] relative md:flex items-center justify-center">
-                <button
-                    on:click={toggleVisualization}
-                    class="absolute text-interactive bottom-4 right-4 border border-gray-700/20 z-10 btn btn-circle btn-sm btn-ghost"
-                    aria-label="Toggle visualization"
-                >
-                    <Rotate3D size="16" />
-                </button>
+<!-- Main Content -->
+<div class="bg-[#252525]">
+	<main class="hero-section mx-auto">
+		<!-- Hero Section -->
+		<HeroSection
+			{skillIcons}
+			on:sceneLoaded={handleSceneLoaded}
+			on:skillEnter={handleSkillEnter}
+			on:skillClick={handleSkillClick}
+		/>
 
-                {#if showSphere}
-                    <InteractiveSphere/>
-                {:else}
-                    <Shapes/>
-                {/if}
-            </div>
-        </div>
+		<!-- Philosophy/Cube Section -->
+		<PhilosophySection {skillIcons} />
 
-        <!-- Skills Scroll -->
-        <div class="w-full overflow-hidden mt-16 md:mt-32">
-            <div class="flex animate-scroll py-3" bind:this={scrollBar}>
-                {#each skills as skill}
-                    <div class="flex-shrink-0 ring-gray-900/5 dark:ring-gray-100/5 ring-1 ring-offset-2 text-interactive aspect-square mx-3 flex items-center justify-center px-3 border border-base-300 dark:border-white/10 dark:ring-offset-base-100 rounded-lg hover:scale-105 transition-transform cursor-pointer">
-                        <i class={'devicon-' + skill.name + '-plain text-2xl'}></i>
-                    </div>
-                {/each}
-            </div>
-        </div>
-    </div>
+		<!-- Skills Section -->
+		<SkillGrid />
 
-    <!-- Projects Section -->
-    <div class="mb-32">
-        <Projects/>
-    </div>
+		<!-- Big animated name -->
+		<BigName />
 
-    <!-- Contact Section -->
-    <div id="contact">
-        <ContactQuote/>
-    </div>
-</main>
+		<!-- Image Shape Section -->
+		<ImageShapeSection />
+
+		<!-- Projects Section -->
+		<ProjectsSection />
+
+		<!-- Start Project Section -->
+		<StartProjectSection />
+
+		<!--		&lt;!&ndash; Donation Section &ndash;&gt;-->
+		<!--		<DonationSection />-->
+
+		<!--		&lt;!&ndash; Payment Assist Section &ndash;&gt;-->
+		<!--		<PaymentAssist />-->
+	</main>
+</div>
 
 <style>
-    @keyframes scroll {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
+	.hero-section {
+		background: repeating-linear-gradient(
+			-25deg,
+			transparent,
+			transparent 39px,
+			rgba(255, 255, 255, 0.15) 39px,
+			rgba(255, 255, 255, 0.15) 40px
+		);
+		background-position: 100%;
+		background-size: 150% 150%;
+		animation: gradient 3s linear infinite;
+		background-repeat: no-repeat;
+		overflow: hidden;
+	}
 
-    .animate-scroll {
-        animation: scroll 40s linear infinite;
-    }
-
-    .animate-scroll:hover {
-        animation-play-state: paused;
-    }
+	@keyframes gradient {
+		0% {
+			background-position: 10px 39px;
+		}
+		100% {
+			background-position: 0px 0px;
+		}
+	}
 </style>

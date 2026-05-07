@@ -1,27 +1,32 @@
 <script lang="ts">
 	import '../app.css'
-	import { Briefcase, Mail, Github, Linkedin, MessageCircle, Moon, Sun } from 'lucide-svelte'
+	import { Briefcase, Mail, Github, Linkedin, MessageCircle } from 'lucide-svelte'
 	import { onMount, onDestroy } from 'svelte'
 	import { fly } from 'svelte/transition'
-
-	let theme = 'light'
-
-	onMount(() => {
-		theme = localStorage.getItem('theme') || 'light'
-		document.documentElement.setAttribute('data-theme', theme)
-	})
-
-	function toggleTheme() {
-		theme = theme === 'light' ? 'dark' : 'light'
-		document.documentElement.setAttribute('data-theme', theme)
-		localStorage.setItem('theme', theme)
-	}
 
 	let year = new Date().getFullYear()
 
 	// Text rotation logic
-	const footerWords = ["code", "pull", "push", "test", "loop", "hash", "bind", "read", "write", "ship", 
- "scan", "send", "edit", "load", "exec", "back", "move", "build"]
+	const footerWords = [
+		'code',
+		'pull',
+		'push',
+		'test',
+		'loop',
+		'hash',
+		'bind',
+		'read',
+		'write',
+		'ship',
+		'scan',
+		'send',
+		'edit',
+		'load',
+		'exec',
+		'back',
+		'move',
+		'build',
+	]
 
 	let currentFooterWordIndex = 0
 	let footerInterval: ReturnType<typeof setInterval>
@@ -46,17 +51,9 @@
 	}
 </script>
 
-<button
-	on:click={toggleTheme}
-	class="fixed top-4 right-4 z-50 ring-1 ring-black/20 dark:ring-white/20 btn btn-circle btn-ghost"
-	aria-label="Toggle theme"
->
-	{#if theme === 'light'}
-		<Moon size="20" />
-	{:else}
-		<Sun size="20" />
-	{/if}
-</button>
+<svelte:head>
+	<meta name="theme-color" content="#252525" />
+</svelte:head>
 
 <div class="min-h-screen bg-base-100">
 	<main>
@@ -95,7 +92,9 @@
 							>
 
 							<!-- Fixed width container - tightened to fit "design" without excess space -->
-							<span class="relative h-[1em] w-[4ch] overflow-hidden block text-center top-1/2 transform">
+							<span
+								class="relative h-[1em] w-[4ch] overflow-hidden block text-center top-1/2 transform"
+							>
 								{#key currentFooterWordIndex}
 									<span
 										class="absolute top-0 left-0 w-full text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-100 to-blue-400"
@@ -163,10 +162,14 @@
 				<div class="md:col-span-3">
 					<h4 class="text-xs font-bold text-white/30 uppercase tracking-widest mb-6">Explore</h4>
 					<ul class="space-y-4">
-						{#each ['Home', 'Projects', 'About', 'Contact'] as item}
+						{#each ['Home', 'Projects', 'About', 'Contact', 'Get a Quote'] as item}
 							<li>
 								<a
-									href={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+									href={item === 'Home'
+										? '/'
+										: item === 'Get a Quote'
+											? '/quote'
+											: `/${item.toLowerCase()}`}
 									class="text-white/60 hover:text-white transition-colors flex items-center gap-2 group"
 								>
 									<span
