@@ -15,10 +15,6 @@
 
     <install>
 
-        <!--files>
-            <file path="{PLUGINPATH}">openXDeliveryLog.readme.txt</file>
-        </files-->
-
         <contents>
             <group name="oxDeliveryDataPrepare">1</group>
 
