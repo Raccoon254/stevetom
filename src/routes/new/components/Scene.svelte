@@ -131,7 +131,7 @@
 		// Top Cube (White with shaded sides)
 		topCube = new THREE.Mesh(geometry, createMaterials(paletteWhite))
 		// Start at y=0 for load animation, will animate to y=7
-		topCube.position.set(7, 0, 7)
+		topCube.position.set(7, 9, 7)
 		scene.add(topCube)
 
 		// Bottom Cube (White with shaded sides)
@@ -149,8 +149,28 @@
 		bottomLeftCube.position.set(0, 0, 7) // Forward/Left
 		scene.add(bottomLeftCube)
 
+			// Bottom Cube (White with shaded sides)
+		const bottomCube1 = new THREE.Mesh(geometry, createMaterials(paletteWhite))
+		bottomCube1.position.set(0, -20, 20) // Down
+		scene.add(bottomCube1)
+
+		// Bottom Right Cube (White with shaded sides)
+		const bottomRightCube1= new THREE.Mesh(geometry, createMaterials(paletteWhite))
+		bottomRightCube1.position.set(7, -20, 20) // Right
+		scene.add(bottomRightCube1)
+
+		// Bottom Left Cube (White with shaded sides)
+		const bottomLeftCube1 = new THREE.Mesh(geometry, createMaterials(paletteWhite))
+		bottomLeftCube1.position.set(0, -20, 27) // Forward/Left
+		scene.add(bottomLeftCube1)
+
+		// Bottom Right Cube (White with shaded sides)
+		const bottomRightCube2= new THREE.Mesh(geometry, createMaterials(paletteWhite))
+		bottomRightCube2.position.set(7, 20, -27) // Right
+		scene.add(bottomRightCube2)
+
 		// Sphere (White with 3D shading from lighting)
-		const sphereGeometry = new THREE.SphereGeometry(4, 32, 32)
+		const sphereGeometry = new THREE.SphereGeometry(2, 32, 32)
 		const sphereMaterial = new THREE.MeshStandardMaterial({
 			color: 0xffffff, // White
 			roughness: 0.6,
