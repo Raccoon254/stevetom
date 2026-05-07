@@ -102,6 +102,34 @@
 		rel="stylesheet"
 		href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
 	/>
+
+	<!-- Primary Meta Tags -->
+	<title>KenTom | Engineering Creative Solutions</title>
+	<meta name="title" content="KenTom | Engineering Creative Solutions" />
+	<meta
+		name="description"
+		content="Creative problem-solver and full-stack developer with 5+ years building apps that matter. From Status Saver to custom web solutions - I turn your vision into working code."
+	/>
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://stevetom.vercel.app/" />
+	<meta property="og:title" content="KenTom | Engineering Creative Solutions" />
+	<meta
+		property="og:description"
+		content="Creative problem-solver and full-stack developer with 5+ years building apps that matter. From Status Saver to custom web solutions - I turn your vision into working code."
+	/>
+	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/" />
+	<meta name="twitter:title" content="KenTom | Engineering Creative Solutions" />
+	<meta
+		name="twitter:description"
+		content="Creative problem-solver and full-stack developer with 5+ years building apps that matter. From Status Saver to custom web solutions - I turn your vision into working code."
+	/>
+	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
 <!-- Loader -->

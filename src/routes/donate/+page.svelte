@@ -123,6 +123,26 @@
 		name="description"
 		content="Support my work with a donation. Your contribution helps me create more amazing projects."
 	/>
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://stevetom.vercel.app/donate" />
+	<meta property="og:title" content="Support & Donate | SteveForge" />
+	<meta
+		property="og:description"
+		content="Support my work with a donation. Your contribution helps me create more amazing projects."
+	/>
+	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/donate" />
+	<meta name="twitter:title" content="Support & Donate | SteveForge" />
+	<meta
+		name="twitter:description"
+		content="Support my work with a donation. Your contribution helps me create more amazing projects."
+	/>
+	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
 <div class="min-h-screen bg-[#252525]/10 text-white">
@@ -301,7 +321,8 @@
 									class="absolute z-[9999] left-6 top-1/2 -translate-y-1/2 text-white/40"
 								/>
 							{:else}
-								<span class="absolute z-[9999] left-6 top-1/2 -translate-y-1/2 text-white/40 font-bold"
+								<span
+									class="absolute z-[9999] left-6 top-1/2 -translate-y-1/2 text-white/40 font-bold"
 									>KSh</span
 								>
 							{/if}

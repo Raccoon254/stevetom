@@ -9,6 +9,26 @@
 		name="description"
 		content="Ready to build something amazing? Request a quote for your web design, development, or mobile app project."
 	/>
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://stevetom.vercel.app/quote/qoute" />
+	<meta property="og:title" content="Request a Quote | Steve Tom - Full-Stack Developer" />
+	<meta
+		property="og:description"
+		content="Ready to build something amazing? Request a quote for your web design, development, or mobile app project."
+	/>
+	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content="https://stevetom.vercel.app/quote/qoute" />
+	<meta name="twitter:title" content="Request a Quote | Steve Tom - Full-Stack Developer" />
+	<meta
+		name="twitter:description"
+		content="Ready to build something amazing? Request a quote for your web design, development, or mobile app project."
+	/>
+	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
 <Cursor />
