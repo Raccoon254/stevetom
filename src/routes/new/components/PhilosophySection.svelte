@@ -4,10 +4,11 @@
 	import ToggleSwitch from './ToggleSwitch.svelte'
 	import CubeControls from './CubeControls.svelte'
 	import BarMenu from './BarMenu.svelte'
+	import type { SkillTool } from '../../../app.d.ts';
 
 	const dispatch = createEventDispatcher()
 
-	export let skillIcons: Record<string, { name: string; icon: string; color: string }[]>
+	export let skillIcons: { design: SkillTool[]; code: SkillTool[]; animate: SkillTool[] }
 
 	let cubeComponent: PhilosophyScene
 	let currentPhrase = 'Think'

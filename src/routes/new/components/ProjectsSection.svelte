@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { onMount } from 'svelte'
 	import { ArrowRight } from 'lucide-svelte'
 
 	type Project = {
@@ -24,7 +23,7 @@
 			id: '1',
 			title: 'Qailly',
 			description: 'AI-powered quality assurance platform',
-			image: '/qailly.png',
+			image: '/apps/qailly.png',
 			projectUrl: 'https://qailly.com',
 			githubUrl: '',
 			tech: ['React', 'Python', 'AI'],
@@ -37,8 +36,8 @@
 			id: '2',
 			title: 'Futurespace',
 			description: 'Digital workspace for remote teams',
-			image: '/futurespace.png',
-			projectUrl: '#',
+			image: '/apps/future.png',
+			projectUrl: 'https://futurespace.vercel.app',
 			githubUrl: '',
 			tech: ['Svelte', 'WebRTC'],
 			year: '2023',
@@ -50,8 +49,8 @@
 			id: '3',
 			title: 'Crown Chambers',
 			description: 'Legal practice management system',
-			image: '/crown-chambers.png',
-			projectUrl: '#',
+			image: '/apps/crown.png',
+			projectUrl: 'https://crown-chambers.vercel.app',
 			githubUrl: '',
 			tech: ['Next.js', 'PostgreSQL'],
 			year: '2023',
@@ -63,8 +62,8 @@
 			id: '4',
 			title: 'DishPoa',
 			description: 'Food delivery and discovery platform',
-			image: '/dishpoa.png',
-			projectUrl: '#',
+			image: '/apps/dishpoa.png',
+			projectUrl: 'https://dishpoa.com',
 			githubUrl: '',
 			tech: ['React Native', 'Firebase'],
 			year: '2024',
@@ -76,8 +75,8 @@
 			id: '5',
 			title: 'ZidiPlay',
 			description: 'Music streaming and discovery service',
-			image: '/zidiplay.png',
-			projectUrl: '#',
+			image: '/apps/zidiplay.png',
+			projectUrl: 'https://zidiplay.vercel.app',
 			githubUrl: '',
 			tech: ['Vue', 'Node.js'],
 			year: '2023',
@@ -89,8 +88,8 @@
 			id: '6',
 			title: 'Status Saver',
 			description: 'Social media utility application',
-			image: '/status-saver.png',
-			projectUrl: '#',
+			image: '/apps/status.png',
+			projectUrl: 'https://status-saver.vercel.app',
 			githubUrl: '',
 			tech: ['Android', 'Kotlin'],
 			year: '2022',
@@ -105,7 +104,7 @@
 			image: '/dev-cleaner.png',
 			projectUrl: '#',
 			githubUrl: '',
-			tech: ['Rust', 'Tauri'],
+			tech: ['Java', 'Tauri'],
 			year: '2024',
 			category: 'Developer Tool',
 			features: [],
@@ -196,7 +195,7 @@
 		const zIndex = 1000 - Math.floor(distFromFront)
 
 		return `
-			transform: rotateY(${angle}deg) translateZ(${RADIUS}px);
+			transform: rotateY(${angle}deg) translateZ(${RADIUS}px) rotateY(180deg);
 			opacity: ${opacity};
 			pointer-events: ${pointerEvents};
 			z-index: ${zIndex};
@@ -208,23 +207,30 @@
 <div class="projects-section">
 	<!-- Styles -->
 	<div class="text-center max-w-xl px-6 mb-16">
-		<span class="inline-block text-sm font-medium italic mb-4" style="color: {customOrange}">
+		<span class="inline-block text-md font-thin mb-4" style="color: {customOrange}">
 			Behind the Code
 		</span>
-		<h2 class="text-5xl font-extrabold text-gray-900 leading-tight mb-5">
-			Interactive 3D Carousel
+		<h2 class="text-3xl md:text-5xl font-extrabold text-[#252525] leading-tight mb-5">
+			Curious What Else I’ve Built?
 		</h2>
-		<p class="text-base text-gray-600 mb-8">
-			A dynamic, rotating view of our portfolio projects, controlled by user input.
+		<p class="text-base text-gray-600/50 font-medium mb-8">
+			Explore more brand and projects I’ve worked on.
 		</p>
 
 		<a
 			href="/projects"
-			class="group inline-flex items-center gap-3 py-3 pr-2 pl-6 bg-white border border-gray-200 rounded-full font-medium text-gray-800 transition-all duration-300 shadow-md hover:shadow-lg hover:border-transparent"
+			class="group inline-flex items-center gap-3 p-3 pr-2 pl-6 bg-white border border-gray-200 rounded-full font-medium text-gray-800 transition-all duration-300 hover:border-transparent bg-[#252525] text-white ring-1 ring-[#252525] ring-offset-2 ring-offset-white border-2 border-[#252525] hover:border-gray-800/30"
+			style="
+			 background: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(37, 37, 37, 0.3) 2px, rgba(37, 37, 37, 0.3) 4px);
+			"
 		>
-			<span>See more Projects</span>
 			<span
-				class="flex items-center justify-center w-8 h-8 rounded-full text-white transition-transform duration-300 group-hover:translate-x-1"
+				class="font-bold text-[#252525] text-2xl"
+				style="
+			">More Projects</span
+			>
+			<span
+				class="flex items-center justify-center w-10 h-10 rounded-full text-white transition-transform duration-300 group-hover:translate-x-1"
 				style="background: linear-gradient(135deg, {customOrange} 0%, #ff8c5a 100%)"
 			>
 				<ArrowRight size={18} />
@@ -313,8 +319,8 @@
 
 	.carousel-container {
 		margin: 0 auto;
-		width: 300px;
-		height: 400px;
+		width: 350px;
+		height: 600px;
 		position: relative;
 		perspective: 1200px;
 	}
@@ -332,10 +338,10 @@
 		align-items: center;
 		justify-content: center;
 		position: absolute;
-		width: 300px;
-		height: 400px;
+		width: 380px;
+		height: 600px;
 		overflow: hidden;
-		border-radius: 16px;
+		border-radius: 40px;
 		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 		/* opacity driven by inline style */
 		/* transition: opacity 0.3s; -- moved to inline to match user code preference */
@@ -358,7 +364,7 @@
 
 	/* scale removed */
 	.carousel-item:hover img {
-		/* transform: scale(1.05); */
+		transform: scale(1.005);
 	}
 
 	.item-overlay {

@@ -3,6 +3,7 @@
 	import { createEventDispatcher } from 'svelte'
 	import Scene from './Scene.svelte'
 	import Counter from './Counter.svelte'
+	import type { SkillTool } from '../../../app.d.ts'
 
 	const dispatch = createEventDispatcher()
 
@@ -20,6 +21,8 @@
 	) {
 		dispatch('skillClick', { event, skill })
 	}
+
+	export let skillIcons: { design: SkillTool[]; code: SkillTool[]; animate: SkillTool[] }
 </script>
 
 <section
