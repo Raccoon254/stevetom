@@ -92,7 +92,7 @@
 <Navbar />
 
 <!-- Announcement Bar -->
-<div class="mt-20 left-0 right-0 z-40 bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] text-white">
+<div class="mt-20 hidden left-0 right-0 z-40 bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] text-white">
 	<div class="mx-auto max-w-7xl px-6 py-3">
 		<a href="/blog/kentom-2026-new-directions" class="flex items-center justify-center gap-3 group">
 			<span class="hidden sm:flex text-sm font-semibold items-center gap-2">
@@ -119,7 +119,7 @@
 	</div>
 </div>
 
-<div class="relative z-0 main-component min-h-screen">
+<div class="relative z-0 mt-20 main-component min-h-screen">
 	<main>
 		<slot />
 	</main>
