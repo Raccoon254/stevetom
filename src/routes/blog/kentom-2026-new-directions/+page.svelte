@@ -136,7 +136,7 @@
 							<div class="rounded-lg border border-white/10 bg-white/5 p-4">
 								<h5 class="mb-1 font-semibold text-[#ff6b35]">Chezapay</h5>
 								<p class="text-sm text-white/70">
-									Payment platform solution building payment infrastructure for local businesses
+									Earn from your playing skills by playing games against other players
 								</p>
 							</div>
 							<div class="rounded-lg border border-white/10 bg-white/5 p-4">
