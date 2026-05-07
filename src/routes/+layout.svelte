@@ -119,7 +119,7 @@
 	</div>
 </div>
 
-<div class="relative z-0 main-component min-h-screen mt-[6.5rem]">
+<div class="relative z-0 main-component min-h-screen">
 	<main>
 		<slot />
 	</main>

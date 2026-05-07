@@ -69,7 +69,7 @@
 <Cursor />
 
 <div class="bg-[#252525]/10 min-h-screen relative overflow-x-hidden">
-    <main class="hero-section mx-auto min-h-screen py-20">
+    <main class="hero-section mx-auto min-h-screen pb-20">
         <!-- Background decoration -->
         <div
             class="hidden lg:block absolute rotate-[65deg] top-20 -left-20 opacity-10"

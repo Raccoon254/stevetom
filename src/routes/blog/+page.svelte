@@ -11,12 +11,12 @@
 			title: 'Kentom 2026: Charting New Creative Directions',
 			slug: 'kentom-2026-new-directions',
 			excerpt:
-				"A realistic roadmap for expanding beyond digital services into physical creative production—exploring what AI can't replace: craftsmanship, local relationships, and tangible value.",
+				"A realistic roadmap for expanding beyond digital services into physical creative production exploring what AI can't replace: craftsmanship, local relationships, and tangible value.",
 			date: 'December 21, 2025',
 			readTime: '15 min read',
 			category: 'Business Strategy',
 			featured: true,
-			image: '/blog/plan.jpg'
+			image: '/blog/plan.jpg',
 		},
 		{
 			title: "Skill Kenya's Pivot: From Pre-Recorded Courses to Live Interactive Sessions",
@@ -27,7 +27,7 @@
 			readTime: '8 min read',
 			category: 'EdTech Strategy',
 			featured: false,
-			image: '/blog/skillkenya-1.jpg'
+			image: '/blog/skillkenya-1.jpg',
 		},
 	]
 </script>
@@ -42,7 +42,7 @@
 
 <div class="min-h-screen text-white">
 	<!-- Hero Section -->
-	<section class="relative overflow-hidden border-b border-white/10 pb-20 md:pb-32">
+	<section class="relative overflow-hidden border-b border-white/10 py-20 md:py-32">
 		<div class="container relative z-10 mx-auto px-6">
 			<div class="mx-auto max-w-4xl text-center">
 				<div
@@ -166,24 +166,24 @@
 											{post.category}
 										</span>
 
-									<h3
-										class="mb-3 text-xl font-bold leading-tight transition-colors group-hover:text-[#ff6b35]"
-									>
-										{post.title}
-									</h3>
+										<h3
+											class="mb-3 text-xl font-bold leading-tight transition-colors group-hover:text-[#ff6b35]"
+										>
+											{post.title}
+										</h3>
 
-									<p class="mb-4 text-sm leading-relaxed text-white/60">
-										{post.excerpt}
-									</p>
+										<p class="mb-4 text-sm leading-relaxed text-white/60">
+											{post.excerpt}
+										</p>
 
-									<div class="flex items-center gap-4 text-xs text-white/50">
-										<div class="flex items-center gap-1">
-											<Calendar size={12} />
-											<span>{post.date}</span>
+										<div class="flex items-center gap-4 text-xs text-white/50">
+											<div class="flex items-center gap-1">
+												<Calendar size={12} />
+												<span>{post.date}</span>
+											</div>
+											<span>•</span>
+											<span>{post.readTime}</span>
 										</div>
-										<span>•</span>
-										<span>{post.readTime}</span>
-									</div>
 									</div>
 								</a>
 							</article>
