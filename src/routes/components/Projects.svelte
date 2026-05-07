@@ -421,7 +421,7 @@
     @media (max-width: 768px) {
         .projects-container {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 5rem;
         }
     }
 
