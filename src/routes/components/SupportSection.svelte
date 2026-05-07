@@ -33,7 +33,7 @@
           <div
             class="inline-flex gap-2 rounded-full border border-[#ff6b35]/30 bg-[#ff6b35]/10 px-5 py-2.5 text-white backdrop-blur-sm transition-colors duration-300 hover:border-[#ff6b35]/50 md:items-center"
           >
-            <Heart size="16" class="animate-pulse text-[#ff6b35]" />
+            <Heart size="16" class="animate-pulse mt-[2px] text-[#ff6b35]" />
             <span class="text-sm font-bold uppercase tracking-widest">Support My Work</span>
           </div>
         </div>
@@ -52,7 +52,7 @@
         </p>
 
         <!-- Feature Pills -->
-        <div class="mb-12 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+        <div class="mb-12 flex flex-wrap gap-2 md:gap-4">
           <div
             class="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 pr-2 md:pr-4 px-4 py-2 text-white/80 transition-all duration-300 hover:border-[#ff6b35]/30 hover:bg-[#ff6b35]/10"
           >
