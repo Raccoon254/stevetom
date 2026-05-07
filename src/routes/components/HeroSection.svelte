@@ -26,7 +26,7 @@
 </script>
 
 <section
-	class="h-[90vh] overflow-y-hidden bg-transparent flex flex-col relative items-center justify-start overflow-x-hidden"
+	class="h-[90vh] md:h-[100vh] overflow-y-hidden bg-transparent flex flex-col relative items-center justify-start overflow-x-hidden"
 >
 	<!-- Right panel background (Hidden on mobile) -->
 	<div
