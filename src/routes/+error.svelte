@@ -7,7 +7,7 @@
 	<title>{$page.status} - Page Not Found</title>
 </svelte:head>
 
-<div class="error-page bg-[#252525]">
+<div class="error-page bg-[#252525]/10 min-h-screen flex flex-col">
 	<main class="hero-section min-h-screen flex items-center justify-center p-6 sm:p-12">
 		<div class="text-center max-w-4xl mx-auto">
 			<!-- Error Code -->
