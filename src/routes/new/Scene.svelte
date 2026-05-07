@@ -150,7 +150,7 @@
 		scene.add(bottomLeftCube)
 
 		// Sphere (White with 3D shading from lighting)
-		const sphereGeometry = new THREE.SphereGeometry(3.5, 32, 32)
+		const sphereGeometry = new THREE.SphereGeometry(4, 32, 32)
 		const sphereMaterial = new THREE.MeshStandardMaterial({
 			color: 0xffffff, // White
 			roughness: 0.6,
