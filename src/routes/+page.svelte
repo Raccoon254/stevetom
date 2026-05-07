@@ -4,8 +4,8 @@
     import ContactQuote from "./components/ContactQuote.svelte";
     import Cursor from './components/Cursor.svelte';
     import InteractiveSphere from './components/InteractiveSphere.svelte'
-    import MusicWave from './components/MusicWave.svelte'
-    import {Repeat, Rotate3D} from 'lucide-svelte';
+    import Shapes from './components/Shapes.svelte'
+    import {Rotate3D} from 'lucide-svelte';
 
     let showSphere = true;
 
@@ -119,7 +119,7 @@
                 {#if showSphere}
                     <InteractiveSphere/>
                 {:else}
-                    <MusicWave/>
+                    <Shapes/>
                 {/if}
             </div>
         </div>

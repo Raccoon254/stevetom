@@ -60,7 +60,7 @@
 <section class="py-16 md:py-32 relative">
     <!-- Header -->
     <div class="text-center mb-16 md:mb-24">
-        <h2 class="text-interactive text-4xl md:text-6xl font-bold mb-4 bg-white bg-clip-text text-transparent">
+        <h2 class="text-interactive text-4xl md:text-6xl font-bold mb-4 bg-black/70 dark:bg-white bg-clip-text text-transparent">
             Featured Projects
         </h2>
         <p class="text-lg text-base-content/60 max-w-2xl mx-auto">

@@ -87,7 +87,6 @@
     }
 
     async function handleSubmit() {
-        // Validate email first
         if (!validateEmail(formData.email)) {
             emailError = 'Please enter a valid email address';
             return;
@@ -177,12 +176,8 @@
 </script>
 
 <section class="min-h-screen bg-base-100 py-16 relative overflow-hidden">
-    <!-- Gradient Backgrounds -->
-    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none"></div>
-
     <div class="container max-w-5xl mx-auto px-4 relative z-10">
         {#if !isSubmitted}
-            <!-- Header -->
             <div class="text-center mb-12">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     {mode === 'quote' ? 'Let\'s Build Something Amazing' : 'Get In Touch'}
@@ -193,27 +188,28 @@
 
                 {#if mode === 'quote'}
                     <div class="mt-8 flex flex-col items-center gap-2">
-                        <progress class="progress progress-primary w-64" value={currentStep} max={totalSteps}></progress>
+                        <div class="w-64 h-2 bg-base-300 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary transition-all duration-300" style="width: {(currentStep / totalSteps) * 100}%"></div>
+                        </div>
                         <span class="text-sm text-base-content/60">Step {currentStep} of {totalSteps}</span>
                     </div>
                 {/if}
             </div>
 
-            <!-- Form Content -->
-            <div class="card bg-base-200/30 backdrop-blur-sm border border-base-300">
-                <div class="card-body p-8">
+            <div class="backdrop-blur-sm">
+                <div class="p-6 md:p-8">
                     {#if mode === 'quote'}
                         {#if currentStep === 1}
                             <h2 class="text-2xl font-semibold mb-6">What do you need?</h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {#each services as service}
                                     <button
-                                        class="card bg-base-100 border-2 transition-all hover:scale-105 {selectedService === service.id ? 'border-primary' : 'border-base-300'}"
+                                        class="bg-base-100 border border-base-300 rounded-xl p-6 ring-gray-900/5 dark:ring-gray-100/5 ring-1 ring-offset-2 text-interactive dark:ring-offset-base-100 transition-all hover:border-primary hover:bg-base-200 dark:border-white/20 {selectedService === service.id ? 'border-primary bg-base-200' : ''}"
                                         on:click={() => selectService(service.id)}
                                     >
-                                        <div class="card-body items-center text-center p-6">
+                                        <div class="flex flex-col items-center text-center gap-3">
                                             <svelte:component this={service.icon} size="40" color={service.color} />
-                                            <h3 class="card-title text-lg">{service.title}</h3>
+                                            <h3 class="font-semibold text-lg">{service.title}</h3>
                                             <p class="text-sm text-base-content/60">{service.description}</p>
                                         </div>
                                     </button>
@@ -221,68 +217,127 @@
                             </div>
                         {:else if currentStep === 2}
                             <h2 class="text-2xl font-semibold mb-6">Tell us about you</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text">Name *</span></label>
-                                    <input type="text" bind:value={formData.name} placeholder="John Doe" class="input input-bordered" required />
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="flex justify-between items-center mb-2">
+                                            <span class="text-sm font-medium">Name *</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            bind:value={formData.name}
+                                            placeholder="John Doe"
+                                            class="w-full px-4 py-3 bg-base-100 border border-base-300 rounded-lg focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="flex justify-between items-center mb-2">
+                                            <span class="text-sm font-medium">Email *</span>
+                                        </label>
+                                        <input
+                                            type="email"
+                                            bind:value={formData.email}
+                                            placeholder="john@example.com"
+                                            class="w-full px-4 py-3 bg-base-100 border border-base-300 rounded-lg focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                            required
+                                        />
+                                        {#if emailError}
+                                            <p class="text-sm text-error mt-1">{emailError}</p>
+                                        {/if}
+                                    </div>
                                 </div>
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text">Email *</span></label>
-                                    <input type="email" bind:value={formData.email} placeholder="john@example.com" class="input input-bordered" required />
-                                    {#if emailError}
-                                        <p class="text-sm text-error mt-1">{emailError}</p>
-                                    {/if}
-                                </div>
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text">Company</span></label>
-                                    <input type="text" bind:value={formData.company} placeholder="Your Company" class="input input-bordered" />
-                                </div>
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text">Phone</span></label>
-                                    <input type="tel" bind:value={formData.phone} placeholder="+1 (555) 123-4567" class="input input-bordered" />
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="flex justify-between items-center mb-2">
+                                            <span class="text-sm font-medium">Company</span>
+                                            <span class="text-xs text-base-content/50">Optional</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            bind:value={formData.company}
+                                            placeholder="Your Company"
+                                            class="w-full px-4 py-3 bg-base-100 border border-base-300 rounded-lg focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="flex justify-between items-center mb-2">
+                                            <span class="text-sm font-medium">Phone</span>
+                                            <span class="text-xs text-base-content/50">Optional</span>
+                                        </label>
+                                        <input
+                                            type="tel"
+                                            bind:value={formData.phone}
+                                            placeholder="+1 (555) 123-4567"
+                                            class="w-full px-4 py-3 bg-base-100 border border-base-300 rounded-lg focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex justify-between mt-6">
-                                <button class="btn btn-outline gap-2" on:click={prevStep}><ArrowLeft size="16" />Back</button>
-                                <button class="btn btn-primary gap-2" on:click={nextStep} disabled={!formData.name || !formData.email}>Continue<ArrowRight size="16" /></button>
+                            <div class="flex justify-between mt-8">
+                                <button class="px-6 py-3 border border-base-300 rounded-lg hover:border-primary hover:bg-base-100 transition-all flex items-center gap-2" on:click={prevStep}><ArrowLeft size="16" />Back</button>
+                                <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" on:click={nextStep} disabled={!formData.name || !formData.email}>Continue<ArrowRight size="16" /></button>
                             </div>
                         {:else if currentStep === 3}
                             <h2 class="text-2xl font-semibold mb-6">Project Details</h2>
                             <div class="space-y-6">
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text">Budget Range</span></label>
+                                <div>
+                                    <label class="flex justify-between items-center mb-3">
+                                        <span class="text-sm font-medium">Budget Range</span>
+                                        <span class="text-xs text-base-content/50">Optional</span>
+                                    </label>
                                     <div class="flex flex-wrap gap-2">
                                         {#each budgetRanges as budget}
-                                            <button class="btn btn-sm {formData.budget === budget ? 'btn-primary' : 'btn-outline'}" on:click={() => formData.budget = budget}>{budget}</button>
+                                            <button
+                                                class="px-4 py-2 text-sm rounded-lg border transition-all {formData.budget === budget ? 'bg-primary text-white border-primary' : 'border-base-300 hover:border-primary hover:bg-base-100'}"
+                                                on:click={() => formData.budget = budget}
+                                            >
+                                                {budget}
+                                            </button>
                                         {/each}
                                     </div>
                                 </div>
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text">Timeline</span></label>
+                                <div>
+                                    <label class="flex justify-between items-center mb-3">
+                                        <span class="text-sm font-medium">Timeline</span>
+                                        <span class="text-xs text-base-content/50">Optional</span>
+                                    </label>
                                     <div class="flex flex-wrap gap-2">
                                         {#each timelineOptions as timeline}
-                                            <button class="btn btn-sm {formData.timeline === timeline ? 'btn-primary' : 'btn-outline'}" on:click={() => formData.timeline = timeline}>{timeline}</button>
+                                            <button
+                                                class="px-4 py-2 text-sm rounded-lg border transition-all {formData.timeline === timeline ? 'bg-primary text-white border-primary' : 'border-base-300 hover:border-primary hover:bg-base-100'}"
+                                                on:click={() => formData.timeline = timeline}
+                                            >
+                                                {timeline}
+                                            </button>
                                         {/each}
                                     </div>
                                 </div>
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text">Project Description</span></label>
-                                    <textarea bind:value={formData.message} placeholder="Tell us about your project..." class="textarea textarea-bordered h-24"></textarea>
+                                <div>
+                                    <label class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium">Project Description</span>
+                                        <span class="text-xs text-base-content/50">Optional</span>
+                                    </label>
+                                    <textarea
+                                        bind:value={formData.message}
+                                        placeholder="Tell us about your project..."
+                                        class="w-full px-4 py-3 bg-base-100 border border-base-300 rounded-lg focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 h-32 resize-none transition-all"
+                                    ></textarea>
                                 </div>
                             </div>
-                            <div class="flex justify-between mt-6">
-                                <button class="btn btn-outline gap-2" on:click={prevStep}><ArrowLeft size="16" />Back</button>
-                                <button class="btn btn-primary gap-2" on:click={nextStep}>Continue<ArrowRight size="16" /></button>
+                            <div class="flex justify-between mt-8">
+                                <button class="px-6 py-3 border border-base-300 rounded-lg hover:border-primary hover:bg-base-100 transition-all flex items-center gap-2" on:click={prevStep}><ArrowLeft size="16" />Back</button>
+                                <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2" on:click={nextStep}>Continue<ArrowRight size="16" /></button>
                             </div>
                         {:else if currentStep === 4}
-                            <h2 class="text-2xl font-semibold mb-6">Almost Done!</h2>
-                            <div class="text-center mb-6">
-                                <p class="mb-4">Select the <strong>fire</strong> emoji:</p>
+                            <h2 class="text-2xl font-semibold mb-6 text-center">Almost Done!</h2>
+                            <div class="bg-base-200/20 border border-base-300 rounded-xl p-6 md:p-8 mb-6">
+                                <p class="text-center mb-6 text-base-content/80">Select the <strong class="text-primary">fire</strong> emoji to verify you're human:</p>
                                 <div class="flex justify-center gap-3 flex-wrap">
                                     {#each shuffledIcons as icon}
                                         <button
-                                                class="px-6 py-4 text-2xl rounded-lg border transition-all {formData.captcha === icon.name ? 'bg-primary text-white border-primary' : 'border-base-300 hover:border-primary hover:bg-base-100'}"
-                                                on:click={() => handleCaptcha(icon.name)}
+                                            class="px-6 py-4 text-2xl rounded-lg border transition-all {formData.captcha === icon.name ? 'bg-primary text-white border-primary' : 'border-base-300 hover:border-primary hover:bg-base-100'}"
+                                            on:click={() => handleCaptcha(icon.name)}
                                         >
                                             <svelte:component this={icon} />
                                         </button>
@@ -290,63 +345,116 @@
                                 </div>
                             </div>
                             {#if submitError}
-                                <div class="alert alert-error"><TriangleAlert size="16" />{submitError}</div>
+                                <div class="bg-error/10 border border-error/20 text-error rounded-lg p-4 mb-6 flex items-center gap-2">
+                                    <TriangleAlert size="16" />
+                                    {submitError}
+                                </div>
                             {/if}
-                            <div class="flex justify-between mt-6">
-                                <button class="btn btn-outline gap-2" on:click={prevStep}><ArrowLeft size="16" />Back</button>
-                                <button class="btn btn-primary gap-2" on:click={handleSubmit} disabled={isSubmitting || formData.captcha !== correctCaptcha}>
-                                    {#if isSubmitting}<span class="loading loading-spinner"></span>Sending...{:else}<Send size="16" />Get My Quote{/if}
+                            <div class="flex justify-between mt-8">
+                                <button class="px-6 py-3 border border-base-300 rounded-lg hover:border-primary hover:bg-base-100 transition-all flex items-center gap-2" on:click={prevStep}><ArrowLeft size="16" />Back</button>
+                                <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" on:click={handleSubmit} disabled={isSubmitting || formData.captcha !== correctCaptcha}>
+                                    {#if isSubmitting}<span class="animate-spin">⏳</span>Sending...{:else}<Send size="16" />Get My Quote{/if}
                                 </button>
                             </div>
                         {/if}
                     {:else}
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div class="flex items-center gap-3 p-4 bg-base-100 rounded-lg">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                            <div class="flex items-center gap-3 p-4 bg-base-200/30 border border-base-300 rounded-lg hover:border-primary/50 transition-colors">
                                 <div class="bg-primary/10 p-3 rounded-lg"><Mail size="20" class="text-primary" /></div>
-                                <div><h3 class="font-semibold">Email</h3><p class="text-sm text-base-content/60">hello@stevetom.dev</p></div>
+                                <div>
+                                    <h3 class="font-semibold text-sm">Email</h3>
+                                    <p class="text-sm text-base-content/60">hello@stevetom.dev</p>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-3 p-4 bg-base-100 rounded-lg">
+                            <div class="flex items-center gap-3 p-4 bg-base-200/30 border border-base-300 rounded-lg hover:border-primary/50 transition-colors">
                                 <div class="bg-primary/10 p-3 rounded-lg"><Phone size="20" class="text-primary" /></div>
-                                <div><h3 class="font-semibold">Phone</h3><p class="text-sm text-base-content/60">+254 712 345 678</p></div>
+                                <div>
+                                    <h3 class="font-semibold text-sm">Phone</h3>
+                                    <p class="text-sm text-base-content/60">+254 712 345 678</p>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-3 p-4 bg-base-100 rounded-lg">
+                            <div class="flex items-center gap-3 p-4 bg-base-200/30 border border-base-300 rounded-lg hover:border-primary/50 transition-colors">
                                 <div class="bg-primary/10 p-3 rounded-lg"><MapPin size="20" class="text-primary" /></div>
-                                <div><h3 class="font-semibold">Location</h3><p class="text-sm text-base-content/60">Nairobi, Kenya</p></div>
+                                <div>
+                                    <h3 class="font-semibold text-sm">Location</h3>
+                                    <p class="text-sm text-base-content/60">Nairobi, Kenya</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text">Name *</span></label>
-                                    <input type="text" bind:value={formData.name} placeholder="Your Name" class="input input-bordered" required />
+                        <div class="bg-base-200/20 border border-base-300 rounded-xl p-6 md:p-8">
+                            <div class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block mb-2">
+                                            <span class="text-sm font-medium">Name *</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            bind:value={formData.name}
+                                            placeholder="Your Name"
+                                            class="w-full px-4 py-3 bg-base-100 border border-base-300 rounded-lg focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block mb-2">
+                                            <span class="text-sm font-medium">Email *</span>
+                                        </label>
+                                        <input
+                                            type="email"
+                                            bind:value={formData.email}
+                                            placeholder="your@email.com"
+                                            class="w-full px-4 py-3 bg-base-100 border border-base-300 rounded-lg focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                                            required
+                                        />
+                                        {#if emailError}
+                                            <p class="text-sm text-error mt-1">{emailError}</p>
+                                        {/if}
+                                    </div>
                                 </div>
-                                <div class="form-control">
-                                    <label class="label"><span class="label-text">Email *</span></label>
-                                    <input type="email" bind:value={formData.email} placeholder="your@email.com" class="input input-bordered" required />
+                                <div>
+                                    <label class="block mb-2">
+                                        <span class="text-sm font-medium">Message *</span>
+                                    </label>
+                                    <textarea
+                                        bind:value={formData.message}
+                                        placeholder="Tell me about your project..."
+                                        class="w-full px-4 py-3 bg-base-100 border border-base-300 rounded-lg focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 h-32 resize-none transition-all"
+                                        required
+                                    ></textarea>
                                 </div>
+                                {#if submitError}
+                                    <div class="bg-error/10 border border-error/20 text-error rounded-lg p-4 flex items-center gap-2">
+                                        <TriangleAlert size="16" />
+                                        {submitError}
+                                    </div>
+                                {/if}
+                                <button
+                                    class="w-full px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    on:click={handleSubmit}
+                                    disabled={isSubmitting || !formData.name || !formData.email || !formData.message}
+                                >
+                                    {#if isSubmitting}
+                                        <span class="animate-spin">⏳</span>
+                                        Sending Message...
+                                    {:else}
+                                        <Send size="16" />
+                                        Send Message
+                                    {/if}
+                                </button>
                             </div>
-                            <div class="form-control">
-                                <label class="label"><span class="label-text">Message *</span></label>
-                                <textarea bind:value={formData.message} placeholder="Tell me about your project..." class="textarea textarea-bordered h-24" required></textarea>
-                            </div>
-                            {#if submitError}
-                                <div class="alert alert-error"><TriangleAlert size="16" />{submitError}</div>
-                            {/if}
-                            <button class="btn btn-primary w-full gap-2" on:click={handleSubmit} disabled={isSubmitting || !formData.name || !formData.email || !formData.message}>
-                                {#if isSubmitting}<span class="loading loading-spinner"></span>Sending Message...{:else}<Send size="16" />Send Message{/if}
-                            </button>
                         </div>
                     {/if}
                 </div>
             </div>
         {:else}
             <div class="text-center py-20">
-                <div class="text-6xl text-secondary mb-6"><CheckCircle size="64" /></div>
+                <div class="text-secondary mb-6 flex justify-center"><CheckCircle size="64" /></div>
                 <h2 class="text-3xl font-bold mb-4">{mode === 'quote' ? 'Quote Request Sent!' : 'Message Sent!'}</h2>
                 <p class="text-lg text-base-content/70 mb-8">
                     {mode === 'quote' ? 'Thank you for your interest! I\'ll review your project details and get back to you within 24 hours.' : 'Thank you for reaching out! I\'ll get back to you as soon as possible.'}
                 </p>
-                <button class="btn btn-primary gap-2" on:click={resetForm}><Plus size="16" />{mode === 'quote' ? 'Request Another Quote' : 'Send Another Message'}</button>
+                <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2 mx-auto" on:click={resetForm}><Plus size="16" />{mode === 'quote' ? 'Request Another Quote' : 'Send Another Message'}</button>
             </div>
         {/if}
     </div>
