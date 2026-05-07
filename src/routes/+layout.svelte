@@ -3,8 +3,13 @@
 	import { Briefcase, Mail, Github, Linkedin, MessageCircle } from 'lucide-svelte'
 	import { onMount, onDestroy } from 'svelte'
 	import { fly } from 'svelte/transition'
+	import { goto } from '$app/navigation'
 
 	let year = new Date().getFullYear()
+
+	// Shift key tracking for admin navigation
+	let shiftPressCount = 0
+	let shiftResetTimeout: ReturnType<typeof setTimeout>
 
 	// Text rotation logic
 	const footerWords = [
@@ -33,6 +38,34 @@
 
 	onMount(() => {
 		startFooterInterval()
+
+		// Add shift key listener for admin navigation
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Shift') {
+				shiftPressCount++
+
+				// Clear any existing timeout
+				if (shiftResetTimeout) clearTimeout(shiftResetTimeout)
+
+				// If shift pressed 3 times, navigate to admin
+				if (shiftPressCount === 3) {
+					goto('/login')
+					shiftPressCount = 0
+					return
+				}
+
+				// Reset count after 1 second of no shift presses
+				shiftResetTimeout = setTimeout(() => {
+					shiftPressCount = 0
+				}, 1000)
+			}
+		}
+
+		window.addEventListener('keydown', handleKeyDown)
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown)
+		}
 	})
 
 	onDestroy(() => {
