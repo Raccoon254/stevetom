@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    import {onMount} from 'svelte';
 
     // Define a type for our project objects
     type Project = {
@@ -22,7 +22,7 @@
             image: 'skillkenya.png',
             projectUrl: 'https://www.skillkenya.com/',
             githubUrl: '#',
-            tech: ['React', 'Node.js', 'MySQL', 'NextJs','Prisma'],
+            tech: ['React', 'NodeJs', 'MySQL', 'NextJs', 'Prisma'],
             year: '2024',
             category: 'Education Platform',
             features: ['Video Streaming', 'Payment Integration', 'User Analytics', 'Course Management'],
@@ -46,7 +46,7 @@
             image: 'jestorm.png',
             projectUrl: 'https://jestorm.vercel.app',
             githubUrl: 'https://github.com/Raccoon254/',
-            tech: ['Next.js', 'TypeScript', 'Prisma', 'Socket.io'],
+            tech: ['NextJs', 'TypeScript', 'Prisma', 'Socket.io'],
             year: '2024',
             category: 'Project Management',
             features: ['Real-time Collaboration', 'Task Automation', 'Time Tracking', 'Team Analytics'],
@@ -82,7 +82,7 @@
             image: 'futurespace.png',
             projectUrl: 'https://futurespace.vercel.app/',
             githubUrl: 'https://github.com/FutureSpace-Kenya',
-            tech: ['Next.js', 'Tailwind', 'HTML', 'Vercel'],
+            tech: ['NextJs', 'Tailwind', 'HTML', 'Vercel'],
             year: '2024',
             category: 'Corporate Website',
             features: ['Interactive Animations', 'Service Showcase', 'Contact Forms', 'Portfolio Gallery'],
@@ -95,7 +95,7 @@
             projectUrl: 'https://crown-chambers.vercel.app/',
             githubUrl: 'https://github.com/Raccoon254/',
             tech: ['React', 'TypeScript', 'Vercel', 'TailwindCSS'],
-            year: '2024',
+            year: '2025',
             category: 'Legal Services',
             features: ['Case Management', 'Client Portal', 'Document Templates', 'Appointment Booking'],
             status: 'live'
@@ -107,7 +107,7 @@
             projectUrl: '#',
             githubUrl: 'https://github.com/Raccoon254/cline',
             tech: ['Laravel', 'Livewire', 'MySQL', 'TailwindCSS'],
-            year: '2024',
+            year: '2023',
             category: 'Business Tool',
             features: ['Client Dashboard', 'Invoice Generation', 'Project Tracking', 'Communication Hub'],
             status: 'development'
@@ -126,7 +126,7 @@
                     entry.target.classList.add('animate-in');
                 }
             });
-        }, { threshold: 0.1 });
+        }, {threshold: 0.1});
 
         document.querySelectorAll('.project-card').forEach((card) => {
             observer.observe(card);
@@ -136,12 +136,27 @@
     });
 
     function getStatusDot(status: string) {
-        switch(status) {
-            case 'live': return '🟢';
-            case 'development': return '🟡';
-            case 'archived': return '🔴';
-            default: return '⚪';
+        switch (status) {
+            case 'live':
+                return '🟢';
+            case 'development':
+                return '🟡';
+            case 'archived':
+                return '🔴';
+            default:
+                return '⚪';
         }
+    }
+
+    function getTechName(name: string){
+        //remove spaces and make it lowercase
+        if (name == "Tailwind"){
+            return 'tailwindcss';
+        }
+        if (name == "HTML"){
+            return 'html5';
+        }
+        return name.toLowerCase().replace(/\s+/g, '');
     }
 
     function handleProjectHover(index: number) {
@@ -153,7 +168,7 @@
     }
 </script>
 
-<svelte:window bind:scrollY />
+<svelte:window bind:scrollY/>
 
 <section class="pt-16 md:pt-32 relative overflow-hidden">
     <!-- Floating background elements -->
@@ -227,7 +242,10 @@
                             <!-- Tech Stack -->
                             <div class="tech-stack">
                                 {#each project.tech.slice(0, 3) as tech}
-                                    <span class="tech-tag">{tech}</span>
+                                    <span class="tech-tag flex items-center justify-center gap-1">
+                                        <i class={`devicon-${getTechName(tech)}-plain colored`}></i>
+                                        {tech}
+                                    </span>
                                 {/each}
                                 {#if project.tech.length > 3}
                                     <span class="tech-more">+{project.tech.length - 3}</span>
@@ -253,11 +271,7 @@
                                 <h5 class="tech-title">Tech Stack</h5>
                                 <div class="tech-grid">
                                     {#each project.tech as tech}
-                                        <div>
-                                            <i class="devicon-react-original colored"></i>
-                                            <i class={`devicon-${tech.toLowerCase()}-plain colored`}></i>
-                                            <span class="tech-pill">{tech}</span>
-                                        </div>
+                                        <span class="tech-pill">{tech}</span>
                                     {/each}
                                 </div>
                             </div>
@@ -306,11 +320,7 @@
             <p class="loading-text">
                 <span class="typewriter">This section is evolving...</span>
             </p>
-            <div class="loading-animation">
-                <div class="pulse-circle"></div>
-                <div class="pulse-circle" style="animation-delay: 0.5s;"></div>
-                <div class="pulse-circle" style="animation-delay: 1s;"></div>
-            </div>
+            <span class="loading opacity-30 mt-2 loading-spinner"></span>
             <p class="coming-soon">More innovative projects launching soon</p>
         </div>
     </div>
@@ -328,10 +338,18 @@
     }
 
     @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        25% { transform: translateY(-20px) rotate(90deg); }
-        50% { transform: translateY(-10px) rotate(180deg); }
-        75% { transform: translateY(-30px) rotate(270deg); }
+        0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        25% {
+            transform: translateY(-20px) rotate(90deg);
+        }
+        50% {
+            transform: translateY(-10px) rotate(180deg);
+        }
+        75% {
+            transform: translateY(-30px) rotate(270deg);
+        }
     }
 
     /* Header Animations */
@@ -344,8 +362,12 @@
     }
 
     @keyframes shimmer {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
+        0% {
+            background-position: -200% center;
+        }
+        100% {
+            background-position: 200% center;
+        }
     }
 
     .text-glitch {
@@ -363,8 +385,12 @@
     }
 
     @keyframes glitch {
-        0%, 90%, 100% { opacity: 1; }
-        91%, 99% { opacity: 0.8; }
+        0%, 90%, 100% {
+            opacity: 1;
+        }
+        91%, 99% {
+            opacity: 0.8;
+        }
     }
 
     .decorative-line {
@@ -376,8 +402,12 @@
     }
 
     @keyframes expand {
-        from { width: 0; }
-        to { width: 100px; }
+        from {
+            width: 0;
+        }
+        to {
+            width: 100px;
+        }
     }
 
     /* Projects Container */
@@ -779,13 +809,21 @@
     }
 
     @keyframes typing {
-        from { width: 0; }
-        to { width: 100%; }
+        from {
+            width: 0;
+        }
+        to {
+            width: 100%;
+        }
     }
 
     @keyframes blink-caret {
-        from, to { border-color: transparent; }
-        50% { border-color: rgba(255, 255, 255, 0.75); }
+        from, to {
+            border-color: transparent;
+        }
+        50% {
+            border-color: rgba(255, 255, 255, 0.75);
+        }
     }
 
     .loading-animation {
