@@ -44,7 +44,7 @@
 			{#each links as l}
 				<li>
 					<a href={l.href} target="_blank" rel="noopener">
-						<span class="brand"><Icon name={l.icon} size={16} /></span>
+						<span class="mark"><Icon name={l.icon} size={16} /></span>
 						<span class="text">
 							<span class="lbl">{l.label}</span>
 							<span class="handle">{l.handle}</span>
@@ -122,13 +122,13 @@
 	}
 
 	/* brand mark — inherits currentColor, so it follows the theme */
-	.brand {
+	.mark {
 		display: inline-flex;
 		flex: 0 0 auto;
 		color: var(--ink);
 		transition: color 0.25s;
 	}
-	ul.lines a:hover .brand {
+	ul.lines a:hover .mark {
 		color: var(--spark);
 	}
 

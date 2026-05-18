@@ -58,7 +58,6 @@
 				transform="translate(384,0)"
 			></path>
 		</svg>
-		<span class="wordmark">kenTom</span>
 	</a>
 
 	<nav class="links" aria-label="Primary">

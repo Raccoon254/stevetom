@@ -11,8 +11,8 @@
 	let year = new Date().getFullYear()
 
 	// Redesigned pages live in the (kenfolio) route group — they bring their
-	// own chrome (Brand / ThemeToggle / Colophon) and skip the legacy shell.
-	$: isKenfolio = $page.route.id?.startsWith('/(kenfolio)') ?? false
+	// own chrome and skip the legacy shell. Error pages also render bare.
+	$: isKenfolio = ($page.route.id?.startsWith('/(kenfolio)') ?? false) || !!$page.error
 
 	// Shift key tracking for admin navigation
 	let shiftPressCount = 0
