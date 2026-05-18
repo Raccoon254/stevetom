@@ -993,7 +993,7 @@
 		<div class="partner-row">
 			<a class="partner-pill" href="/partners">
 				<span>Start a conversation</span>
-				<span class="ar" aria-hidden="true"><Icon name="arrow-down" size={13} /></span>
+				<span class="ar" aria-hidden="true"><Icon name="message" size={13} /></span>
 			</a>
 		</div>
 	</div>

@@ -1,15 +1,101 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
 
 	export let status: number = 404;
 	export let message: string = '';
 
-	$: headline = status === 404 ? 'No pulse here.' : 'Something flatlined.';
+	$: headline = status === 404 ? 'Nothing here.' : 'Something broke.';
 	$: detail =
 		message ||
 		(status === 404
 			? 'The page you were looking for does not exist, or it has moved.'
 			: 'An unexpected error stopped this page. Try again in a moment.');
+
+	onMount(() => {
+		const SVGNS = 'http://www.w3.org/2000/svg';
+		const pathEl = document.getElementById('errEcgPath') as unknown as SVGPathElement | null;
+		const ribbonG = document.getElementById('errRibbon');
+		if (!pathEl || !ribbonG) return;
+
+		const TOTAL = pathEl.getTotalLength();
+		const DURATION = 4200;
+		const HEAD_W = 5;
+		const TAIL_LEN = 1100;
+		const LIFETIME = 1 + TAIL_LEN / TOTAL;
+		const SEGS = 64;
+		let alive = true;
+
+		function widthAt(d: number) {
+			if (d <= 0) return HEAD_W;
+			if (d >= TAIL_LEN) return 0;
+			const t = d / TAIL_LEN;
+			return HEAD_W * (1 - t) * (1 - t);
+		}
+
+		const segs: SVGUseElement[] = [];
+		for (let i = 0; i < SEGS; i++) {
+			const u = document.createElementNS(SVGNS, 'use');
+			u.setAttribute('href', '#errEcgPath');
+			u.setAttribute('stroke-width', '0');
+			u.setAttribute('stroke-dasharray', '0 99999');
+			ribbonG.appendChild(u);
+			segs.push(u);
+		}
+
+		function drawRibbon(progress: number) {
+			if (progress <= 0 || progress >= LIFETIME) {
+				for (let i = 0; i < SEGS; i++) segs[i].setAttribute('stroke-width', '0');
+				return;
+			}
+			const H = progress * TOTAL;
+			const s0 = Math.max(0, H - TAIL_LEN);
+			const s1 = Math.min(TOTAL, H);
+			const span = s1 - s0;
+			if (span < 1) {
+				for (let i = 0; i < SEGS; i++) segs[i].setAttribute('stroke-width', '0');
+				return;
+			}
+			const sl = span / SEGS;
+			for (let i = 0; i < SEGS; i++) {
+				const a = s0 + i * sl;
+				const b = a + sl;
+				const mid = (a + b) / 2;
+				const w = widthAt(H - mid) * 2;
+				const el = segs[i];
+				if (w < 0.2) {
+					el.setAttribute('stroke-width', '0');
+					continue;
+				}
+				const pad = sl * 0.06;
+				const showStart = Math.max(0, a - pad);
+				const showLen = b + pad - showStart;
+				el.setAttribute('stroke-width', w.toFixed(2));
+				el.setAttribute(
+					'stroke-dasharray',
+					`0 ${showStart.toFixed(2)} ${showLen.toFixed(2)} 999999`
+				);
+			}
+		}
+
+		let elapsed = 0;
+		let last = performance.now();
+		function loop(now: number) {
+			if (!alive) return;
+			elapsed += now - last;
+			last = now;
+			drawRibbon((elapsed % DURATION) / DURATION);
+			requestAnimationFrame(loop);
+		}
+		requestAnimationFrame((n) => {
+			last = n;
+			requestAnimationFrame(loop);
+		});
+
+		return () => {
+			alive = false;
+		};
+	});
 </script>
 
 <main class="page">
@@ -17,12 +103,16 @@
 		<div class="eyebrow">error · {status}</div>
 		<h1>{headline}</h1>
 
-		<div class="flat" aria-hidden="true">
-			<svg viewBox="0 0 600 80" preserveAspectRatio="none">
-				<line class="base" x1="0" y1="40" x2="600" y2="40" />
-				<line class="draw" x1="0" y1="40" x2="600" y2="40" />
+		<div class="pulse" aria-hidden="true">
+			<svg viewBox="0 150 1280 470" preserveAspectRatio="xMidYMid meet">
+				<path
+					id="errEcgPath"
+					d="M0,400 H560 q10,0 14,-14 q5,-14 10,0 q4,14 10,14 H630 L660,420 L700,170 L740,560 L770,400 q10,0 16,-22 q6,-22 12,0 q6,22 14,22 H1280"
+				/>
+				<use class="ghost" href="#errEcgPath" />
+				<g id="errRibbon" class="ribbon" fill="none" stroke-linecap="round" stroke-linejoin="round"
+				></g>
 			</svg>
-			<span class="scan"></span>
 		</div>
 
 		<p class="detail">{detail}</p>
@@ -47,7 +137,7 @@
 	}
 	.err {
 		width: 100%;
-		max-width: 560px;
+		max-width: 600px;
 		text-align: center;
 	}
 	.eyebrow {
@@ -65,73 +155,32 @@
 		line-height: 1.05;
 		letter-spacing: -0.025em;
 		color: var(--ink);
-		margin: 0 0 clamp(28px, 5vh, 44px);
+		margin: 0 0 clamp(20px, 4vh, 36px);
 		text-wrap: balance;
 	}
 
-	/* flatline — the heartbeat stopped */
-	.flat {
-		position: relative;
-		height: 64px;
-		margin: 0 auto clamp(28px, 5vh, 44px);
+	/* the ECG pulse, same heartbeat as the landing hero */
+	.pulse {
+		margin: 0 auto clamp(20px, 4vh, 36px);
 	}
-	.flat svg {
-		width: 100%;
-		height: 100%;
+	.pulse svg {
 		display: block;
+		width: 100%;
+		height: auto;
 		overflow: visible;
 	}
-	.flat .base {
+	#errEcgPath {
+		fill: none;
+		stroke: none;
+	}
+	.ghost {
+		fill: none;
 		stroke: var(--hairline-2);
 		stroke-width: 1.5;
+		vector-effect: non-scaling-stroke;
 	}
-	.flat .draw {
-		stroke: var(--ink-2);
-		stroke-width: 1.5;
-		stroke-dasharray: 600;
-		stroke-dashoffset: 600;
-		animation: draw 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-	}
-	.flat .scan {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		width: 7px;
-		height: 7px;
-		margin-top: -3.5px;
-		border-radius: 50%;
-		background: var(--spark);
-		box-shadow: 0 0 12px var(--spark-glow);
-		animation: scan 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-	}
-	@keyframes draw {
-		to {
-			stroke-dashoffset: 0;
-		}
-	}
-	@keyframes scan {
-		0% {
-			left: 0;
-			opacity: 0;
-		}
-		8%,
-		92% {
-			opacity: 1;
-		}
-		100% {
-			left: 100%;
-			opacity: 0;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.flat .draw {
-			stroke-dashoffset: 0;
-			animation: none;
-		}
-		.flat .scan {
-			animation: none;
-			opacity: 0;
-		}
+	.ribbon {
+		stroke: var(--spark);
 	}
 
 	.detail {

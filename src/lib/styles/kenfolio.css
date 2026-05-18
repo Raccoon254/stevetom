@@ -58,6 +58,14 @@
 	--syn-cmt: rgba(14, 17, 15, 0.4);
 }
 
+/* html surface — keep the root element (overscroll / rubber-band area,
+   address-bar fill) on-theme, not just the body */
+:root[data-theme='dark'],
+:root[data-theme='light'] {
+	background-color: var(--bg);
+	transition: background-color 0.35s ease;
+}
+
 /* page surface — applied by the KenFolio layout via the .kenfolio body class */
 body.kenfolio {
 	margin: 0;
