@@ -125,6 +125,17 @@ export function buttonDark(text: string, url: string): string {
 	);
 }
 
+/** One-time-code block — large monospace code on a soft panel. */
+export function otpBlock(code: string): string {
+	return (
+		`<div style="margin:22px 0;padding:24px;background:#f9f8f5;border-radius:6px;text-align:center">` +
+		`<div style="font-family:${BODY_FONT};font-size:13px;color:#666;margin:0 0 14px">Your verification code</div>` +
+		`<div style="font-family:${MONO_FONT};font-size:34px;font-weight:700;letter-spacing:9px;color:#111;padding-left:9px">${code}</div>` +
+		`<div style="font-family:${BODY_FONT};font-size:12px;color:#999;margin-top:14px">Expires in 10 minutes. Don't share this code.</div>` +
+		`</div>`
+	);
+}
+
 /**
  * Master email template — dark kenTom logo, left-aligned content,
  * a subtle footer. `bodyHtml` is composed from the primitives above.

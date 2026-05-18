@@ -11,6 +11,10 @@
 	let showDetailModal = false;
 	let filterStatus = '';
 
+	let replyText = '';
+	let replySending = false;
+	let replyMsg = '';
+
 	const STATUSES = ['PENDING', 'IN_REVIEW', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'REJECTED'];
 
 	onMount(fetchRequests);
@@ -62,6 +66,32 @@
 	function showDetails(request: any) {
 		selectedRequest = request;
 		showDetailModal = true;
+		replyText = '';
+		replyMsg = '';
+	}
+
+	async function sendReply() {
+		if (!replyText.trim() || replySending) return;
+		replySending = true;
+		replyMsg = '';
+		try {
+			const res = await fetch(`/api/service-requests/${selectedRequest.id}/reply`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ message: replyText })
+			});
+			const data = await res.json();
+			if (res.ok && data.success) {
+				replyMsg = `Reply sent to ${selectedRequest.clientEmail}.`;
+				replyText = '';
+			} else {
+				replyMsg = data.error || 'Failed to send the reply.';
+			}
+		} catch {
+			replyMsg = 'Network error. Please try again.';
+		} finally {
+			replySending = false;
+		}
 	}
 
 	const formatDate = (d: string) => new Date(d).toLocaleDateString();
@@ -211,6 +241,26 @@
 						<p class="notes">{selectedRequest.notes}</p>
 					</section>
 				{/if}
+
+				<section>
+					<h4 class="a-section-title"><Icon name="sms" size={13} /> Reply to client</h4>
+					<textarea
+						class="a-textarea reply"
+						bind:value={replyText}
+						placeholder="Write a reply — it is emailed to {selectedRequest.clientEmail} from KenTom HQ."
+					></textarea>
+					{#if replyMsg}<p class="reply-msg">{replyMsg}</p>{/if}
+					<div class="reply-row">
+						<button
+							class="a-btn a-btn--solid"
+							on:click={sendReply}
+							disabled={replySending || !replyText.trim()}
+						>
+							<Icon name="send" size={14} />
+							{replySending ? 'Sending' : 'Send reply'}
+						</button>
+					</div>
+				</section>
 			</div>
 
 			<footer class="modal-foot">
@@ -393,6 +443,20 @@
 		line-height: 1.6;
 		white-space: pre-wrap;
 		margin: 0;
+	}
+	.reply {
+		min-height: 110px;
+	}
+	.reply-msg {
+		font-family: var(--mono);
+		font-size: 11px;
+		color: var(--mute);
+		margin: 8px 0 0;
+	}
+	.reply-row {
+		display: flex;
+		justify-content: flex-end;
+		margin-top: 12px;
 	}
 	.modal-foot {
 		position: sticky;

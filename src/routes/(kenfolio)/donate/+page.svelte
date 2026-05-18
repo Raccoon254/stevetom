@@ -111,52 +111,79 @@
 				</a>
 			</div>
 		{:else}
-			<h1>A one-off gift, <em>when the work earns it</em>.</h1>
-			<p class="lede">
-				No tiers, no pressure. If something here was useful, this goes straight back into tools,
-				tutoring, and the next few things on the bench. For ongoing support, see
-				<a class="inline-link" href="/partners">partners</a>.
-			</p>
+			<div class="body">
+				<!-- intro -->
+				<div class="intro">
+					<h1>A one-off gift, <em>when the work earns it</em>.</h1>
+					<p class="lede">
+						No tiers, no pressure. If something here was useful, this goes straight back into
+						tools, tutoring, and the next few things on the bench.
+					</p>
+					<ul class="goes">
+						<li><Icon name="code" size={15} /> Open-source upkeep</li>
+						<li><Icon name="book" size={15} /> SkillKenya tutoring</li>
+						<li><Icon name="cpu" size={15} /> Infra &amp; tools</li>
+					</ul>
+					<p class="ongoing">
+						Looking to support long-term? See <a class="inline-link" href="/partners">partners</a>.
+					</p>
+				</div>
 
-			<div class="seg" role="group" aria-label="Currency">
-				<button class:on={currency === 'KES'} type="button" on:click={() => pickCurrency('KES')}
-					>KES</button
-				>
-				<button class:on={currency === 'USD'} type="button" on:click={() => pickCurrency('USD')}
-					>USD</button
-				>
-			</div>
+				<!-- donation card -->
+				<div class="card">
+					<div class="seg" role="group" aria-label="Currency">
+						<button class:on={currency === 'KES'} type="button" on:click={() => pickCurrency('KES')}
+							>KES</button
+						>
+						<button class:on={currency === 'USD'} type="button" on:click={() => pickCurrency('USD')}
+							>USD</button
+						>
+					</div>
 
-			<div class="amounts">
-				{#each suggested[currency] as a}
+					<div class="amounts">
+						{#each suggested[currency] as a}
+							<button
+								type="button"
+								class="amt"
+								class:on={amount === a}
+								on:click={() => (amount = a)}>{currency === 'KES' ? '' : '$'}{a}</button
+							>
+						{/each}
+					</div>
+
+					<div class="field">
+						<label for="amount">Amount ({currency})</label>
+						<div class="amount-input">
+							<span class="cur">{currency === 'KES' ? 'KSh' : '$'}</span>
+							<input id="amount" type="number" min="1" bind:value={amount} />
+						</div>
+					</div>
+					<div class="field">
+						<label for="email">Email — for the receipt</label>
+						<input
+							id="email"
+							type="email"
+							autocomplete="email"
+							bind:value={email}
+							placeholder="your@email"
+						/>
+					</div>
+
+					{#if status === 'error'}
+						<p class="err">{message}</p>
+					{/if}
+
 					<button
+						class="pill pill--solid give"
 						type="button"
-						class="amt"
-						class:on={amount === a}
-						on:click={() => (amount = a)}>{currency === 'KES' ? '' : '$'}{a}</button
+						on:click={donate}
+						disabled={status === 'loading'}
 					>
-				{/each}
-			</div>
-
-			<div class="field">
-				<label for="amount">Amount ({currency})</label>
-				<input id="amount" type="number" min="1" bind:value={amount} />
-			</div>
-			<div class="field">
-				<label for="email">Email — for the receipt</label>
-				<input id="email" type="email" autocomplete="email" bind:value={email} placeholder="your@email" />
-			</div>
-
-			{#if status === 'error'}
-				<p class="err">{message}</p>
-			{/if}
-
-			<div class="cta-row">
-				<button class="pill pill--solid" type="button" on:click={donate} disabled={status === 'loading'}>
-					<span>{status === 'loading' ? 'Redirecting' : 'Continue to payment'}</span>
-					<span class="ar" aria-hidden="true"><Icon name="card-send" size={15} /></span>
-				</button>
-				<span class="alt">secured by Paystack</span>
+						<span>{status === 'loading' ? 'Redirecting' : 'Continue to payment'}</span>
+						<span class="ar" aria-hidden="true"><Icon name="card-send" size={15} /></span>
+					</button>
+					<span class="secured"><Icon name="shield-tick" size={13} /> Secured by Paystack</span>
+				</div>
 			</div>
 		{/if}
 	</div>
@@ -184,11 +211,11 @@
 	h1 {
 		font-family: 'Google Sans Display', var(--sans);
 		font-weight: 500;
-		font-size: clamp(32px, 4.6vw, 56px);
+		font-size: clamp(32px, 4.6vw, 52px);
 		line-height: 1.08;
 		letter-spacing: -0.025em;
 		color: var(--ink);
-		margin: 0 0 clamp(16px, 3vh, 24px);
+		margin: 0 0 clamp(16px, 3vh, 22px);
 		text-wrap: balance;
 	}
 	h1 em {
@@ -196,10 +223,10 @@
 		color: var(--mute);
 	}
 	.lede {
-		font-size: clamp(16px, 1.5vw, 19px);
+		font-size: clamp(16px, 1.5vw, 18px);
 		line-height: 1.55;
 		color: var(--ink-2);
-		margin: 0 0 clamp(32px, 5vh, 44px);
+		margin: 0 0 clamp(24px, 4vh, 32px);
 		text-wrap: pretty;
 	}
 	.inline-link {
@@ -211,13 +238,61 @@
 		border-color: var(--spark);
 	}
 
+	/* two-column body */
+	.body {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: clamp(32px, 5vw, 64px);
+		align-items: start;
+	}
+
+	/* intro column */
+	.goes {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 clamp(22px, 3.5vh, 30px);
+		display: grid;
+		gap: 12px;
+	}
+	.goes li {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--mono);
+		font-size: 11px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--ink-2);
+	}
+	.goes li :global(svg) {
+		color: var(--spark);
+		flex: 0 0 auto;
+	}
+	.ongoing {
+		font-size: 14px;
+		line-height: 1.5;
+		color: var(--mute);
+		margin: 0;
+	}
+
+	/* donation card */
+	.card {
+		border: 1px solid var(--hairline-2);
+		border-radius: 16px;
+		padding: clamp(22px, 3vw, 32px);
+		background: rgba(var(--bg-rgb), 0.4);
+	}
+
 	/* currency segmented toggle */
 	.seg {
-		display: inline-flex;
+		display: flex;
 		border: 1px solid var(--hairline-2);
 		border-radius: 999px;
 		padding: 3px;
-		margin: 0 0 20px;
+		margin: 0 0 18px;
+	}
+	.seg button {
+		flex: 1;
 	}
 	.seg button {
 		font-family: var(--mono);

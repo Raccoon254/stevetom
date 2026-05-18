@@ -7,7 +7,6 @@
 		{ href: '/', label: 'Home' },
 		{ href: '/blog', label: 'Notes' },
 		{ href: '/partners', label: 'Partners' },
-		{ href: '/donate', label: 'Support' },
 		{ href: '/quote', label: 'Quote' },
 		{ href: '/contact', label: 'Contact' }
 	];
@@ -17,7 +16,8 @@
 	let menuOpen = false;
 
 	$: pathname = $page.url.pathname;
-	const isActive = (href: string) =>
+	// reactive so the active link updates on navigation (depends on pathname)
+	$: isActive = (href: string) =>
 		href === '/' ? pathname === '/' : pathname.startsWith(href);
 
 	onMount(() => {
