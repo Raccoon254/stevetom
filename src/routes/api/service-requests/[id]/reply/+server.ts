@@ -2,6 +2,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { prisma } from '$lib/db.js';
 import { sendEmail, renderEmail, p, esc, SENDERS, CONTACT } from '$lib/server/mailer';
+import { logActivity } from '$lib/server/log';
 
 /** Admin → client reply. Gated by the admin session cookie. */
 export const POST: RequestHandler = async ({ params, request, cookies }) => {
@@ -35,6 +36,14 @@ export const POST: RequestHandler = async ({ params, request, cookies }) => {
 				footerNote: 'You received this as a reply to your request on kentom.co.ke.',
 				bodyHtml: paras + p('Steve', 0)
 			})
+		});
+
+		await logActivity({
+			action: 'request.reply',
+			entity: 'request',
+			entityId: sr.id,
+			actor: 'admin',
+			summary: `Replied by email to ${sr.clientName}`
 		});
 
 		return json({ success: true });

@@ -53,11 +53,25 @@ model ServiceRequest {
   timeline     String? // Expected timeline
   status       ServiceRequestStatus @default(PENDING)
   notes        String? // Internal notes
+  deletedAt    DateTime? // Soft delete — archived, never destroyed
   createdAt    DateTime             @default(now())
   updatedAt    DateTime             @updatedAt
 
   // Relation to service
   service Service @relation(fields: [serviceId], references: [id])
+}
+
+// Admin activity log — an append-only trail of what happened.
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String // e.g. "request.created", "request.status", "project.updated"
+  entity    String // "request" | "project" | "service" | "donation"
+  entityId  String?
+  summary   String // human-readable line
+  actor     String   @default("system") // "system" | "admin" | "client"
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
 }
 
 enum ProjectStatus {

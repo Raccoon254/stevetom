@@ -15,7 +15,7 @@
 <div class="login">
 	<main class="wrap">
 		<a class="back" href="/">
-			<Icon name="arrow-left" size={13} /> Back to site
+			<Icon name="ai-homepage" size={13} /> Back to site
 		</a>
 
 		<div class="card">

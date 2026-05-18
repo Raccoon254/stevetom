@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db.js'
+import { logActivity } from '$lib/server/log'
 import type { RequestHandler } from './$types'
 
 export const GET: RequestHandler = async ({ url }) => {
@@ -71,6 +72,14 @@ export const POST: RequestHandler = async ({ request }) => {
 				status: data.status?.toUpperCase() || 'DEVELOPMENT',
 				featured: data.featured || false
 			}
+		})
+
+		await logActivity({
+			action: 'project.created',
+			entity: 'project',
+			entityId: project.id,
+			actor: 'admin',
+			summary: `Added project "${project.title}"`
 		})
 
 		return json({

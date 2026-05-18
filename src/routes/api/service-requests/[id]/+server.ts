@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db.js'
+import { logActivity } from '$lib/server/log'
 import type { RequestHandler } from './$types'
 
 export const GET: RequestHandler = async ({ params }) => {
@@ -37,7 +38,9 @@ export const GET: RequestHandler = async ({ params }) => {
 export const PUT: RequestHandler = async ({ params, request }) => {
 	try {
 		const data = await request.json()
-		
+
+		const prev = await prisma.serviceRequest.findUnique({ where: { id: params.id } })
+
 		const serviceRequest = await prisma.serviceRequest.update({
 			where: { id: params.id },
 			data: {
@@ -52,7 +55,8 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 				budget: data.budget ? parseFloat(data.budget) : null,
 				timeline: data.timeline,
 				status: data.status || 'PENDING',
-				notes: data.notes
+				notes: data.notes,
+				deletedAt: data.deletedAt !== undefined ? data.deletedAt : undefined
 			},
 			include: {
 				service: {
@@ -63,6 +67,25 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 				}
 			}
 		})
+
+		if (prev && prev.status !== serviceRequest.status) {
+			await logActivity({
+				action: 'request.status',
+				entity: 'request',
+				entityId: serviceRequest.id,
+				actor: 'admin',
+				summary: `${serviceRequest.clientName}: status ${prev.status} → ${serviceRequest.status}`
+			})
+		}
+		if (prev && prev.deletedAt && !serviceRequest.deletedAt) {
+			await logActivity({
+				action: 'request.restored',
+				entity: 'request',
+				entityId: serviceRequest.id,
+				actor: 'admin',
+				summary: `Restored the request from ${serviceRequest.clientName}`
+			})
+		}
 
 		return json({
 			success: true,
@@ -82,15 +105,25 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 	}
 }
 
+// "Delete" is a soft delete — the row is archived, never destroyed.
 export const DELETE: RequestHandler = async ({ params }) => {
 	try {
-		await prisma.serviceRequest.delete({
-			where: { id: params.id }
+		const archived = await prisma.serviceRequest.update({
+			where: { id: params.id },
+			data: { deletedAt: new Date() }
+		})
+
+		await logActivity({
+			action: 'request.archived',
+			entity: 'request',
+			entityId: archived.id,
+			actor: 'admin',
+			summary: `Archived the request from ${archived.clientName}`
 		})
 
 		return json({
 			success: true,
-			message: 'Service request deleted successfully'
+			message: 'Service request archived'
 		})
 	} catch (error) {
 		console.error('Error deleting service request:', error)

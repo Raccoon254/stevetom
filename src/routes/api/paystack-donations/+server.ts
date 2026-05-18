@@ -17,6 +17,32 @@ export const POST: RequestHandler = async ({ request }) => {
     return json({ error: 'Valid email is required.' }, { status: 400 });
   }
 
+  // Paystack (this account) only settles in KES. USD donations are converted
+  // at today's live rate before the charge; the original USD amount and the
+  // rate used are kept on the donation record.
+  const originalCurrency: string = currency || 'KES';
+  let kesAmount = amount;
+  let fxRate: number | null = null;
+
+  if (originalCurrency === 'USD') {
+    try {
+      const fxRes = await fetch('https://open.er-api.com/v6/latest/USD');
+      const fxData = await fxRes.json();
+      const rate = fxData?.rates?.KES;
+      if (!fxRes.ok || typeof rate !== 'number' || rate <= 0) {
+        throw new Error('Bad exchange-rate response');
+      }
+      fxRate = rate;
+      kesAmount = Math.round(amount * rate);
+    } catch (fxErr) {
+      console.error('USD to KES conversion failed:', fxErr);
+      return json(
+        { error: 'Could not get an exchange rate, please try again.' },
+        { status: 502 }
+      );
+    }
+  }
+
   try {
     // Initialize Paystack transaction
     const response = await fetch('https://api.paystack.co/transaction/initialize', {
@@ -27,8 +53,8 @@ export const POST: RequestHandler = async ({ request }) => {
       },
       body: JSON.stringify({
         email,
-        amount: Math.round(amount * 100), // Paystack expects amount in kobo (cents)
-        currency: currency || 'KES',
+        amount: Math.round(kesAmount * 100), // Paystack expects the amount in kobo
+        currency: 'KES',
         callback_url: `${process.env.ORIGIN || 'http://localhost:5173'}/donate?success=true`,
         metadata: {
           custom_fields: [
@@ -48,17 +74,22 @@ export const POST: RequestHandler = async ({ request }) => {
       return json({ error: data.message || 'Failed to initialize payment.' }, { status: 500 });
     }
 
-    // Create donation record in database
+    // Create donation record in database. `amount`/`currency` reflect what is
+    // actually charged (KES); the original USD figure and FX rate are kept in
+    // metadata for reconciliation.
     await prisma.donation.create({
       data: {
         email,
-        amount,
-        currency: currency || 'KES',
+        amount: kesAmount,
+        currency: 'KES',
         paystackReference: data.data.reference,
         status: 'PENDING',
         metadata: JSON.stringify({
           accessCode: data.data.access_code,
-          authorizationUrl: data.data.authorization_url
+          authorizationUrl: data.data.authorization_url,
+          originalCurrency,
+          originalAmount: amount,
+          fxRate
         })
       }
     });

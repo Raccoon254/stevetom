@@ -6,8 +6,10 @@ export const GET: RequestHandler = async ({ url }) => {
 	try {
 		const status = url.searchParams.get('status')
 		const serviceId = url.searchParams.get('serviceId')
-		
-		const where: any = {}
+		const archived = url.searchParams.get('archived') === 'true'
+
+		// active requests by default; ?archived=true shows the archived ones
+		const where: any = { deletedAt: archived ? { not: null } : null }
 		if (status) where.status = status.toUpperCase()
 		if (serviceId) where.serviceId = serviceId
 

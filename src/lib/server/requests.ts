@@ -15,6 +15,7 @@ import {
 	NOTIFY_TO,
 	CONTACT
 } from './mailer';
+import { logActivity } from './log';
 
 const prisma = new PrismaClient();
 
@@ -82,6 +83,14 @@ export async function createServiceRequest(data: RequestInput): Promise<{ id: st
 			timeline: timeline || null,
 			status: 'PENDING'
 		}
+	});
+
+	await logActivity({
+		action: 'request.created',
+		entity: 'request',
+		entityId: serviceRequest.id,
+		actor: 'client',
+		summary: `${who} submitted a ${isQuote ? 'quote request' : 'contact message'}`
 	});
 
 	try {

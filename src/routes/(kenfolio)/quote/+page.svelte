@@ -203,7 +203,7 @@
 			<div class="send-row">
 				<a class="pill pill--solid" href="/">
 					<span>Back home</span>
-					<span class="ar" aria-hidden="true"><Icon name="arrow-left" size={14} /></span>
+					<span class="ar" aria-hidden="true"><Icon name="ai-homepage" size={14} /></span>
 				</a>
 			</div>
 		</div>

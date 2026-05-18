@@ -12,11 +12,13 @@
 		{ href: '/admin', label: 'Dashboard', icon: 'chart' },
 		{ href: '/admin/projects', label: 'Projects', icon: 'box' },
 		{ href: '/admin/services', label: 'Services', icon: 'setting' },
-		{ href: '/admin/service-requests', label: 'Requests', icon: 'messages' }
+		{ href: '/admin/service-requests', label: 'Requests', icon: 'messages' },
+		{ href: '/admin/logs', label: 'Logs', icon: 'activity' }
 	];
 
-	$: isActive = (href: string) =>
-		currentPath === href || (currentPath?.startsWith(href + '/') ?? false);
+	// exact match only — the dashboard (/admin) is a prefix of every other
+	// route, so a startsWith() rule would keep it permanently highlighted.
+	$: isActive = (href: string) => currentPath === href;
 </script>
 
 <div class="admin">
@@ -64,7 +66,7 @@
 
 			<div class="side-foot">
 				<a href="/" class="nav-link subtle">
-					<Icon name="arrow-left" size={17} />
+					<Icon name="ai-homepage" size={17} />
 					<span>Back to site</span>
 				</a>
 				<form action="/logout" method="POST">

@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db.js'
+import { logActivity } from '$lib/server/log'
 import type { RequestHandler } from './$types'
 
 export const GET: RequestHandler = async ({ url }) => {
@@ -49,6 +50,14 @@ export const POST: RequestHandler = async ({ request }) => {
 				technologies: data.technologies || [],
 				isActive: data.isActive !== false
 			}
+		})
+
+		await logActivity({
+			action: 'service.created',
+			entity: 'service',
+			entityId: service.id,
+			actor: 'admin',
+			summary: `Added service "${service.name}"`
 		})
 
 		return json({

@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db.js'
+import { logActivity } from '$lib/server/log'
 import type { RequestHandler } from './$types'
 
 export const GET: RequestHandler = async ({ params }) => {
@@ -47,6 +48,14 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 			}
 		})
 
+		await logActivity({
+			action: 'service.updated',
+			entity: 'service',
+			entityId: service.id,
+			actor: 'admin',
+			summary: `Updated service "${service.name}"`
+		})
+
 		return json({
 			success: true,
 			message: 'Service updated successfully',
@@ -67,8 +76,16 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 
 export const DELETE: RequestHandler = async ({ params }) => {
 	try {
-		await prisma.service.delete({
+		const deleted = await prisma.service.delete({
 			where: { id: params.id }
+		})
+
+		await logActivity({
+			action: 'service.deleted',
+			entity: 'service',
+			entityId: deleted.id,
+			actor: 'admin',
+			summary: `Deleted service "${deleted.name}"`
 		})
 
 		return json({

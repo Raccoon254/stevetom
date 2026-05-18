@@ -10,6 +10,7 @@
 	let selectedRequest: any = null;
 	let showDetailModal = false;
 	let filterStatus = '';
+	let view: 'active' | 'archived' = 'active';
 
 	let replyText = '';
 	let replySending = false;
@@ -21,9 +22,11 @@
 
 	async function fetchRequests() {
 		try {
-			let url = '/api/service-requests';
-			if (filterStatus) url += `?status=${filterStatus}`;
-			const res = await fetch(url);
+			const params = new URLSearchParams();
+			if (filterStatus) params.set('status', filterStatus);
+			if (view === 'archived') params.set('archived', 'true');
+			const qs = params.toString();
+			const res = await fetch('/api/service-requests' + (qs ? `?${qs}` : ''));
 			const data = await res.json();
 			if (data.success) requests = data.data;
 		} catch (error) {
@@ -50,8 +53,9 @@
 		}
 	}
 
-	async function deleteRequest(request: any) {
-		if (!confirm(`Delete the request from ${request.clientName}?`)) return;
+	async function archiveRequest(request: any) {
+		if (!confirm(`Archive the request from ${request.clientName}? You can restore it later.`))
+			return;
 		try {
 			const res = await fetch(`/api/service-requests/${request.id}`, { method: 'DELETE' });
 			if (res.ok) {
@@ -59,7 +63,23 @@
 				if (selectedRequest?.id === request.id) showDetailModal = false;
 			}
 		} catch (error) {
-			console.error('Error deleting request:', error);
+			console.error('Error archiving request:', error);
+		}
+	}
+
+	async function restoreRequest(request: any) {
+		try {
+			const res = await fetch(`/api/service-requests/${request.id}`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ ...request, deletedAt: null })
+			});
+			if (res.ok) {
+				await fetchRequests();
+				if (selectedRequest?.id === request.id) showDetailModal = false;
+			}
+		} catch (error) {
+			console.error('Error restoring request:', error);
 		}
 	}
 
@@ -109,7 +129,8 @@
 		);
 	}
 
-	$: if (browser && filterStatus !== undefined) fetchRequests();
+	$: refetchKey = `${view}:${filterStatus}`;
+	$: if (browser && refetchKey) fetchRequests();
 </script>
 
 <svelte:head>
@@ -122,12 +143,22 @@
 		<h1 class="a-title">Service Requests</h1>
 		<p class="a-sub">Manage and respond to client requests.</p>
 	</div>
-	<select class="a-select filter" bind:value={filterStatus}>
-		<option value="">All statuses</option>
-		{#each STATUSES as s}
-			<option value={s}>{s.replace('_', ' ')}</option>
-		{/each}
-	</select>
+	<div class="controls">
+		<div class="vtoggle">
+			<button class:on={view === 'active'} type="button" on:click={() => (view = 'active')}>
+				Active
+			</button>
+			<button class:on={view === 'archived'} type="button" on:click={() => (view = 'archived')}>
+				Archived
+			</button>
+		</div>
+		<select class="a-select filter" bind:value={filterStatus}>
+			<option value="">All statuses</option>
+			{#each STATUSES as s}
+				<option value={s}>{s.replace('_', ' ')}</option>
+			{/each}
+		</select>
+	</div>
 </div>
 
 {#if loading}
@@ -138,8 +169,12 @@
 {:else if requests.length === 0}
 	<div class="a-card a-empty" in:fade>
 		<div class="a-empty-icon"><Icon name="messages" size={30} /></div>
-		<h3>No service requests</h3>
-		<p>When clients submit requests, they appear here.</p>
+		<h3>{view === 'archived' ? 'Nothing archived' : 'No service requests'}</h3>
+		<p>
+			{view === 'archived'
+				? 'Archived requests show up here — they are never destroyed.'
+				: 'When clients submit requests, they appear here.'}
+		</p>
 	</div>
 {:else}
 	<div class="rows">
@@ -160,9 +195,19 @@
 					<button class="a-btn" on:click={() => showDetails(r)}>
 						<Icon name="eye" size={14} /> View
 					</button>
-					<button class="a-btn a-btn--danger" on:click={() => deleteRequest(r)} aria-label="Delete">
-						<Icon name="trash" size={14} />
-					</button>
+					{#if view === 'archived'}
+						<button class="a-btn" on:click={() => restoreRequest(r)} aria-label="Restore">
+							<Icon name="refresh" size={14} />
+						</button>
+					{:else}
+						<button
+							class="a-btn a-btn--danger"
+							on:click={() => archiveRequest(r)}
+							aria-label="Archive"
+						>
+							<Icon name="archive" size={14} />
+						</button>
+					{/if}
 				</div>
 			</div>
 		{/each}
@@ -275,9 +320,15 @@
 					{/if}
 				</div>
 				<div class="foot-r">
-					<button class="a-btn a-btn--danger" on:click={() => deleteRequest(selectedRequest)}>
-						Delete
-					</button>
+					{#if selectedRequest.deletedAt}
+						<button class="a-btn" on:click={() => restoreRequest(selectedRequest)}>
+							<Icon name="refresh" size={14} /> Restore
+						</button>
+					{:else}
+						<button class="a-btn a-btn--danger" on:click={() => archiveRequest(selectedRequest)}>
+							<Icon name="archive" size={14} /> Archive
+						</button>
+					{/if}
 					<button class="a-btn a-btn--solid" on:click={() => (showDetailModal = false)}>
 						Close
 					</button>
@@ -288,9 +339,40 @@
 {/if}
 
 <style>
+	.controls {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		flex-wrap: wrap;
+	}
 	.filter {
 		width: auto;
-		min-width: 180px;
+		min-width: 160px;
+	}
+	.vtoggle {
+		display: inline-flex;
+		border: 1px solid var(--hairline-2);
+		border-radius: 8px;
+		padding: 3px;
+	}
+	.vtoggle button {
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--mute);
+		background: transparent;
+		border: none;
+		padding: 7px 13px;
+		border-radius: 6px;
+		cursor: pointer;
+		transition:
+			color 0.2s,
+			background 0.2s;
+	}
+	.vtoggle button.on {
+		color: var(--bg);
+		background: var(--ink);
 	}
 	.rows {
 		display: grid;
