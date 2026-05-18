@@ -7,7 +7,7 @@
     <meta name="description" content="BillMate Privacy Policy - Learn how we protect your privacy with local-first, offline storage. No data collection, no tracking, complete privacy." />
 </svelte:head>
 
-<Cursor />
+
 
 <div class="min-h-screen bg-base-100">
     <div class="max-w-4xl mx-auto px-6 py-16">

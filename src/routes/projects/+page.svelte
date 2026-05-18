@@ -90,7 +90,7 @@
 	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
-<Cursor />
+
 
 <div class="bg-[#0e0e0e]/10 min-h-screen relative overflow-x-hidden">
 	<main class="hero-section mx-auto min-h-screen pb-20">

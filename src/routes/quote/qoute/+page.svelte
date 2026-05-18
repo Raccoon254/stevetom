@@ -31,7 +31,7 @@
 	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
-<Cursor />
+
 
 <div class="bg-[#0e0e0e] min-h-screen relative overflow-x-hidden">
 	<main class="hero-section mx-auto min-h-screen flex flex-col items-center justify-center py-20">

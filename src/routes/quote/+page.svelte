@@ -8,9 +8,7 @@
     <meta name="description" content="Get a personalized quote for your web development project. Tell us about your vision and receive a detailed proposal within 24 hours." />
 </svelte:head>
 
-<Cursor />
-
-<div class="bg-[#0e0e0e] min-h-screen relative overflow-x-hidden">
+<div class="min-h-screen relative overflow-x-hidden">
 	<main class="hero-section mx-auto min-h-screen flex flex-col items-center justify-center py-20">
 		<!-- Background decoration -->
 		<div

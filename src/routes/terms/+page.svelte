@@ -7,7 +7,7 @@
     <meta name="description" content="Terms of Service for KenTom - Clear guidelines for using our services and working together on projects." />
 </svelte:head>
 
-<Cursor />
+
 
 <div class="min-h-screen bg-base-100/10">
     <div class="max-w-4xl mx-auto px-6 py-16">

@@ -5,6 +5,7 @@
 	import { onMount, onDestroy } from 'svelte'
 	import { fly } from 'svelte/transition'
 	import { goto } from '$app/navigation'
+	import Cursor from "./components/Cursor.svelte";
 
 	let year = new Date().getFullYear()
 
@@ -88,7 +89,7 @@
 <svelte:head>
 	<meta name="theme-color" content="#0e0e0e" />
 </svelte:head>
-
+<Cursor />
 <main>
 	<Navbar />
 

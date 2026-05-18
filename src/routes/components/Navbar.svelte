@@ -125,7 +125,7 @@
 				<!-- CTA Button (Desktop) -->
 				<a
 					href="/quote"
-					class="hidden md:flex items-center gap-2 rounded-full bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] px-6 py-3 text-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#ff6b35]/30"
+					class="hidden md:flex items-center gap-2 rounded-full bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] px-6 py-3 text-sm font-bold text-white transition-all duration-300 hover:scale-105"
 				>
 					<Sparkles size={16} />
 					<span>Get a Quote</span>

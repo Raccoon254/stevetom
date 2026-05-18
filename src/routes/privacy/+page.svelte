@@ -7,7 +7,7 @@
     <meta name="description" content="Privacy Policy for KenTom - Learn how we handle your data with transparency and respect for your privacy." />
 </svelte:head>
 
-<Cursor />
+
 
 <div class="min-h-screen bg-base-100/10">
     <div class="max-w-4xl mx-auto px-6 py-16">

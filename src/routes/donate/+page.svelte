@@ -343,7 +343,7 @@
 					<button
 						on:click={initiateDonation}
 						disabled={status === 'loading'}
-						class="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] px-8 py-6 text-xl font-bold text-white transition-all hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#ff6b35]/40 disabled:cursor-not-allowed disabled:opacity-50"
+						class="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-[#ff6b35] to-[#ff8c5a] px-8 py-6 text-xl font-bold text-white transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						<div
 							class="absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
