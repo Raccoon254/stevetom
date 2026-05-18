@@ -925,7 +925,7 @@
 	</div>
 
 	<div class="hero-foot">
-		<a class="cta-pill" href="#contact">
+		<a class="cta-pill" href="/contact">
 			<span>Contact</span>
 			<span class="ar" aria-hidden="true"><Icon name="arrow-down" size={13} /></span>
 		</a>

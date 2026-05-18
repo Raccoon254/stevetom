@@ -2,8 +2,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import '$lib/styles/kenfolio.css';
-	import Brand from '$lib/components/kenfolio/Brand.svelte';
-	import ThemeToggle from '$lib/components/kenfolio/ThemeToggle.svelte';
+	import Nav from '$lib/components/kenfolio/Nav.svelte';
 	import Colophon from '$lib/components/kenfolio/Colophon.svelte';
 
 	// The landing page renders its own dot-index nav + colophon.
@@ -16,8 +15,7 @@
 </script>
 
 <div class="kenfolio">
-	<Brand />
-	<ThemeToggle />
+	<Nav />
 	{#if !isHome}
 		<Colophon />
 	{/if}

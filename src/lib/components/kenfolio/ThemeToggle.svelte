@@ -4,55 +4,76 @@
 	$: isDark = $theme === 'dark';
 </script>
 
-<div class="meta">
-	<button
-		class="theme"
-		class:is-dark={isDark}
-		aria-label="Toggle theme"
-		aria-pressed={isDark}
-		type="button"
-		on:click={toggleTheme}
-	>
-		<span class="orb" aria-hidden="true">
-			<!-- sun -->
-			<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-				<circle cx="12" cy="12" r="4.25" stroke-width="1.5" />
-				<g class="rays" stroke-width="2" stroke-linecap="round">
-					<line x1="12" y1="2.4" x2="12" y2="4.6" />
-					<line x1="12" y1="19.4" x2="12" y2="21.6" />
-					<line x1="2.4" y1="12" x2="4.6" y2="12" />
-					<line x1="19.4" y1="12" x2="21.6" y2="12" />
-					<line x1="5.2" y1="5.2" x2="6.8" y2="6.8" />
-					<line x1="17.2" y1="17.2" x2="18.8" y2="18.8" />
-					<line x1="5.2" y1="18.8" x2="6.8" y2="17.2" />
-					<line x1="17.2" y1="6.8" x2="18.8" y2="5.2" />
-				</g>
-			</svg>
-			<!-- moon -->
-			<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-				<path
-					d="M8.37 2.19c-1.25.53-1.9 1.12-1.36 2.36-.49 1.12-.76 2.35-.75 3.65.02 4.83 4.02 8.92 8.91 9.12.72.03 1.41-.02 2.08-.14 1.37-.25 1.81.49.99 1.6C16.96 20.43 13.66 22.15 9.97 21.99 4.74 21.76.37 17.57.01 12.42c-.19-2.66.64-5.12 2.15-7.04"
-					stroke-width="1.5"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				/>
-			</svg>
+<button
+	class="theme"
+	class:is-dark={isDark}
+	aria-label="Toggle theme"
+	aria-pressed={isDark}
+	type="button"
+	on:click={toggleTheme}
+>
+	<span class="orb" aria-hidden="true">
+		<!-- sun -->
+		<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+			<circle cx="12" cy="12" r="4.25" stroke-width="1.5" />
+			<g class="rays" stroke-width="2" stroke-linecap="round">
+				<line x1="12" y1="2.4" x2="12" y2="4.6" />
+				<line x1="12" y1="19.4" x2="12" y2="21.6" />
+				<line x1="2.4" y1="12" x2="4.6" y2="12" />
+				<line x1="19.4" y1="12" x2="21.6" y2="12" />
+				<line x1="5.2" y1="5.2" x2="6.8" y2="6.8" />
+				<line x1="17.2" y1="17.2" x2="18.8" y2="18.8" />
+				<line x1="5.2" y1="18.8" x2="6.8" y2="17.2" />
+				<line x1="17.2" y1="6.8" x2="18.8" y2="5.2" />
+			</g>
+		</svg>
+		<!-- moon -->
+		<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+			<path
+				d="M8.37 2.19c-1.25.53-1.9 1.12-1.36 2.36-.49 1.12-.76 2.35-.75 3.65.02 4.83 4.02 8.92 8.91 9.12.72.03 1.41-.02 2.08-.14 1.37-.25 1.81.49.99 1.6C16.96 20.43 13.66 22.15 9.97 21.99 4.74 21.76.37 17.57.01 12.42c-.19-2.66.64-5.12 2.15-7.04"
+				stroke-width="1.5"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			/>
+		</svg>
+		<!-- phone fallback: crisp half-filled disc, rotates on toggle -->
+		<span class="disc"></span>
+	</span>
+	<span class="label">
+		<span class="key">theme</span><span class="colon">:</span>
+		<span class="val">
+			<span class="word from">{isDark ? 'dark' : 'light'}</span>
+			<span class="word to">{isDark ? 'light' : 'dark'}</span>
 		</span>
-		<span class="label">
-			<span class="key">theme</span><span class="colon">:</span>
-			<span class="val">
-				<span class="word from">{isDark ? 'dark' : 'light'}</span>
-				<span class="word to">{isDark ? 'light' : 'dark'}</span>
-			</span>
-		</span>
-	</button>
-</div>
+	</span>
+</button>
 
 <style>
 	.theme {
 		--anim: 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 		position: relative;
 		overflow: hidden;
+		background: transparent;
+		border: 1px solid var(--hairline);
+		color: var(--chrome-ink);
+		padding: 7px 12px;
+		border-radius: 999px;
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		cursor: pointer;
+		display: inline-flex;
+		gap: 8px;
+		align-items: center;
+		transition:
+			border-color 0.25s,
+			color 0.25s,
+			background 0.25s;
+	}
+	.theme:hover {
+		border-color: var(--mute);
+		color: var(--ink);
 	}
 
 	/* icon */
@@ -98,6 +119,46 @@
 	}
 	.theme.is-dark .rays line {
 		transform: scale(0.1);
+	}
+
+	/* half-filled disc — phone only. filled half = currentColor,
+	   empty half reads as the page colour through the ring. */
+	.disc {
+		position: absolute;
+		inset: 0;
+		display: none;
+		border-radius: 50%;
+		border: 1.5px solid currentColor;
+		background: linear-gradient(90deg, currentColor 0 50%, transparent 50% 100%);
+		transition: transform var(--anim);
+		will-change: transform;
+	}
+	.theme.is-dark .disc {
+		transform: rotate(180deg);
+	}
+
+	@media (max-width: 640px) {
+		.theme {
+			border-color: transparent;
+			padding: 4px;
+			gap: 0;
+		}
+		.theme:hover {
+			border-color: transparent;
+		}
+		.orb {
+			width: 18px;
+			height: 18px;
+		}
+		.orb svg {
+			display: none;
+		}
+		.disc {
+			display: block;
+		}
+		.label {
+			display: none;
+		}
 	}
 
 	/* dev-style label: theme: <word> */
