@@ -209,6 +209,12 @@
 		gap: 18px;
 		flex-wrap: wrap;
 	}
+	/* keep the CTA on the error palette, not the spark orange */
+	.cta-row :global(.pill--solid:hover) {
+		background: var(--error);
+		border-color: var(--error);
+		color: #fff;
+	}
 	.cta-row .alt {
 		font-family: var(--mono);
 		font-size: 10.5px;

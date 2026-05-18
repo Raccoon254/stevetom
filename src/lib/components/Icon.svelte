@@ -12,14 +12,22 @@
 
 <span
 	class={className}
-	style="display:inline-flex;width:{dim};height:{dim};line-height:0"
+	style="width:{dim};height:{dim}"
 	aria-hidden="true"
 >
 	{@html svg}
 </span>
 
 <style>
+	span {
+		display: inline-flex;
+		flex: 0 0 auto;
+		line-height: 0;
+		/* align with the text it sits beside in inline (non-flex) contexts */
+		vertical-align: middle;
+	}
 	span :global(svg) {
+		display: block;
 		width: 100%;
 		height: 100%;
 	}

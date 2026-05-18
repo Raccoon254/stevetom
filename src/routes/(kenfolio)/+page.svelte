@@ -1336,7 +1336,7 @@
 		height: 8px;
 		margin: 0 0 -4px -10.5px;
 		border-radius: 50%;
-		border: 1px solid var(--spark);
+		border: 0.5px solid var(--spark);
 		transform: scale(0);
 		opacity: 0;
 		animation: scroll-cue-ripple var(--cue-dur) var(--ripple-ease) infinite;
