@@ -1,0 +1,330 @@
+/* ──────────────────────────────────────────────────────────────────
+   kenTom · KenFolio redesign — shared design tokens + chrome
+   Ported from the KenFolio design bundle (design-source/kenfolio).
+   ────────────────────────────────────────────────────────────────── */
+
+:root[data-theme='dark'] {
+	color-scheme: dark;
+	--bg: #050505;
+	--bg-rgb: 5, 5, 5;
+	--ink: #f4fffc;
+	--ink-2: #cfeee6;
+	--mute: #6fa89c;
+	--mute-2: #2c6258;
+	--mute-3: #1b3b34;
+	--spark: #ff7a1a;
+	--spark-glow: rgba(255, 122, 26, 0.55);
+	--hairline: rgba(255, 255, 255, 0.1);
+	--hairline-2: rgba(255, 255, 255, 0.22);
+	--chrome-ink: #f0f0f0;
+	--colophon: rgba(160, 180, 176, 0.5);
+	--sans: 'Google Sans', 'Google Sans Display', 'DM Sans', system-ui, -apple-system, sans-serif;
+	--mono: 'Google Sans Mono', 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+:root[data-theme='light'] {
+	color-scheme: light;
+	--bg: #f4f1ea;
+	--bg-rgb: 244, 241, 234;
+	--ink: #0e110f;
+	--ink-2: #2a3d38;
+	--mute: #6a8a82;
+	--mute-2: #b8cdc6;
+	--mute-3: #d6e3de;
+	--spark: #d85f00;
+	--spark-glow: rgba(216, 95, 0, 0.45);
+	--hairline: rgba(14, 17, 15, 0.1);
+	--hairline-2: rgba(14, 17, 15, 0.22);
+	--chrome-ink: #101010;
+	--colophon: rgba(60, 80, 76, 0.55);
+	--sans: 'Google Sans', 'Google Sans Display', 'DM Sans', system-ui, -apple-system, sans-serif;
+	--mono: 'Google Sans Mono', 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+
+/* page surface — applied by the KenFolio layout via the .kenfolio body class */
+body.kenfolio {
+	margin: 0;
+	background: var(--bg) !important;
+	color: var(--ink);
+	font-family: var(--sans) !important;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden;
+	transition:
+		background-color 0.35s ease,
+		color 0.35s ease;
+}
+/* suppress the legacy animated stripe overlay on redesigned pages */
+body.kenfolio::before {
+	display: none !important;
+}
+body.kenfolio ::selection {
+	background: var(--mute-2);
+	color: var(--ink);
+}
+
+.kenfolio a {
+	color: inherit;
+	text-decoration: none;
+}
+.kenfolio a:focus-visible,
+.kenfolio button:focus-visible,
+.kenfolio input:focus-visible,
+.kenfolio textarea:focus-visible,
+.kenfolio select:focus-visible {
+	outline: 1px solid var(--mute);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+/* ─────────── chrome ─────────── */
+.kenfolio .brand,
+.kenfolio .meta {
+	position: fixed;
+	z-index: 60;
+	font-family: var(--mono);
+	font-size: 11px;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	padding: clamp(14px, 2.4vw, 32px);
+	color: var(--chrome-ink);
+}
+.kenfolio .brand {
+	top: 0;
+	left: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	color: var(--ink);
+}
+.kenfolio .brand .logo {
+	width: 22px;
+	height: 22px;
+	color: var(--ink);
+	flex: 0 0 auto;
+}
+.kenfolio .brand .logo svg {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+.kenfolio .meta {
+	top: 0;
+	right: 0;
+	text-align: right;
+	display: inline-flex;
+	gap: 14px;
+	align-items: center;
+}
+.kenfolio .meta .theme {
+	background: transparent;
+	border: 1px solid var(--hairline);
+	color: var(--chrome-ink);
+	padding: 6px 10px;
+	border-radius: 999px;
+	font-family: var(--mono);
+	font-size: 10px;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	cursor: pointer;
+	display: inline-flex;
+	gap: 8px;
+	align-items: center;
+	transition:
+		border-color 0.25s,
+		color 0.25s,
+		background 0.25s;
+}
+.kenfolio .meta .theme:hover {
+	border-color: var(--mute);
+	color: var(--ink);
+}
+.kenfolio .meta .theme .glyph {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	border-radius: 50%;
+	background: var(--ink);
+	box-shadow: inset -3px -3px 0 0 var(--bg);
+}
+
+.kenfolio .colophon {
+	position: fixed;
+	bottom: clamp(20px, 2.4vw, 32px);
+	left: clamp(20px, 2.4vw, 32px);
+	z-index: 60;
+	font-family: var(--mono);
+	font-size: 10px;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--colophon);
+}
+.kenfolio .colophon a:hover {
+	color: var(--ink-2);
+}
+
+/* ─────────── page layout ─────────── */
+.kenfolio .page {
+	min-height: 100vh;
+	min-height: 100svh;
+	padding: clamp(96px, 12vh, 140px) clamp(20px, 5vw, 80px) clamp(80px, 10vh, 120px);
+	display: grid;
+	place-items: start center;
+}
+.kenfolio .page > .wrap {
+	width: 100%;
+	max-width: 880px;
+}
+
+/* ─────────── type helpers ─────────── */
+.kenfolio .eyebrow {
+	font-family: var(--mono);
+	font-size: 11px;
+	letter-spacing: 0.35em;
+	text-transform: uppercase;
+	color: var(--mute);
+	margin: 0 0 clamp(20px, 3.5vh, 32px);
+}
+.kenfolio .headline {
+	font-family: 'Google Sans Display', var(--sans);
+	font-weight: 500;
+	font-size: clamp(36px, 5.4vw, 72px);
+	line-height: 1.05;
+	letter-spacing: -0.025em;
+	margin: 0 0 clamp(20px, 3vh, 32px);
+	text-wrap: balance;
+}
+.kenfolio .headline em {
+	font-style: normal;
+	color: var(--mute);
+}
+.kenfolio .sub {
+	font-size: clamp(17px, 1.6vw, 22px);
+	line-height: 1.5;
+	color: var(--ink-2);
+	margin: 0 0 clamp(40px, 6vh, 64px);
+	max-width: 56ch;
+	text-wrap: pretty;
+}
+
+/* ─────────── controls / pills ─────────── */
+.kenfolio .pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--mono);
+	font-size: 10.5px;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--ink-2);
+	border: 1px solid var(--hairline-2);
+	padding: 11px 20px;
+	border-radius: 999px;
+	background: rgba(var(--bg-rgb), 0.35);
+	backdrop-filter: blur(6px);
+	cursor: pointer;
+	transition:
+		color 0.25s,
+		border-color 0.25s,
+		background 0.25s,
+		transform 0.25s;
+}
+.kenfolio .pill .ar {
+	color: var(--spark);
+	transition: transform 0.3s;
+}
+.kenfolio .pill:hover {
+	color: var(--ink);
+	border-color: var(--ink-2);
+}
+.kenfolio .pill:hover .ar {
+	transform: translate(2px, -2px);
+}
+.kenfolio .pill--solid {
+	background: var(--ink);
+	color: var(--bg);
+	border-color: var(--ink);
+}
+.kenfolio .pill--solid:hover {
+	background: var(--spark);
+	border-color: var(--spark);
+	color: #fff;
+}
+.kenfolio .pill--solid .ar {
+	color: var(--bg);
+}
+
+/* ─────────── form fields ─────────── */
+.kenfolio .field {
+	display: grid;
+	gap: 6px;
+	margin-bottom: clamp(18px, 2.4vh, 24px);
+}
+.kenfolio .field > label {
+	font-family: var(--mono);
+	font-size: 10.5px;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--mute);
+}
+.kenfolio .field > input,
+.kenfolio .field > textarea,
+.kenfolio .field > select {
+	font: inherit;
+	font-size: 16px;
+	color: var(--ink);
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid var(--hairline-2);
+	padding: 10px 0;
+	width: 100%;
+	outline: none;
+	transition: border-color 0.25s;
+}
+.kenfolio .field > input:focus,
+.kenfolio .field > textarea:focus,
+.kenfolio .field > select:focus {
+	border-bottom-color: var(--ink-2);
+}
+.kenfolio .field > textarea {
+	resize: vertical;
+	min-height: 100px;
+	line-height: 1.5;
+}
+
+/* ─────────── tiny inline nav ─────────── */
+.kenfolio .crumb {
+	font-family: var(--mono);
+	font-size: 10.5px;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--mute);
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: clamp(24px, 4vh, 40px);
+}
+.kenfolio .crumb a {
+	color: var(--ink-2);
+}
+.kenfolio .crumb a:hover {
+	color: var(--ink);
+}
+.kenfolio .crumb .sep {
+	color: var(--mute-2);
+}
+
+/* ─────────── mobile chrome ─────────── */
+@media (max-width: 600px) {
+	.kenfolio .colophon {
+		display: none;
+	}
+	.kenfolio .meta .theme span:not(.glyph) {
+		display: none;
+	}
+	.kenfolio .meta .theme {
+		padding: 8px;
+	}
+	.kenfolio .page > .wrap {
+		max-width: 100%;
+	}
+}

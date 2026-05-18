@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>kenTom · Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Google+Sans+Display:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/portfolio.css" />
+<style>
+  .page { place-items: center; }
+  .notes { width: 100%; max-width: 720px; }
+  .notes h1 {
+    font-family: "Google Sans Display", var(--sans);
+    font-weight: 500;
+    font-size: clamp(34px, 4.6vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin: 0 0 clamp(48px, 8vh, 80px);
+  }
+  .notes h1 em { font-style: normal; color: var(--mute); }
+
+  ol.list { list-style: none; padding: 0; margin: 0; }
+  ol.list li + li { margin-top: clamp(28px, 4.5vh, 44px); }
+  ol.list a {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: clamp(18px, 2.5vw, 32px);
+    align-items: baseline;
+    transition: opacity .3s;
+  }
+  ol.list .when {
+    font-family: var(--mono);
+    font-size: 10.5px; letter-spacing: .26em;
+    color: var(--mute);
+    text-transform: uppercase;
+  }
+  ol.list .title {
+    font-family: "Google Sans Display", var(--sans);
+    font-weight: 500;
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    transition: color .25s;
+    text-wrap: pretty;
+  }
+  ol.list:has(a:hover) a:not(:hover) { opacity: .35; }
+  ol.list a:hover .title { color: var(--spark); }
+  @media (max-width: 560px) {
+    ol.list a { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="brand">
+    <span class="logo" aria-hidden="true">
+      <svg viewBox="0 0 576 596" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 0 0 L 319.02 -1 L 318.946 402.932 L 158 595 L 158 183 L -1 183 L 0 0 Z" fill="currentColor" transform="translate(1,1)"></path>
+        <path d="M 0 0 C 110.421 0 191.846 0 191.846 0 L 0 183.628 C 0 183.628 0 65.96 0 0 Z" fill="currentColor" transform="translate(384,0)"></path>
+      </svg>
+    </span>
+  </div>
+  <div class="meta">
+    <button class="theme" id="themeToggle" aria-label="Toggle theme" type="button">
+      <span class="glyph" aria-hidden="true"></span>
+      <span id="themeLabel">Light</span>
+    </button>
+  </div>
+  <div class="colophon"><a href="../KenFolio v3.html">← kentom</a></div>
+
+  <main class="page">
+    <div class="notes">
+      <h1>Notes from the <em>workshop</em>.</h1>
+      <ol class="list">
+        <li>
+          <a href="#">
+            <span class="when">May · 26</span>
+            <span class="title">What I charge, and why I rarely talk about it.</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="when">Apr · 26</span>
+            <span class="title">A pattern for forms you can still edit at 2am.</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="when">Mar · 26</span>
+            <span class="title">Sending a million SMS from Nairobi without flinching.</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="when">Feb · 26</span>
+            <span class="title">Teaching one student properly beats a course of 200.</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="when">Jan · 26</span>
+            <span class="title">The "before AI" stack I still reach for first.</span>
+          </a>
+        </li>
+      </ol>
+    </div>
+  </main>
+
+<script src="../assets/portfolio.js"></script>
+</body>
+</html>

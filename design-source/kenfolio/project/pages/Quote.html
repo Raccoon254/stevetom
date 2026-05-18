@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>kenTom · Quote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Google+Sans+Display:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/portfolio.css" />
+<style>
+  .page { place-items: center; }
+  .ask {
+    max-width: 640px;
+    width: 100%;
+  }
+  .ask .prompt {
+    font-family: "Google Sans Display", var(--sans);
+    font-weight: 500;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin: 0 0 clamp(40px, 6vh, 64px);
+    text-wrap: balance;
+  }
+  .ask .prompt em { font-style: normal; color: var(--mute); }
+  .ask .field {
+    margin: 0 0 clamp(28px, 4vh, 36px);
+    display: grid; gap: 8px;
+  }
+  .ask .field input,
+  .ask .field textarea {
+    font: inherit;
+    font-family: var(--sans);
+    font-size: clamp(18px, 1.8vw, 22px);
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--hairline-2);
+    padding: 8px 0;
+    width: 100%;
+    outline: none;
+    transition: border-color .25s;
+  }
+  .ask .field input::placeholder,
+  .ask .field textarea::placeholder { color: var(--mute); }
+  .ask .field input:focus,
+  .ask .field textarea:focus { border-bottom-color: var(--ink-2); }
+  .ask .field textarea { resize: none; line-height: 1.5; }
+  .ask .field .hint {
+    font-family: var(--mono);
+    font-size: 10.5px; letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  .ask .send-row {
+    margin-top: clamp(36px, 5vh, 48px);
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .ask .send-row button {
+    font: inherit; border: none; cursor: pointer;
+  }
+  .ask .send-row .alt {
+    font-family: var(--mono);
+    font-size: 10.5px; letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  .ask .send-row .alt a { color: var(--ink-2); border-bottom: 1px solid var(--mute-2); }
+</style>
+</head>
+<body>
+
+  <div class="brand">
+    <span class="logo" aria-hidden="true">
+      <svg viewBox="0 0 576 596" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 0 0 L 319.02 -1 L 318.946 402.932 L 158 595 L 158 183 L -1 183 L 0 0 Z" fill="currentColor" transform="translate(1,1)"></path>
+        <path d="M 0 0 C 110.421 0 191.846 0 191.846 0 L 0 183.628 C 0 183.628 0 65.96 0 0 Z" fill="currentColor" transform="translate(384,0)"></path>
+      </svg>
+    </span>
+  </div>
+  <div class="meta">
+    <button class="theme" id="themeToggle" aria-label="Toggle theme" type="button">
+      <span class="glyph" aria-hidden="true"></span>
+      <span id="themeLabel">Light</span>
+    </button>
+  </div>
+  <div class="colophon"><a href="../KenFolio v3.html">← kentom</a></div>
+
+  <main class="page">
+    <form class="ask" onsubmit="event.preventDefault(); this.querySelector('button span:first-child').textContent = 'Sent ✓';">
+      <h1 class="prompt">Tell me what you're <em>building</em>.</h1>
+
+      <div class="field">
+        <input type="text" placeholder="A sentence about it" aria-label="Brief" />
+      </div>
+
+      <div class="field">
+        <input type="email" placeholder="your@email" autocomplete="email" required aria-label="Email" />
+      </div>
+
+      <div class="send-row">
+        <button class="pill pill--solid" type="submit">
+          <span>Send</span>
+          <span class="ar" aria-hidden="true">↗</span>
+        </button>
+        <span class="alt">or <a href="mailto:tomsteve187@gmail.com">email</a></span>
+      </div>
+    </form>
+  </main>
+
+<script src="../assets/portfolio.js"></script>
+</body>
+</html>

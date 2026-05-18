@@ -5,9 +5,14 @@
 	import { onMount, onDestroy } from 'svelte'
 	import { fly } from 'svelte/transition'
 	import { goto } from '$app/navigation'
+	import { page } from '$app/stores'
 	import Cursor from "./components/Cursor.svelte";
 
 	let year = new Date().getFullYear()
+
+	// Redesigned pages live in the (kenfolio) route group — they bring their
+	// own chrome (Brand / ThemeToggle / Colophon) and skip the legacy shell.
+	$: isKenfolio = $page.route.id?.startsWith('/(kenfolio)') ?? false
 
 	// Shift key tracking for admin navigation
 	let shiftPressCount = 0
@@ -89,6 +94,10 @@
 <svelte:head>
 	<meta name="theme-color" content="#0e0e0e" />
 </svelte:head>
+
+{#if isKenfolio}
+	<slot />
+{:else}
 <Cursor />
 <main>
 	<Navbar />
@@ -314,3 +323,4 @@
 		</footer>
 	</div>
 </main>
+{/if}

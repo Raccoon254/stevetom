@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>kenTom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Display:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    color-scheme: dark;
+    --bg:        #050505;
+    --ink:       #f4fffc;
+    --ink-2:     #cfeee6;
+    --mute:      #6fa89c;
+    --mute-2:    #2c6258;
+    --mute-3:    #1b3b34;
+    --spark:     #ff7a1a;
+    --spark-glow: rgba(255,122,26,.55);
+    --sans:  "Google Sans Display", "Google Sans", "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono:  "Google Sans Mono", "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--mute-2); color: var(--ink); }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible {
+    outline: 1px solid var(--mute);
+    outline-offset: 4px; border-radius: 2px;
+  }
+
+  /* ─────────── chrome — same on every screen ─────────── */
+  .brand, .meta {
+    position: fixed; z-index: 60;
+    font-family: var(--mono);
+    font-size: 11px; letter-spacing: .26em;
+    text-transform: uppercase;
+    padding: clamp(20px, 2.4vw, 32px);
+    mix-blend-mode: difference; /* always legible over any animation */
+    color: #f0f0f0;
+  }
+  .brand { top: 0; left: 0; }
+  .meta  { top: 0; right: 0; text-align: right; }
+  .meta .dot {
+    display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--spark);
+    box-shadow: 0 0 10px var(--spark-glow);
+    margin-right: 7px; vertical-align: 1px;
+    mix-blend-mode: normal; /* keep the spark its actual color */
+  }
+
+  /* dot index — fixed right, hover reveals label */
+  .index {
+    position: fixed; z-index: 60;
+    right: clamp(16px, 2vw, 28px); top: 50%;
+    transform: translateY(-50%);
+    display: grid; gap: 14px;
+    padding: 6px;
+  }
+  .index a {
+    position: relative;
+    display: block; width: 10px; height: 10px;
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 50%;
+    transition: background .25s ease, border-color .25s ease, transform .25s ease;
+  }
+  .index a::after {
+    content: attr(data-label);
+    position: absolute; right: 22px; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--ink-2);
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+    white-space: nowrap;
+  }
+  .index a:hover::after, .index a.active::after { opacity: 1; }
+  .index a:hover { border-color: var(--ink-2); }
+  .index a.active {
+    background: var(--ink-2);
+    border-color: var(--ink-2);
+    transform: scale(1.15);
+  }
+  @media (max-width: 700px) { .index { display: none; } }
+
+  /* ─────────── stage ─────────── */
+  .stage {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: clamp(96px, 12vh, 140px) clamp(28px, 5vw, 80px);
+  }
+  .stage > .bg {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .stage > .bg canvas, .stage > .bg svg {
+    width: 100%; height: 100%; display: block;
+  }
+  /* gentle top + bottom vignette so animations don't have a hard
+     viewport-edge when sections meet — they just dissolve into each other. */
+  .stage::before, .stage::after {
+    content: "";
+    position: absolute; left: 0; right: 0;
+    height: 18vh; z-index: 1; pointer-events: none;
+  }
+  .stage::before { top: 0;    background: linear-gradient(to bottom, var(--bg), transparent); }
+  .stage::after  { bottom: 0; background: linear-gradient(to top,    var(--bg), transparent); }
+
+  .stage > .content {
+    position: relative; z-index: 2;
+    text-align: center;
+    max-width: min(90vw, 900px);
+  }
+
+  /* type helpers */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px; letter-spacing: .35em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin: 0 0 clamp(24px, 4vh, 40px);
+  }
+  .line {
+    font-size: clamp(22px, 2.8vw, 36px);
+    line-height: 1.35;
+    font-weight: 400;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+    max-width: 22ch;
+    margin: 0 auto;
+    text-wrap: pretty;
+  }
+  .line em { font-style: normal; color: var(--mute); }
+
+  /* ─────────── 00 hero ─────────── */
+  .stage--hero { padding: 0; }
+  .stage--hero::before, .stage--hero::after { display: none; }
+  .stage--hero svg.ecg { width: 100%; height: 100%; position: absolute; inset: 0; }
+  /* the bold wordmark inside the SVG */
+  .wm {
+    font-family: "Google Sans Display", "Google Sans", "DM Sans", system-ui, sans-serif;
+  }
+  .wm-em   { fill: inherit; }
+  .wm-stop { fill: var(--spark); }
+  .wm-ghost {
+    fill: none;
+    stroke: #cfeee6;
+    stroke-width: 1.4;
+    stroke-opacity: 0.55;
+    paint-order: stroke;
+    vector-effect: non-scaling-stroke;
+  }
+  .wm-ghost .wm-em   { fill: none; stroke: #eafffb; }
+  .wm-ghost .wm-stop { fill: none; stroke: var(--spark); stroke-opacity: 0.85; }
+  .wm-bright { fill: #f4fffc; }
+  .wm-bright .wm-em { fill: #eafffb; }
+
+  .hero-foot {
+    position: absolute; bottom: clamp(24px, 5vh, 56px);
+    left: 0; right: 0; z-index: 3;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--mute);
+    display: flex; flex-direction: column; gap: 14px; align-items: center;
+  }
+  .hero-foot button {
+    background: rgba(5,5,5,0.4);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    padding: 10px 20px;
+    color: var(--ink-2);
+    font-family: var(--mono);
+    font-size: 10.5px; letter-spacing: .26em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: inline-flex; gap: 10px; align-items: center;
+    transition: border-color .25s, color .25s, background .25s;
+  }
+  .hero-foot button:hover { border-color: var(--mute); }
+  .hero-foot button.on { color: var(--spark); border-color: var(--spark); }
+  .hero-foot button .ic { width: 8px; height: 8px; }
+  .hero-foot .hint {
+    opacity: .55;
+  }
+
+  /* ─────────── 02 work ─────────── */
+  .stage--work .works {
+    list-style: none; padding: 0;
+    margin: 0;
+    display: grid; gap: clamp(22px, 3.4vh, 40px);
+  }
+  .stage--work .works li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 100px minmax(0, 1fr);
+    gap: clamp(20px, 3vw, 36px);
+    align-items: baseline;
+    transition: opacity .3s;
+  }
+  .stage--work .works .ttl {
+    font-size: clamp(28px, 4.6vw, 56px);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    text-align: right;
+    line-height: 1;
+  }
+  .stage--work .works .rule {
+    display: block; height: 1px;
+    background: var(--mute-2);
+    align-self: center;
+    transition: background .3s;
+  }
+  .stage--work .works .yr {
+    font-family: var(--mono);
+    font-size: 11.5px; letter-spacing: .24em;
+    color: var(--mute);
+    text-align: left;
+    text-transform: uppercase;
+  }
+  .stage--work .works li:hover .ttl { color: var(--ink); }
+  .stage--work .works li:hover .rule { background: var(--ink-2); }
+  .stage--work .works:has(li:hover) li:not(:hover) { opacity: .35; }
+  @media (max-width: 640px) {
+    .stage--work .works li {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .stage--work .works .ttl { text-align: center; }
+    .stage--work .works .yr  { text-align: center; }
+    .stage--work .works .rule { display: none; }
+  }
+
+  /* ─────────── 04 contact ─────────── */
+  .stage--contact .email {
+    display: inline-block;
+    font-size: clamp(28px, 5.2vw, 64px);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin: 0 0 clamp(28px, 5vh, 48px);
+    border-bottom: 1px solid var(--mute-2);
+    padding-bottom: 4px;
+    transition: color .25s, border-color .25s;
+  }
+  .stage--contact .email:hover { color: var(--spark); border-color: var(--spark); }
+  .stage--contact .socials {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    gap: 12px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: .24em; text-transform: uppercase;
+    color: var(--mute);
+  }
+  .stage--contact .socials a {
+    border: 1px solid rgba(255,255,255,.10);
+    padding: 10px 18px; border-radius: 999px;
+    transition: border-color .25s, color .25s, background .25s;
+    background: rgba(5,5,5,.4);
+    backdrop-filter: blur(6px);
+  }
+  .stage--contact .socials a:hover { border-color: var(--mute); color: var(--ink-2); }
+
+  /* ─────────── colophon ─────────── */
+  .colophon {
+    position: fixed; bottom: clamp(20px, 2.4vw, 32px);
+    left: clamp(20px, 2.4vw, 32px);
+    z-index: 60;
+    font-family: var(--mono);
+    font-size: 10px; letter-spacing: .26em;
+    text-transform: uppercase;
+    color: rgba(160,180,176,.5);
+    mix-blend-mode: difference;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ─── chrome ─── -->
+  <div class="brand">kenTom</div>
+  <nav class="index" aria-label="sections">
+    <a href="#hero"    data-id="hero"    data-label="Pulse"></a>
+    <a href="#about"   data-id="about"   data-label="About"></a>
+    <a href="#work"    data-id="work"    data-label="Work"></a>
+    <a href="#lab"     data-id="lab"     data-label="Lab"></a>
+    <a href="#contact" data-id="contact" data-label="Contact"></a>
+  </nav>
+  <div class="colophon">© 26 · v2</div>
+
+  <!-- ─────────── 00 / HERO ─────────── -->
+  <section id="hero" class="stage stage--hero" data-screen-label="00 Hero">
+    <div class="bg">
+      <svg class="ecg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <path id="ecgPath"
+                d="M0,400
+                   H560
+                   q10,0 14,-14 q5,-14 10,0 q4,14 10,14
+                   H630
+                   L660,420
+                   L700,170
+                   L740,560
+                   L770,400
+                   q10,0 16,-22 q6,-22 12,0 q6,22 14,22
+                   H1280" />
+          <linearGradient id="paintEdge" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0"    stop-color="#fff" stop-opacity="0"/>
+            <stop offset="0.18" stop-color="#fff" stop-opacity="1"/>
+            <stop offset="0.82" stop-color="#fff" stop-opacity="1"/>
+            <stop offset="1"    stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+          <mask id="paintMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="720">
+            <rect id="paintRect" x="0" y="0" width="0" height="720" fill="url(#paintEdge)"/>
+          </mask>
+        </defs>
+
+        <rect width="1280" height="720" fill="#050505"/>
+
+        <!-- outline-only ghost wordmark — always there, faint, as a silhouette -->
+        <text class="wm wm-ghost"
+              x="640" y="430" text-anchor="middle"
+              font-weight="700" font-size="280" letter-spacing="-14">
+          ken<tspan class="wm-em">Tom</tspan><tspan class="wm-stop">.</tspan>
+        </text>
+
+        <!-- bright fill — only visible inside the moving mask -->
+        <text class="wm wm-bright"
+              x="640" y="430" text-anchor="middle"
+              font-weight="700" font-size="280" letter-spacing="-14"
+              mask="url(#paintMask)">
+          ken<tspan class="wm-em">Tom</tspan><tspan class="wm-stop">.</tspan>
+        </text>
+
+        <g id="ribbon" fill="none" stroke="#f4fffc"
+           stroke-linecap="round" stroke-linejoin="round"></g>
+      </svg>
+    </div>
+
+    <div class="hero-foot">
+      <button id="audioToggle" aria-pressed="false">
+        <svg class="ic" viewBox="0 0 8 8" fill="currentColor"><polygon points="1,0 7,4 1,8"/></svg>
+        <span id="audioLabel">Listen</span>
+      </button>
+      <div class="hint">Scroll ↓</div>
+    </div>
+
+    <audio id="ecgAudio" src="assets/one_beat.mp3" loop preload="auto"></audio>
+  </section>
+
+  <!-- ─────────── 01 / ABOUT — wave halftone behind ─────────── -->
+  <section id="about" class="stage stage--about" data-screen-label="01 About">
+    <div class="bg"><canvas id="bgWave"></canvas></div>
+    <div class="content">
+      <div class="eyebrow">§ about</div>
+      <p class="line">Steve Tom builds <em>quietly considered</em> products for the web. Based in Nairobi, since 2019.</p>
+    </div>
+  </section>
+
+  <!-- ─────────── 02 / WORK — ripple dot grid behind ─────────── -->
+  <section id="work" class="stage stage--work" data-screen-label="02 Work">
+    <div class="bg"><canvas id="bgRipple"></canvas></div>
+    <div class="content">
+      <div class="eyebrow">§ selected work</div>
+      <ul class="works">
+        <li>
+          <span class="ttl">Status&nbsp;Saver</span>
+          <span class="rule"></span>
+          <span class="yr">2023 · Android</span>
+        </li>
+        <li>
+          <span class="ttl">JeStorm</span>
+          <span class="rule"></span>
+          <span class="yr">2024 · Web</span>
+        </li>
+        <li>
+          <span class="ttl">ScholarSpace</span>
+          <span class="rule"></span>
+          <span class="yr">2023 · Web</span>
+        </li>
+        <li>
+          <span class="ttl">InternLink</span>
+          <span class="rule"></span>
+          <span class="yr">2022 · Web</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─────────── 03 / LAB — rain plane behind ─────────── -->
+  <section id="lab" class="stage stage--lab" data-screen-label="03 Lab">
+    <div class="bg"><canvas id="bgRain"></canvas></div>
+    <div class="content">
+      <div class="eyebrow">§ lab</div>
+      <p class="line">Side rigs. Things that <em>move for the joy of it</em>.</p>
+    </div>
+  </section>
+
+  <!-- ─────────── 04 / CONTACT — slow second heartbeat behind ─────────── -->
+  <section id="contact" class="stage stage--contact" data-screen-label="04 Contact">
+    <div class="bg">
+      <svg id="bgContactEcg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <path id="ecgPath2"
+                d="M0,400
+                   H560
+                   q10,0 14,-14 q5,-14 10,0 q4,14 10,14
+                   H630
+                   L660,420
+                   L700,170
+                   L740,560
+                   L770,400
+                   q10,0 16,-22 q6,-22 12,0 q6,22 14,22
+                   H1280" />
+        </defs>
+        <g id="ribbon2" fill="none" stroke="#cfeee6"
+           stroke-opacity="0.35"
+           stroke-linecap="round" stroke-linejoin="round"></g>
+      </svg>
+    </div>
+    <div class="content">
+      <div class="eyebrow">§ contact</div>
+      <a class="email" href="mailto:tomsteve187@gmail.com">tomsteve187@gmail.com</a>
+      <div class="socials">
+        <a href="https://github.com/Raccoon254" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/steve-tom-822a81230/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://wa.link/w1774n" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://www.kentom.co.ke/" target="_blank" rel="noopener">kentom.co.ke</a>
+      </div>
+    </div>
+  </section>
+
+<script>
+/* ═════════════════════════════════════════════════════════════════
+   Shared helpers
+   ═════════════════════════════════════════════════════════════════ */
+const DPR_CAP = 1.5;
+function fitCanvas(cv) {
+  const r = cv.getBoundingClientRect();
+  const dpr = Math.min(DPR_CAP, devicePixelRatio || 1);
+  cv.width  = Math.max(2, Math.floor(r.width * dpr));
+  cv.height = Math.max(2, Math.floor(r.height * dpr));
+}
+function makeVisible(el) {
+  const state = { in: false };
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) state.in = e.isIntersecting;
+  }, { threshold: 0.02 });
+  io.observe(el);
+  return state;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   HERO · paint/erase ECG ribbon over a bold outlined wordmark.
+   Slow cycle (5.2 s). One ribbon sweeps left→right. Even passes
+   REVEAL the bright fill, odd passes HIDE it again.
+   ═════════════════════════════════════════════════════════════════ */
+(function () {
+  const SVGNS    = 'http://www.w3.org/2000/svg';
+  const pathEl   = document.getElementById('ecgPath');
+  const ribbonG  = document.getElementById('ribbon');
+  const audio    = document.getElementById('ecgAudio');
+  const toggle   = document.getElementById('audioToggle');
+  const audioLbl = document.getElementById('audioLabel');
+  const paintRect= document.getElementById('paintRect');
+
+  const TOTAL    = pathEl.getTotalLength();
+  const DURATION = 5200;
+  const HEAD_W   = 6.2;
+  const TAIL_LEN = 980;
+  const LIFETIME = 1 + TAIL_LEN / TOTAL;
+  const SEGS     = 70;
+
+  const AUDIO_NATIVE_MS = 2328;
+  audio.playbackRate = AUDIO_NATIVE_MS / DURATION;
+  audio.volume = 0.55;
+
+  function widthAt(d) {
+    if (d <= 0) return HEAD_W;
+    if (d >= TAIL_LEN) return 0;
+    const t = d / TAIL_LEN;
+    return HEAD_W * (1 - t) * (1 - t);
+  }
+  const segs = [];
+  for (let i = 0; i < SEGS; i++) {
+    const u = document.createElementNS(SVGNS, 'use');
+    u.setAttribute('href', '#ecgPath');
+    u.setAttribute('stroke-width', '0');
+    u.setAttribute('stroke-dasharray', '0 99999');
+    ribbonG.appendChild(u);
+    segs.push(u);
+  }
+  function drawRibbon(progress) {
+    if (progress <= 0 || progress >= LIFETIME) {
+      for (let i = 0; i < SEGS; i++) segs[i].setAttribute('stroke-width', '0');
+      return;
+    }
+    const H = progress * TOTAL;
+    const s0 = Math.max(0, H - TAIL_LEN);
+    const s1 = Math.min(TOTAL, H);
+    const span = s1 - s0;
+    if (span < 1) {
+      for (let i = 0; i < SEGS; i++) segs[i].setAttribute('stroke-width', '0');
+      return;
+    }
+    const sl = span / SEGS;
+    for (let i = 0; i < SEGS; i++) {
+      const a = s0 + i * sl;
+      const b = a + sl;
+      const mid = (a + b) / 2;
+      const w = widthAt(H - mid) * 2;
+      const el = segs[i];
+      if (w < 0.2) { el.setAttribute('stroke-width', '0'); continue; }
+      const pad = sl * 0.06;
+      const showStart = Math.max(0, a - pad);
+      const showLen   = (b + pad) - showStart;
+      el.setAttribute('stroke-width', w.toFixed(2));
+      el.setAttribute('stroke-dasharray',
+        `0 ${showStart.toFixed(2)} ${showLen.toFixed(2)} 999999`);
+    }
+  }
+  function updateMask(progress, passIdx) {
+    const p = Math.min(1, progress);
+    const x = pathEl.getPointAtLength(p * TOTAL).x;
+    if (passIdx % 2 === 0) {
+      paintRect.setAttribute('x', '0');
+      paintRect.setAttribute('width', x.toFixed(2));
+    } else {
+      paintRect.setAttribute('x', x.toFixed(2));
+      paintRect.setAttribute('width', (1280 - x).toFixed(2));
+    }
+  }
+
+  let elapsed = 0, last = performance.now(), playing = true;
+  function render() {
+    const passIdx = Math.floor(elapsed / DURATION);
+    const tInPass = elapsed - passIdx * DURATION;
+    drawRibbon(tInPass / DURATION);
+    updateMask(tInPass / DURATION, passIdx);
+  }
+  function loop(now) {
+    const dt = now - last; last = now;
+    if (playing) { elapsed += dt; render(); }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame((n) => { last = n; render(); requestAnimationFrame(loop); });
+
+  // audio toggle
+  function syncAudio() {
+    try {
+      const tInPass = elapsed % DURATION;
+      const nat = (tInPass * (AUDIO_NATIVE_MS / DURATION)) / 1000;
+      audio.currentTime = ((nat % (AUDIO_NATIVE_MS/1000)) + (AUDIO_NATIVE_MS/1000)) % (AUDIO_NATIVE_MS/1000);
+    } catch (e) {}
+  }
+  function setAudio(on) {
+    if (on) {
+      syncAudio();
+      audio.play().catch(() => {
+        toggle.classList.remove('on');
+        toggle.setAttribute('aria-pressed', 'false');
+        audioLbl.textContent = 'Listen';
+      });
+      toggle.classList.add('on');
+      toggle.setAttribute('aria-pressed', 'true');
+      audioLbl.textContent = 'Mute';
+    } else {
+      audio.pause();
+      toggle.classList.remove('on');
+      toggle.setAttribute('aria-pressed', 'false');
+      audioLbl.textContent = 'Listen';
+    }
+  }
+  toggle.addEventListener('click', () => setAudio(audio.paused));
+
+  // pause when off-screen
+  const heroSec = document.getElementById('hero');
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) {
+        playing = false;
+        if (!audio.paused) audio.pause();
+      } else {
+        playing = true; last = performance.now();
+      }
+    }
+  }, { threshold: 0.05 });
+  io.observe(heroSec);
+})();
+
+/* ═════════════════════════════════════════════════════════════════
+   ABOUT · halftone wave — dim, slow, ambient
+   ═════════════════════════════════════════════════════════════════ */
+(function () {
+  const cv = document.getElementById('bgWave'); if (!cv) return;
+  const ctx = cv.getContext('2d');
+  fitCanvas(cv); addEventListener('resize', () => fitCanvas(cv));
+  const vis = makeVisible(cv);
+  const COLS = 180, STEP = 13, GAIN = 1.0, SMOOTH = 0.85;
+  const colAmp = new Array(COLS).fill(0);
+  function draw() {
+    const W = cv.width, H = cv.height, cy = H/2;
+    ctx.fillStyle = '#050505'; ctx.fillRect(0,0,W,H);
+    if (!vis.in) { requestAnimationFrame(draw); return; }
+    const t = performance.now()/1000;
+    const margin = W*0.06, useW = W - margin*2, sp = useW/(COLS-1);
+    const baseR = Math.min(sp*0.42, STEP*0.55*(H/800));
+    for (let c = 0; c < COLS; c++) {
+      const x = c/(COLS-1);
+      const env = 0.18 + 0.50 * Math.exp(-Math.pow((x-0.5)*2.3, 2));
+      const wob = 0.5 + 0.5 * Math.sin(x*18 - t*1.8) * Math.sin(x*4 + t*0.6);
+      const target = env * Math.abs(wob) * GAIN * 0.55;
+      colAmp[c] = colAmp[c]*SMOOTH + target*(1-SMOOTH);
+    }
+    const STEP_PX = STEP * (H/800);
+    const maxHalf = H*0.46;
+    // dim teal, low opacity so type reads
+    ctx.fillStyle = 'rgba(207, 238, 230, 0.45)';
+    for (let c = 0; c < COLS; c++) {
+      const xs = margin + c*sp;
+      const amp = colAmp[c]; if (amp<=0.015) continue;
+      const half = amp * maxHalf;
+      const rows = Math.ceil(half/STEP_PX);
+      for (let r = 0; r <= rows; r++) {
+        const dy = r*STEP_PX; if (dy>half) break;
+        const rel = dy/half;
+        const rad = baseR * Math.sqrt(Math.max(0,1-rel*rel)) * (0.55+0.45*amp);
+        if (rad<0.3) continue;
+        ctx.beginPath();
+        ctx.arc(xs, cy-dy, rad, 0, Math.PI*2);
+        if (r!==0) ctx.arc(xs, cy+dy, rad, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ═════════════════════════════════════════════════════════════════
+   WORK · ripple dot grid — perspective dots, occasional drops
+   ═════════════════════════════════════════════════════════════════ */
+(function () {
+  const cv = document.getElementById('bgRipple'); if (!cv) return;
+  const ctx = cv.getContext('2d');
+  fitCanvas(cv); addEventListener('resize', () => fitCanvas(cv));
+  const vis = makeVisible(cv);
+  const drops = [];
+  let lastDrop = 0;
+  function maybeDrop(t) {
+    if (t - lastDrop > 1800 + Math.random()*1400) {
+      drops.push({ x: 0.15 + 0.7*Math.random(), y: 0.30 + 0.55*Math.random(), t });
+      if (drops.length > 5) drops.shift();
+      lastDrop = t;
+    }
+  }
+  function draw() {
+    const W = cv.width, H = cv.height;
+    ctx.fillStyle = '#050505'; ctx.fillRect(0,0,W,H);
+    if (!vis.in) { requestAnimationFrame(draw); return; }
+    const t = performance.now();
+    maybeDrop(t);
+    // density tuned so dots disappear into the bg until a drop wakes them
+    const cols = 48, rows = 28;
+    for (let j = 0; j < rows; j++) {
+      const yv = j/(rows-1);
+      const persp = 0.40 + 0.60*yv;
+      const yPx = (0.10 + 0.84*yv) * H;
+      const dotR = (0.5 + 1.4*persp);
+      for (let i = 0; i < cols; i++) {
+        const xv = i/(cols-1);
+        const xPx = (0.04 + 0.92*xv) * W;
+        let disp = 0;
+        for (const d of drops) {
+          const dt = (t - d.t)/1000;
+          if (dt<0 || dt>2.8) continue;
+          const dx = xv - d.x, dy = yv - d.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          const r = dt * 0.42;
+          const env = Math.exp(-Math.pow((dist-r)*9,2)) * Math.exp(-dt*1.15);
+          disp += env;
+        }
+        const a = 0.10 + 0.85*Math.min(1, disp*1.4);
+        ctx.fillStyle = `rgba(111,168,156,${a*0.55})`;
+        ctx.beginPath();
+        ctx.arc(xPx, yPx - disp*18*persp, dotR*persp, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ═════════════════════════════════════════════════════════════════
+   LAB · rain — diagonal streaks against an oblique plane
+   ═════════════════════════════════════════════════════════════════ */
+(function () {
+  const cv = document.getElementById('bgRain'); if (!cv) return;
+  const ctx = cv.getContext('2d');
+  fitCanvas(cv); addEventListener('resize', () => fitCanvas(cv));
+  const vis = makeVisible(cv);
+  const N = 70;
+  const streaks = [];
+  const ripples = [];
+  for (let i = 0; i < N; i++) {
+    streaks.push({ x: Math.random(), y: -Math.random()*0.4, v: 0.35 + Math.random()*0.35, len: 0.04 + Math.random()*0.05 });
+  }
+  let last = performance.now();
+  function draw() {
+    const W = cv.width, H = cv.height;
+    const now = performance.now();
+    const dt = Math.min(40, now-last)/1000; last = now;
+    ctx.fillStyle = '#050505'; ctx.fillRect(0,0,W,H);
+    if (!vis.in) { requestAnimationFrame(draw); return; }
+    const horizon = H*0.5;
+    // very subtle ground gradient
+    const g = ctx.createLinearGradient(0, horizon, 0, H);
+    g.addColorStop(0, 'rgba(20,40,36,0.30)');
+    g.addColorStop(1, 'rgba(8,16,14,0.0)');
+    ctx.fillStyle = g; ctx.fillRect(0, horizon, W, H-horizon);
+    // streaks
+    ctx.strokeStyle = 'rgba(207,238,230,0.35)';
+    ctx.lineWidth = 1;
+    for (const s of streaks) {
+      s.y += s.v * dt;
+      if (s.y > 0.5) {
+        const groundY = horizon + Math.random()*(H-horizon)*0.95;
+        const persp = (groundY-horizon)/(H-horizon);
+        ripples.push({ x: s.x*W, y: groundY, t: now, persp });
+        s.y = -0.05 - Math.random()*0.3;
+        s.x = Math.random();
+      }
+      const px = s.x*W, py = s.y*H;
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(px-2, py + s.len*H);
+      ctx.stroke();
+    }
+    for (let i = ripples.length-1; i >= 0; i--) {
+      const r = ripples[i];
+      const age = (now-r.t)/1000;
+      if (age > 1.8) { ripples.splice(i,1); continue; }
+      const rr = age * (40 + 60*r.persp);
+      const alpha = (1 - age/1.8) * 0.35;
+      ctx.strokeStyle = `rgba(207,238,230,${alpha})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(r.x, r.y, rr, rr*0.35, 0, 0, Math.PI*2);
+      ctx.stroke();
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ═════════════════════════════════════════════════════════════════
+   CONTACT · slow, dim heartbeat returning to the motif
+   ═════════════════════════════════════════════════════════════════ */
+(function () {
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const pathEl = document.getElementById('ecgPath2');
+  const ribbonG = document.getElementById('ribbon2');
+  if (!pathEl || !ribbonG) return;
+  const TOTAL    = pathEl.getTotalLength();
+  const DURATION = 9200;        // even slower than hero — a final exhale
+  const HEAD_W   = 4.0;
+  const TAIL_LEN = 1200;
+  const LIFETIME = 1 + TAIL_LEN / TOTAL;
+  const SEGS     = 60;
+
+  function widthAt(d) {
+    if (d <= 0) return HEAD_W;
+    if (d >= TAIL_LEN) return 0;
+    const t = d / TAIL_LEN;
+    return HEAD_W * (1 - t) * (1 - t);
+  }
+  const segs = [];
+  for (let i = 0; i < SEGS; i++) {
+    const u = document.createElementNS(SVGNS, 'use');
+    u.setAttribute('href', '#ecgPath2');
+    u.setAttribute('stroke-width', '0');
+    u.setAttribute('stroke-dasharray', '0 99999');
+    ribbonG.appendChild(u);
+    segs.push(u);
+  }
+  function drawRibbon(progress) {
+    if (progress <= 0 || progress >= LIFETIME) {
+      for (let i = 0; i < SEGS; i++) segs[i].setAttribute('stroke-width', '0');
+      return;
+    }
+    const H = progress * TOTAL;
+    const s0 = Math.max(0, H - TAIL_LEN);
+    const s1 = Math.min(TOTAL, H);
+    const span = s1 - s0;
+    if (span < 1) {
+      for (let i = 0; i < SEGS; i++) segs[i].setAttribute('stroke-width', '0');
+      return;
+    }
+    const sl = span / SEGS;
+    for (let i = 0; i < SEGS; i++) {
+      const a = s0 + i * sl;
+      const b = a + sl;
+      const mid = (a + b) / 2;
+      const w = widthAt(H - mid) * 2;
+      const el = segs[i];
+      if (w < 0.2) { el.setAttribute('stroke-width', '0'); continue; }
+      const pad = sl * 0.06;
+      const showStart = Math.max(0, a - pad);
+      const showLen   = (b + pad) - showStart;
+      el.setAttribute('stroke-width', w.toFixed(2));
+      el.setAttribute('stroke-dasharray',
+        `0 ${showStart.toFixed(2)} ${showLen.toFixed(2)} 999999`);
+    }
+  }
+  let elapsed = 0, last = performance.now(), playing = false;
+  const sec = document.getElementById('contact');
+  const io = new IntersectionObserver(es=>{ for (const e of es) {
+    playing = e.isIntersecting; if (playing) last = performance.now();
+  } }, { threshold: 0.05 });
+  io.observe(sec);
+  function loop(now) {
+    const dt = now-last; last = now;
+    if (playing) {
+      elapsed += dt;
+      const tInPass = elapsed % DURATION;
+      drawRibbon(tInPass / DURATION);
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ═════════════════════════════════════════════════════════════════
+   Index dots — active section tracking
+   ═════════════════════════════════════════════════════════════════ */
+(function () {
+  const links = document.querySelectorAll('.index a');
+  const sections = [...links].map(a => document.getElementById(a.dataset.id));
+  function update() {
+    const probe = window.innerHeight * 0.4;
+    let best = sections[0], bestD = Infinity;
+    for (const s of sections) {
+      if (!s) continue;
+      const r = s.getBoundingClientRect();
+      const d = Math.abs(r.top - probe);
+      if (r.top < window.innerHeight && r.bottom > 0 && d < bestD) { best = s; bestD = d; }
+    }
+    links.forEach(a => a.classList.toggle('active', a.dataset.id === (best && best.id)));
+  }
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
