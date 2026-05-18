@@ -137,30 +137,6 @@
 		transform: rotate(180deg);
 	}
 
-	@media (max-width: 640px) {
-		.theme {
-			border-color: transparent;
-			padding: 4px;
-			gap: 0;
-		}
-		.theme:hover {
-			border-color: transparent;
-		}
-		.orb {
-			width: 18px;
-			height: 18px;
-		}
-		.orb svg {
-			display: none;
-		}
-		.disc {
-			display: block;
-		}
-		.label {
-			display: none;
-		}
-	}
-
 	/* dev-style label: theme: <word> */
 	.label {
 		display: inline-flex;
@@ -208,6 +184,31 @@
 		.rays line,
 		.word {
 			--anim: 0s;
+		}
+	}
+
+	/* phone: bare ◐ disc only — no border, no text */
+	@media (max-width: 640px) {
+		.theme {
+			border-color: transparent;
+			padding: 4px;
+			gap: 0;
+		}
+		.theme:hover {
+			border-color: transparent;
+		}
+		.orb {
+			width: 18px;
+			height: 18px;
+		}
+		.orb svg {
+			display: none;
+		}
+		.disc {
+			display: block;
+		}
+		.label {
+			display: none;
 		}
 	}
 </style>

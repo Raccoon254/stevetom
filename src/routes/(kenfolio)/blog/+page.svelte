@@ -1,16 +1,5 @@
 <script lang="ts">
-	const notes = [
-		{
-			when: 'Dec · 25',
-			title: 'Kentom 2026: Charting New Creative Directions.',
-			slug: 'kentom-2026-new-directions'
-		},
-		{
-			when: 'Dec · 25',
-			title: 'Skill Kenya pivots from pre-recorded courses to live interactive sessions.',
-			slug: 'skillkenya-pivot-to-live-sessions'
-		}
-	];
+	import { posts, shortDate } from '$lib/content';
 </script>
 
 <svelte:head>
@@ -21,16 +10,20 @@
 <main class="page">
 	<div class="notes">
 		<h1>Notes from the <em>workshop</em>.</h1>
-		<ol class="list">
-			{#each notes as note}
-				<li>
-					<a href="/blog/{note.slug}">
-						<span class="when">{note.when}</span>
-						<span class="title">{note.title}</span>
-					</a>
-				</li>
-			{/each}
-		</ol>
+		{#if posts.length === 0}
+			<p class="empty">Nothing here yet.</p>
+		{:else}
+			<ol class="list">
+				{#each posts as post}
+					<li>
+						<a href="/blog/{post.slug}">
+							<span class="when">{shortDate(post.date)}</span>
+							<span class="title">{post.title}</span>
+						</a>
+					</li>
+				{/each}
+			</ol>
+		{/if}
 	</div>
 </main>
 
@@ -53,6 +46,13 @@
 	}
 	.notes h1 em {
 		font-style: normal;
+		color: var(--mute);
+	}
+	.empty {
+		font-family: var(--mono);
+		font-size: 12px;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
 		color: var(--mute);
 	}
 

@@ -2,25 +2,54 @@
 	import Icon from '$lib/components/Icon.svelte';
 
 	const links = [
-		{ label: 'WhatsApp', href: 'https://wa.link/w1774n' },
-		{ label: 'GitHub', href: 'https://github.com/Raccoon254' },
-		{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/steve-tom-822a81230/' }
+		{
+			label: 'TikTok',
+			handle: '@raccoon.254',
+			href: 'https://www.tiktok.com/@raccoon.254',
+			icon: 'tiktok'
+		},
+		{
+			label: 'GitHub',
+			handle: 'Raccoon254',
+			href: 'https://github.com/Raccoon254',
+			icon: 'github'
+		},
+		{
+			label: 'YouTube',
+			handle: '@iamkentom',
+			href: 'https://www.youtube.com/@iamkentom',
+			icon: 'youtube-logo'
+		},
+		{
+			label: 'WhatsApp',
+			handle: 'Message me',
+			href: 'https://wa.link/w1774n',
+			icon: 'whatsapp-logo'
+		}
 	];
 </script>
 
 <svelte:head>
 	<title>kenTom · Contact</title>
-	<meta name="description" content="Get in touch with Steve Tom — email, WhatsApp, GitHub, LinkedIn." />
+	<meta name="description" content="Get in touch with Steve Tom — email, TikTok, GitHub, WhatsApp." />
 </svelte:head>
 
 <main class="page">
 	<div class="contact">
+		<div class="eyebrow"><Icon name="messages" size={13} /> contact</div>
+
 		<a class="email" href="mailto:tomsteve187@gmail.com">tomsteve187@gmail.com</a>
+
 		<ul class="lines">
 			{#each links as l}
 				<li>
 					<a href={l.href} target="_blank" rel="noopener">
-						{l.label} <span class="ar"><Icon name="export-arrow" size={12} /></span>
+						<span class="brand"><Icon name={l.icon} size={16} /></span>
+						<span class="text">
+							<span class="lbl">{l.label}</span>
+							<span class="handle">{l.handle}</span>
+						</span>
+						<span class="ar"><Icon name="export-arrow" size={13} /></span>
 					</a>
 				</li>
 			{/each}
@@ -36,6 +65,22 @@
 		width: 100%;
 		max-width: 640px;
 	}
+
+	.eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--mono);
+		font-size: 11px;
+		letter-spacing: 0.35em;
+		text-transform: uppercase;
+		color: var(--mute);
+		margin: 0 0 clamp(20px, 4vh, 32px);
+	}
+	.eyebrow :global(svg) {
+		stroke-width: 1.5;
+	}
+
 	.contact .email {
 		display: inline-block;
 		font-family: 'Google Sans Display', var(--sans);
@@ -58,26 +103,57 @@
 	ul.lines {
 		list-style: none;
 		padding: 0;
-		margin: clamp(48px, 8vh, 80px) 0 0;
+		margin: clamp(40px, 7vh, 72px) 0 0;
+		border-top: 1px solid var(--hairline);
 	}
-	ul.lines li + li {
-		margin-top: 18px;
+	ul.lines li {
+		border-bottom: 1px solid var(--hairline);
 	}
 	ul.lines a {
-		display: inline-flex;
-		align-items: baseline;
-		gap: 14px;
-		font-family: var(--mono);
-		font-size: 12px;
-		letter-spacing: 0.26em;
-		text-transform: uppercase;
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		padding: 18px 4px;
 		color: var(--ink-2);
 		transition: color 0.25s;
 	}
 	ul.lines a:hover {
 		color: var(--spark);
 	}
-	ul.lines a .ar {
+
+	/* brand mark — inherits currentColor, so it follows the theme */
+	.brand {
+		display: inline-flex;
+		flex: 0 0 auto;
+		color: var(--ink);
+		transition: color 0.25s;
+	}
+	ul.lines a:hover .brand {
+		color: var(--spark);
+	}
+
+	.text {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		min-width: 0;
+	}
+	.lbl {
+		font-family: var(--mono);
+		font-size: 12px;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
+		color: var(--ink);
+	}
+	.handle {
+		font-family: var(--mono);
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		color: var(--mute);
+	}
+
+	.ar {
+		margin-left: auto;
 		color: var(--mute);
 		transition:
 			transform 0.25s,
@@ -86,5 +162,11 @@
 	ul.lines a:hover .ar {
 		color: var(--spark);
 		transform: translate(2px, -2px);
+	}
+
+	@media (max-width: 600px) {
+		.contact .email {
+			font-size: clamp(22px, 6.4vw, 30px);
+		}
 	}
 </style>

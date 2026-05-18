@@ -251,6 +251,7 @@
 		}
 		.burger {
 			display: flex;
+			border-color: transparent;
 		}
 	}
 </style>

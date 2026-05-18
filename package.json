@@ -35,6 +35,7 @@
 		"@prisma/client": "^6.15.0",
 		"aos": "^2.3.4",
 		"lucide-svelte": "^0.542.0",
+		"marked": "^18.0.3",
 		"nodemailer": "^7.0.11",
 		"prisma": "^6.15.0",
 		"three": "^0.180.0"

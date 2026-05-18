@@ -1437,6 +1437,11 @@
 	}
 
 	/* 04 contact */
+	/* eyebrow on its own row, above the email (not inline beside it) */
+	.stage--contact .eyebrow {
+		display: flex;
+		justify-content: center;
+	}
 	.stage--contact .email {
 		display: inline-block;
 		font-size: clamp(24px, 5.2vw, 64px);
@@ -1517,11 +1522,19 @@
 		.stage--partnerships .partner-row {
 			justify-content: flex-start;
 		}
+		/* contact: left-aligned, socials pinned to the bottom of the screen */
 		.stage--contact .content {
 			text-align: left;
+			align-self: stretch;
+			display: flex;
+			flex-direction: column;
+		}
+		.stage--contact .eyebrow {
+			justify-content: flex-start;
 		}
 		.stage--contact .socials {
 			justify-content: flex-start;
+			margin-top: auto;
 		}
 		.stage--contact .email {
 			font-size: clamp(22px, 6.4vw, 32px);
