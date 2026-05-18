@@ -2,12 +2,12 @@
 	import Icon from '$lib/components/Icon.svelte';
 
 	const services = [
-		'Web app',
-		'Mobile app',
-		'Infrastructure / APIs',
-		'Custom software',
-		'Design',
-		'Something else'
+		{ label: 'Web app', icon: 'monitor' },
+		{ label: 'Mobile app', icon: 'mobile' },
+		{ label: 'Infrastructure / APIs', icon: 'cloud-connection' },
+		{ label: 'Custom software', icon: 'code' },
+		{ label: 'Design', icon: 'magicpen' },
+		{ label: 'Something else', icon: 'category' }
 	];
 
 	let brief = '';
@@ -57,9 +57,10 @@
 			<span class="pick-label">What is it</span>
 			<div class="choices">
 				{#each services as s}
-					<label>
-						<input type="radio" name="service" value={s} bind:group={service} />
-						{s}
+					<label class="choice" class:selected={service === s.label}>
+						<input type="radio" name="service" value={s.label} bind:group={service} />
+						<span class="choice-ic"><Icon name={s.icon} size={18} /></span>
+						<span class="choice-txt">{s.label}</span>
 					</label>
 				{/each}
 			</div>
@@ -79,7 +80,7 @@
 		<div class="send-row">
 			<button class="pill pill--solid" type="submit" disabled={status === 'sending'}>
 				<span>{label}</span>
-				<span class="ar" aria-hidden="true"><Icon name="export-arrow" size={13} /></span>
+				<span class="ar" aria-hidden="true"><Icon name="direct-send" size={14} /></span>
 			</button>
 			<span class="alt">or <a href="mailto:tomsteve187@gmail.com">email</a></span>
 		</div>
@@ -140,6 +141,75 @@
 		letter-spacing: 0.26em;
 		text-transform: uppercase;
 		color: var(--mute);
+	}
+	.ask .choices {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 10px;
+	}
+	.ask .choice {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 13px 14px;
+		border: 1px solid var(--hairline-2);
+		border-radius: 12px;
+		cursor: pointer;
+		color: var(--ink-2);
+		background: rgba(var(--bg-rgb), 0.35);
+		transition:
+			border-color 0.2s ease,
+			color 0.2s ease,
+			background 0.2s ease;
+	}
+	.ask .choice input {
+		position: absolute;
+		opacity: 0;
+		pointer-events: none;
+	}
+	.ask .choice-ic {
+		display: inline-flex;
+		color: var(--mute);
+		transition:
+			color 0.2s ease,
+			transform 0.2s ease;
+	}
+	.ask .choice-txt {
+		font-family: var(--mono);
+		font-size: 11px;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		line-height: 1.25;
+	}
+	.ask .choice:hover {
+		border-color: var(--mute);
+		color: var(--ink);
+	}
+	.ask .choice:hover .choice-ic {
+		color: var(--ink-2);
+	}
+	.ask .choice.selected {
+		border-color: var(--spark);
+		color: var(--ink);
+	}
+	.ask .choice.selected .choice-ic {
+		color: var(--spark);
+		transform: scale(1.1);
+	}
+	.ask .choice:focus-within {
+		outline: 1px solid var(--mute);
+		outline-offset: 2px;
+	}
+	@media (max-width: 640px) {
+		.ask .choices {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media (max-width: 400px) {
+		.ask .choices {
+			grid-template-columns: 1fr;
+		}
 	}
 	.ask .send-row {
 		margin-top: clamp(36px, 5vh, 48px);

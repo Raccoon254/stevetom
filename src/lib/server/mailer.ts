@@ -3,6 +3,10 @@
  * Docs: https://axene.io/docs/mailer/sending/api
  *
  * Sending goes through the Axene REST API with AXENE_MAILER_API_KEY.
+ * The HTML templates follow the Axene system-email style: white ground,
+ * #111 text, Georgia body, monospace labels, hairline #e2e2e0 dividers,
+ * dark buttons — table-based for legacy mail-client support.
+ *
  * Verified senders (all forward to tomsteve187@gmail.com):
  *   i@kentom.co.ke         "KenTom HQ"
  *   me@kentom.co.ke        "KenTom HQ"
@@ -35,8 +39,8 @@ export type SendOptions = {
 
 /**
  * Send one email through Axene Mailer. Resolves with the queued message
- * info (202). Throws on a missing key or a non-2xx response — callers
- * should decide whether an email failure is fatal.
+ * info (202). Throws on a missing key or non-2xx response — callers
+ * decide whether an email failure is fatal.
  */
 export async function sendEmail(opts: SendOptions): Promise<{ id?: string; status?: string }> {
 	const key = env.AXENE_MAILER_API_KEY;
@@ -75,19 +79,106 @@ export function esc(value: unknown): string {
 		.replace(/"/g, '&quot;');
 }
 
-/** Wrap body content in the shared kenTom email shell. */
-export function emailShell(heading: string, inner: string): string {
-	return `<!doctype html>
-<html>
-<body style="margin:0;background:#f4f1ea;font-family:Arial,Helvetica,sans-serif;color:#0e110f;">
-  <div style="max-width:560px;margin:0 auto;padding:32px 20px;">
-    <div style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#6a8a82;margin-bottom:18px;">kenTom</div>
-    <h1 style="font-size:22px;font-weight:600;margin:0 0 18px;line-height:1.25;">${heading}</h1>
-    ${inner}
-    <div style="margin-top:28px;padding-top:18px;border-top:1px solid rgba(14,17,15,.12);font-size:12px;color:#6a8a82;">
-      kentom.co.ke
-    </div>
-  </div>
+/* ───────────────────────── template primitives ─────────────────────────
+   Ported from the Axene system-email design (v3). */
+
+const MAX_WIDTH = 560;
+const BODY_FONT = 'Georgia, serif';
+const MONO_FONT = "'Courier New', monospace";
+const LOGO_URL = 'https://stevetom.vercel.app/logo-dark.png';
+
+/** Body paragraph. */
+export function p(text: string, bottomMargin = 16): string {
+	return `<p style="margin:0 0 ${bottomMargin}px 0;font-family:${BODY_FONT};font-size:15px;line-height:1.7;color:#111">${text}</p>`;
+}
+
+/** Monospace label for technical / field info. */
+export function label(text: string): string {
+	return `<div style="font-family:${MONO_FONT};font-size:12px;color:#999;margin:0 0 4px 0;letter-spacing:.05em">${text}</div>`;
+}
+
+/** Display value. */
+export function value(text: string, bottomMargin = 16): string {
+	return `<div style="font-family:${BODY_FONT};font-size:15px;color:#111;line-height:1.6;margin:0 0 ${bottomMargin}px 0">${text}</div>`;
+}
+
+/** Label + value pair. */
+export function labelValue(lbl: string, val: string): string {
+	return label(lbl) + value(val);
+}
+
+/** Subtle line divider. */
+export function divider(): string {
+	return (
+		'<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:20px 0">' +
+		'<tr><td style="border-top:1px solid #e2e2e0;height:0;font-size:0;line-height:0">&nbsp;</td></tr></table>'
+	);
+}
+
+/** Solid dark button. */
+export function buttonDark(text: string, url: string): string {
+	return (
+		'<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:20px 0">' +
+		'<tr><td bgcolor="#111" style="background:#111;border-radius:3px">' +
+		`<a href="${url}" target="_blank" style="display:block;padding:12px 24px;font-family:Arial,sans-serif;font-size:13px;font-weight:600;color:#fff;text-decoration:none;text-align:center;letter-spacing:.05em">${text}</a>` +
+		'</td></tr></table>'
+	);
+}
+
+/**
+ * Master email template — dark kenTom logo, left-aligned content,
+ * a subtle footer. `bodyHtml` is composed from the primitives above.
+ */
+export function renderEmail(opts: {
+	title?: string;
+	heading: string;
+	bodyHtml: string;
+	preheader?: string;
+	footerNote?: string;
+}): string {
+	const docTitle = opts.title || opts.heading || 'kenTom';
+	const preheader = opts.preheader
+		? `<div style="display:none;font-size:0;color:#fff;opacity:0">${opts.preheader}</div>`
+		: '';
+	const footerNote =
+		opts.footerNote || 'You received this email because you contacted kenTom.';
+
+	return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>${docTitle}</title>
+<!--[if mso]>
+<style type="text/css">table, td, div, h1, h2, p, a { font-family: Georgia, serif !important; }</style>
+<![endif]-->
+<style>
+@media only screen and (max-width:600px){
+  .content{width:100%!important;max-width:100%!important;padding:20px 16px!important;}
+  h1{font-size:20px!important;}
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background:#fff;font-family:${BODY_FONT};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%">
+${preheader}
+<table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse">
+<tr><td align="left" style="padding:40px 20px">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" class="content" style="max-width:${MAX_WIDTH}px;margin:0 auto;border-collapse:collapse">
+<tr><td style="padding:0;font-family:${BODY_FONT};color:#111">
+<img src="${LOGO_URL}" width="34" alt="kenTom" style="display:block;width:34px;height:auto;border:0;margin-bottom:20px">
+<h1 style="margin:0 0 20px 0;font-family:${BODY_FONT};font-size:24px;line-height:1.3;font-weight:600;color:#111">${opts.heading}</h1>
+${opts.bodyHtml}
+</td></tr>
+<tr><td style="padding:20px 0 0 0;border-top:1px solid #e2e2e0">
+<p style="margin:0 0 12px 0;font-family:${BODY_FONT};font-size:13px">
+<a href="https://www.kentom.co.ke" target="_blank" style="color:#111;text-decoration:underline;font-weight:500">kentom.co.ke</a>
+</p>
+<p style="margin:0;font-family:${BODY_FONT};font-size:12px;color:#999;line-height:1.6">${footerNote}</p>
+</td></tr>
+</table>
+</td></tr>
+</table>
 </body>
 </html>`;
 }

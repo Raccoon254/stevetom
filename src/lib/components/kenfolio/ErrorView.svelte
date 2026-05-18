@@ -122,7 +122,7 @@
 			<div class="cta-row">
 				<a class="pill pill--solid" href="/">
 					<span>Back home</span>
-					<span class="ar" aria-hidden="true"><Icon name="arrow-left" size={13} /></span>
+					<span class="ar" aria-hidden="true"><Icon name="home" size={14} /></span>
 				</a>
 				<a class="alt" href="/contact">or get in touch</a>
 			</div>

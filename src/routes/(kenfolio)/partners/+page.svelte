@@ -90,7 +90,7 @@
 		<div class="cta-row">
 			<a class="pill pill--solid" href="mailto:tomsteve187@gmail.com?subject=Sponsorship">
 				<span>Start a conversation</span>
-				<span class="ar" aria-hidden="true"><Icon name="export-arrow" size={13} /></span>
+				<span class="ar" aria-hidden="true"><Icon name="messages" size={14} /></span>
 			</a>
 			<span class="alt">or <a href="/contact">other ways</a></span>
 		</div>

@@ -25,7 +25,7 @@
 
 		<a class="out" href={project.link.href} target="_blank" rel="noopener">
 			<span>{project.link.label}</span>
-			<Icon name="export-arrow" size={13} />
+			<Icon name="paperclip" size={14} />
 		</a>
 	</article>
 </main>

@@ -49,7 +49,7 @@
 							<span class="lbl">{l.label}</span>
 							<span class="handle">{l.handle}</span>
 						</span>
-						<span class="ar"><Icon name="export-arrow" size={13} /></span>
+						<span class="ar"><Icon name="paperclip" size={14} /></span>
 					</a>
 				</li>
 			{/each}

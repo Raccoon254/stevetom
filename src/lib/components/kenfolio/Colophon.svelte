@@ -5,7 +5,7 @@
 </script>
 
 <div class="colophon">
-	<a {href}><Icon name="arrow-left" size={11} /> {label}</a>
+	<a {href}><Icon name="home" size={12} /> {label}</a>
 </div>
 
 <style>
