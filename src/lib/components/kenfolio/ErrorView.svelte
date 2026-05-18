@@ -105,10 +105,12 @@
 
 		<div class="pulse" aria-hidden="true">
 			<svg viewBox="0 150 1280 470" preserveAspectRatio="xMidYMid meet">
-				<path
-					id="errEcgPath"
-					d="M0,400 H560 q10,0 14,-14 q5,-14 10,0 q4,14 10,14 H630 L660,420 L700,170 L740,560 L770,400 q10,0 16,-22 q6,-22 12,0 q6,22 14,22 H1280"
-				/>
+				<defs>
+					<path
+						id="errEcgPath"
+						d="M0,400 H560 q10,0 14,-14 q5,-14 10,0 q4,14 10,14 H630 L660,420 L700,170 L740,560 L770,400 q10,0 16,-22 q6,-22 12,0 q6,22 14,22 H1280"
+					/>
+				</defs>
 				<use class="ghost" href="#errEcgPath" />
 				<g id="errRibbon" class="ribbon" fill="none" stroke-linecap="round" stroke-linejoin="round"
 				></g>
@@ -168,10 +170,6 @@
 		width: 100%;
 		height: auto;
 		overflow: visible;
-	}
-	#errEcgPath {
-		fill: none;
-		stroke: none;
 	}
 	.ghost {
 		fill: none;

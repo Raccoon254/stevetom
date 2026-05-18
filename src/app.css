@@ -18,7 +18,6 @@
 
 html{
     scroll-behavior: smooth;
-    background: #0e0e0e;
 }
 
 body {
@@ -27,8 +26,19 @@ body {
 	font: 1rem/1.5 var(--font-body);
     font-family: 'Figtree', sans-serif !important;
     -webkit-font-smoothing: antialiased;
-    background: #0e0e0e;
     position: relative;
+}
+
+/* Theme background — set from first paint via the [data-theme] attribute
+   (the boot script in app.html applies it before the page renders). */
+html,
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+    background-color: #050505;
+}
+html[data-theme="light"],
+html[data-theme="light"] body {
+    background-color: #f4f1ea;
 }
 
 [data-theme="light"] img[src="/logo-light.png"] {

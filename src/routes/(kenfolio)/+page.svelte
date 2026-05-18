@@ -924,10 +924,11 @@
 	</div>
 
 	<div class="hero-foot">
-		<a class="cta-pill" href="/contact">
-			<span>Contact</span>
-			<span class="ar" aria-hidden="true"><Icon name="arrow-down" size={13} /></span>
-		</a>
+		<div class="scroll-cue" aria-hidden="true">
+			<span class="scroll-line"><span class="scroll-track"></span></span>
+			<span class="scroll-ripple"></span>
+			<span class="scroll-ripple scroll-ripple--2"></span>
+		</div>
 	</div>
 </section>
 
@@ -993,7 +994,7 @@
 		<div class="partner-row">
 			<a class="partner-pill" href="/partners">
 				<span>Start a conversation</span>
-				<span class="ar" aria-hidden="true"><Icon name="message" size={13} /></span>
+				<span class="ar" aria-hidden="true"><Icon name="email" size={13} /></span>
 			</a>
 		</div>
 	</div>
@@ -1275,37 +1276,98 @@
 		gap: 14px;
 		align-items: center;
 	}
-	.hero-foot .cta-pill {
-		background: rgba(var(--bg-rgb), 0.4);
-		backdrop-filter: blur(6px);
-		border: 1px solid var(--hairline);
-		border-radius: 999px;
-		padding: 10px 20px;
-		color: var(--ink-2);
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.26em;
-		text-transform: uppercase;
-		cursor: pointer;
-		display: inline-flex;
-		gap: 10px;
-		align-items: center;
-		transition:
-			border-color 0.25s,
-			color 0.25s,
-			background 0.25s,
-			transform 0.25s;
+	/* minimal scroll indicator — spark glides down a hairline, then
+	   a clean ripple blooms from the foot of the line */
+	.scroll-cue {
+		--cue-dur: 3.6s;
+		--cue-ease: cubic-bezier(0.65, 0, 0.35, 1);
+		/* ripples decelerate as they spread — natural surface feel */
+		--ripple-ease: cubic-bezier(0.12, 0.78, 0.28, 1);
+		--ripple-peak: 0.85;
+		position: relative;
+		width: 48px;
+		height: 48px;
+		display: flex;
+		justify-content: center;
 	}
-	.hero-foot .cta-pill:hover {
-		border-color: var(--mute);
-		color: var(--ink);
+	.scroll-line {
+		position: relative;
+		width: 1px;
+		height: 100%;
+		background: var(--hairline);
+		overflow: hidden;
 	}
-	.hero-foot .cta-pill .ar {
-		color: var(--spark);
-		transition: transform 0.3s;
+	.scroll-track {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 42%;
+		background: linear-gradient(to bottom, transparent, var(--spark));
+		animation: scroll-cue-travel var(--cue-dur) var(--cue-ease) infinite;
 	}
-	.hero-foot .cta-pill:hover .ar {
-		transform: translateY(2px);
+	@keyframes scroll-cue-travel {
+		0% {
+			transform: translateY(-110%);
+			opacity: 0;
+		}
+		18% {
+			opacity: 1;
+		}
+		52% {
+			transform: translateY(138%);
+			opacity: 1;
+		}
+		60%,
+		100% {
+			transform: translateY(138%);
+			opacity: 0;
+		}
+	}
+
+	/* ripple — oval, foreshortened like a ripple on a surface,
+	   sits at the bottom point of the line, unclipped */
+	.scroll-ripple {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		width: 21px;
+		height: 8px;
+		margin: 0 0 -4px -10.5px;
+		border-radius: 50%;
+		border: 1px solid var(--spark);
+		transform: scale(0);
+		opacity: 0;
+		animation: scroll-cue-ripple var(--cue-dur) var(--ripple-ease) infinite;
+	}
+	/* trailing ring — slower to appear, much fainter */
+	.scroll-ripple--2 {
+		--ripple-peak: 0.22;
+		animation-delay: 0.34s;
+	}
+	@keyframes scroll-cue-ripple {
+		0%,
+		50% {
+			transform: scale(0);
+			opacity: 0;
+		}
+		54% {
+			transform: scale(0.4);
+			opacity: var(--ripple-peak);
+		}
+		100% {
+			transform: scale(3.1);
+			opacity: 0;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.scroll-track {
+			animation: none;
+			transform: translateY(70%);
+		}
+		.scroll-ripple {
+			display: none;
+		}
 	}
 
 	/* 02 work */
