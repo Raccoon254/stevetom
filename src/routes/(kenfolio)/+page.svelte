@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import Icon from '$lib/components/Icon.svelte';
 
 	const works = [
 		{ name: 'Axene.io', href: 'https://axene.io', quip: 'Send, build, ship' },
@@ -935,7 +936,7 @@
 <section id="about" class="stage stage--about" data-screen-label="01 About">
 	<div class="bg"><canvas id="bgWave"></canvas></div>
 	<div class="content">
-		<div class="eyebrow">§ about</div>
+		<div class="eyebrow"><Icon name="user" size={13} /> about</div>
 		<p class="line">A guy who codes. Started in 2019, before the machines learned the trick.</p>
 	</div>
 </section>
@@ -944,7 +945,7 @@
 <section id="work" class="stage stage--work" data-screen-label="02 Work">
 	<div class="bg"><canvas id="bgRipple"></canvas></div>
 	<div class="content">
-		<div class="eyebrow">§ selected work</div>
+		<div class="eyebrow"><Icon name="briefcase" size={13} /> selected work</div>
 		<ul class="works">
 			{#each works as w}
 				<li>
@@ -972,7 +973,7 @@
 <section id="tutoring" class="stage stage--tutoring" data-screen-label="02b Tutoring">
 	<div class="bg"><canvas id="bgPulse"></canvas></div>
 	<div class="content">
-		<div class="eyebrow">§ tutoring</div>
+		<div class="eyebrow"><Icon name="book" size={13} /> tutoring</div>
 		<p class="line">
 			One-on-one tutoring on <em>whatever you want to learn</em>. Pick a subject, we go deep on it
 			together. I also own
@@ -985,7 +986,7 @@
 <section id="partnerships" class="stage stage--partnerships" data-screen-label="02c Partnerships">
 	<div class="bg"><canvas id="bgPartners"></canvas></div>
 	<div class="content">
-		<div class="eyebrow">§ partnerships</div>
+		<div class="eyebrow"><Icon name="people" size={13} /> partnerships</div>
 		<p class="line">
 			Open to building things together. <em>Especially the kind that take a while to become
 				obvious.</em>
@@ -1003,7 +1004,7 @@
 <section id="lab" class="stage stage--lab" data-screen-label="03 Lab">
 	<div class="bg"><canvas id="bgRain"></canvas></div>
 	<div class="content">
-		<div class="eyebrow">§ lab</div>
+		<div class="eyebrow"><Icon name="flash" size={13} /> lab</div>
 		<p class="line">Side rigs. Things that <em>move for the joy of it</em>.</p>
 	</div>
 </section>
@@ -1030,7 +1031,7 @@
 		</svg>
 	</div>
 	<div class="content">
-		<div class="eyebrow">§ contact</div>
+		<div class="eyebrow"><Icon name="messages" size={13} /> contact</div>
 		<a class="email" href="mailto:tomsteve187@gmail.com">tomsteve187@gmail.com</a>
 		<div class="socials">
 			<a href="https://github.com/Raccoon254" target="_blank" rel="noopener">GitHub</a>
@@ -1168,6 +1169,12 @@
 		text-transform: uppercase;
 		color: var(--mute);
 		margin: 0 0 clamp(24px, 4vh, 40px);
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.stage .eyebrow :global(svg) {
+		stroke-width: 1.5;
 	}
 	.line {
 		font-size: clamp(22px, 2.8vw, 36px);
