@@ -881,14 +881,14 @@
 						<text x="3" y="28" style="fill: var(--syn-cmt)">// build slow</text>
 						<text x="3" y="43" style="fill: var(--syn-str)">'❤'</text>
 						<text x="22" y="43" style="fill: var(--syn-pun)">.map(</text>
-						<text x="55" y="43" style="fill: var(--syn-fn)">Tom</text>
+						<text x="55" y="43" style="fill: var(--syn-fn)">Code</text>
 						<text x="78" y="43" style="fill: var(--syn-pun)">)</text>
 						<text x="3" y="58" style="fill: var(--syn-num)">01101</text>
 						<text x="40" y="58" style="fill: var(--syn-key)">&amp;&amp;</text>
 						<text x="60" y="58" style="fill: var(--syn-fn)">λ()</text>
 						<text x="82" y="58" style="fill: var(--syn-num)">;;</text>
 						<text x="3" y="73" style="fill: var(--syn-pun)">&lt;/</text>
-						<text x="17" y="73" style="fill: var(--syn-fn)">Tom</text>
+						<text x="17" y="73" style="fill: var(--syn-fn)">Java</text>
 						<text x="40" y="73" style="fill: var(--syn-pun)">&gt;</text>
 						<text x="50" y="73" style="fill: var(--syn-cmt)">/*·*/</text>
 					</g>
@@ -904,7 +904,7 @@
 				text-anchor="middle"
 				font-weight="700"
 				font-size="280"
-				letter-spacing="-14">ken<tspan class="wm-em">Tom</tspan><tspan class="wm-stop">.</tspan></text
+				letter-spacing="-14">ken<tspan class="wm-em-a">Tom</tspan><tspan class="wm-stop">.</tspan></text
 			>
 
 			<text
@@ -927,7 +927,7 @@
 	<div class="hero-foot">
 		<a class="cta-pill" href="#contact">
 			<span>Contact</span>
-			<span class="ar" aria-hidden="true">↓</span>
+			<span class="ar" aria-hidden="true"><Icon name="arrow-down" size={13} /></span>
 		</a>
 	</div>
 </section>
@@ -963,7 +963,7 @@
 				rel="noopener"
 			>
 				<span>See all work</span>
-				<span class="ar" aria-hidden="true">↗</span>
+				<span class="ar" aria-hidden="true"><Icon name="export-arrow" size={13} /></span>
 			</a>
 		</div>
 	</div>
@@ -994,7 +994,7 @@
 		<div class="partner-row">
 			<a class="partner-pill" href="/partners">
 				<span>Start a conversation</span>
-				<span class="ar" aria-hidden="true">↓</span>
+				<span class="ar" aria-hidden="true"><Icon name="arrow-down" size={13} /></span>
 			</a>
 		</div>
 	</div>

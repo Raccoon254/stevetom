@@ -156,14 +156,6 @@ body.kenfolio ::selection {
 	border-color: var(--mute);
 	color: var(--ink);
 }
-.kenfolio .meta .theme .glyph {
-	width: 10px;
-	height: 10px;
-	display: inline-block;
-	border-radius: 50%;
-	background: var(--ink);
-	box-shadow: inset -3px -3px 0 0 var(--bg);
-}
 
 .kenfolio .colophon {
 	position: fixed;

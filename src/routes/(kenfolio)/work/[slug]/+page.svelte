@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Icon from '$lib/components/Icon.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
 	$: project = data.project;
@@ -23,7 +24,8 @@
 		{/each}
 
 		<a class="out" href={project.link.href} target="_blank" rel="noopener">
-			{project.link.label} ↗
+			<span>{project.link.label}</span>
+			<Icon name="export-arrow" size={13} />
 		</a>
 	</article>
 </main>
@@ -91,8 +93,8 @@
 	.proj .out {
 		margin-top: clamp(36px, 6vh, 56px);
 		display: inline-flex;
-		align-items: baseline;
-		gap: 12px;
+		align-items: center;
+		gap: 10px;
 		font-family: var(--mono);
 		font-size: 11px;
 		letter-spacing: 0.26em;

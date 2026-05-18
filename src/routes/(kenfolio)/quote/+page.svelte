@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Icon from '$lib/components/Icon.svelte';
+
 	let brief = '';
 	let email = '';
 	let status: 'idle' | 'sending' | 'sent' | 'error' = 'idle';
@@ -55,7 +57,7 @@
 		<div class="send-row">
 			<button class="pill pill--solid" type="submit" disabled={status === 'sending'}>
 				<span>{label}</span>
-				<span class="ar" aria-hidden="true">↗</span>
+				<span class="ar" aria-hidden="true"><Icon name="export-arrow" size={13} /></span>
 			</button>
 			<span class="alt">or <a href="mailto:tomsteve187@gmail.com">email</a></span>
 		</div>

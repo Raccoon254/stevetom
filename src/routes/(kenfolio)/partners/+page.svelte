@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Icon from '$lib/components/Icon.svelte';
+
 	const reasons = [
 		{
 			n: '01',
@@ -88,7 +90,7 @@
 		<div class="cta-row">
 			<a class="pill pill--solid" href="mailto:tomsteve187@gmail.com?subject=Sponsorship">
 				<span>Start a conversation</span>
-				<span class="ar" aria-hidden="true">↗</span>
+				<span class="ar" aria-hidden="true"><Icon name="export-arrow" size={13} /></span>
 			</a>
 			<span class="alt">or <a href="/contact">other ways</a></span>
 		</div>

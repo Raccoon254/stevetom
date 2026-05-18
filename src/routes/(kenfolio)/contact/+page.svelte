@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Icon from '$lib/components/Icon.svelte';
+
 	const links = [
 		{ label: 'WhatsApp', href: 'https://wa.link/w1774n' },
 		{ label: 'GitHub', href: 'https://github.com/Raccoon254' },
@@ -18,7 +20,7 @@
 			{#each links as l}
 				<li>
 					<a href={l.href} target="_blank" rel="noopener">
-						{l.label} <span class="ar">↗</span>
+						{l.label} <span class="ar"><Icon name="export-arrow" size={12} /></span>
 					</a>
 				</li>
 			{/each}
