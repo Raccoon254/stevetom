@@ -3,6 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import Icon from '$lib/components/Icon.svelte';
 	import '$lib/styles/kenfolio.css';
+	import '$lib/styles/admin.css';
 
 	$: currentPath = $page.route.id;
 	let mobileMenuOpen = false;

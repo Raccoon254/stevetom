@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import { fade, fly } from 'svelte/transition';
-	import { cubicInOut } from 'svelte/easing';
-	import { Inbox, Mail, Phone, Eye, Trash2, X, User, Building, DollarSign, Clock, FileText } from 'lucide-svelte';
+	import Icon from '$lib/components/Icon.svelte';
+	import { avatar } from '$lib/avatar';
 
 	let requests: any[] = [];
 	let loading = true;
@@ -10,22 +11,17 @@
 	let showDetailModal = false;
 	let filterStatus = '';
 
-	onMount(() => {
-		fetchRequests();
-	});
+	const STATUSES = ['PENDING', 'IN_REVIEW', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'REJECTED'];
+
+	onMount(fetchRequests);
 
 	async function fetchRequests() {
 		try {
 			let url = '/api/service-requests';
-			if (filterStatus) {
-				url += `?status=${filterStatus}`;
-			}
-
-			const response = await fetch(url);
-			const data = await response.json();
-			if (data.success) {
-				requests = data.data;
-			}
+			if (filterStatus) url += `?status=${filterStatus}`;
+			const res = await fetch(url);
+			const data = await res.json();
+			if (data.success) requests = data.data;
 		} catch (error) {
 			console.error('Error fetching requests:', error);
 		} finally {
@@ -35,20 +31,15 @@
 
 	async function updateRequestStatus(request: any, newStatus: string) {
 		try {
-			const response = await fetch(`/api/service-requests/${request.id}`, {
+			const res = await fetch(`/api/service-requests/${request.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					...request,
-					status: newStatus
-				})
+				body: JSON.stringify({ ...request, status: newStatus })
 			});
-
-			if (response.ok) {
+			if (res.ok) {
 				await fetchRequests();
-				if (selectedRequest?.id === request.id) {
+				if (selectedRequest?.id === request.id)
 					selectedRequest = { ...selectedRequest, status: newStatus };
-				}
 			}
 		} catch (error) {
 			console.error('Error updating request status:', error);
@@ -56,21 +47,15 @@
 	}
 
 	async function deleteRequest(request: any) {
-		if (confirm(`Are you sure you want to delete the request from ${request.clientName}?`)) {
-			try {
-				const response = await fetch(`/api/service-requests/${request.id}`, {
-					method: 'DELETE'
-				});
-
-				if (response.ok) {
-					await fetchRequests();
-					if (selectedRequest?.id === request.id) {
-						showDetailModal = false;
-					}
-				}
-			} catch (error) {
-				console.error('Error deleting request:', error);
+		if (!confirm(`Delete the request from ${request.clientName}?`)) return;
+		try {
+			const res = await fetch(`/api/service-requests/${request.id}`, { method: 'DELETE' });
+			if (res.ok) {
+				await fetchRequests();
+				if (selectedRequest?.id === request.id) showDetailModal = false;
 			}
+		} catch (error) {
+			console.error('Error deleting request:', error);
 		}
 	}
 
@@ -79,322 +64,355 @@
 		showDetailModal = true;
 	}
 
-	function formatDate(dateString: string) {
-		return new Date(dateString).toLocaleDateString();
+	const formatDate = (d: string) => new Date(d).toLocaleDateString();
+
+	function statusColor(status: string): string {
+		return (
+			{
+				PENDING: '#ff7a1a',
+				IN_REVIEW: '#7ecbff',
+				ACCEPTED: '#6fa89c',
+				IN_PROGRESS: '#ffd166',
+				COMPLETED: '#9fe2a0',
+				REJECTED: '#ff5a52'
+			}[status] || '#6fa89c'
+		);
 	}
 
-	function getStatusColor(status: string) {
-		switch (status) {
-			case 'PENDING':
-				return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30';
-			case 'IN_REVIEW':
-				return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
-			case 'ACCEPTED':
-				return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
-			case 'IN_PROGRESS':
-				return 'bg-purple-500/10 text-purple-400 border-purple-500/30';
-			case 'COMPLETED':
-				return 'bg-green-500/10 text-green-400 border-green-500/30';
-			case 'REJECTED':
-				return 'bg-red-500/10 text-red-400 border-red-500/30';
-			default:
-				return 'bg-white/5 text-white/40 border-white/20';
-		}
-	}
-
-	function getStatusOptions(currentStatus: string) {
-		const allStatuses = ['PENDING', 'IN_REVIEW', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'REJECTED'];
-		return allStatuses.filter((status) => status !== currentStatus);
-	}
-
-	import { browser } from '$app/environment';
-
-	$: {
-		if (browser && filterStatus !== undefined) {
-			fetchRequests();
-		}
-	}
+	$: if (browser && filterStatus !== undefined) fetchRequests();
 </script>
 
-<div class="space-y-6">
-	<!-- Header -->
-	<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-		<div>
-			<h1 class="text-4xl font-bold text-white">Service Requests</h1>
-			<p class="text-white/60">Manage client service requests</p>
-		</div>
+<svelte:head>
+	<title>Requests · kenTom Admin</title>
+</svelte:head>
 
-		<!-- Filter -->
-		<select
-			bind:value={filterStatus}
-			class="px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
-		>
-			<option value="">All Statuses</option>
-			<option value="PENDING">Pending</option>
-			<option value="IN_REVIEW">In Review</option>
-			<option value="ACCEPTED">Accepted</option>
-			<option value="IN_PROGRESS">In Progress</option>
-			<option value="COMPLETED">Completed</option>
-			<option value="REJECTED">Rejected</option>
-		</select>
+<div class="a-head">
+	<div>
+		<p class="a-eyebrow">Inbox</p>
+		<h1 class="a-title">Service Requests</h1>
+		<p class="a-sub">Manage and respond to client requests.</p>
 	</div>
-
-	{#if loading}
-		<div class="flex justify-center items-center min-h-[60vh] py-12" in:fade>
-			<div class="flex flex-col items-center gap-4">
-				<div class="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
-				<p class="text-white/50">Loading requests...</p>
-			</div>
-		</div>
-	{:else if requests.length === 0}
-		<div class="text-center py-20 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-2xl" in:fade>
-			<div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10">
-				<Inbox size="32" class="text-white/40" />
-			</div>
-			<h3 class="text-xl font-semibold text-white mb-2">No service requests</h3>
-			<p class="text-white/50">When clients submit service requests, they'll appear here.</p>
-		</div>
-	{:else}
-		<div class="space-y-4">
-			{#each requests as request, i}
-				<div
-					class="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/30 transition-all duration-300"
-					in:fly={{ y: 20, duration: 500, delay: i * 50, easing: cubicInOut }}
-				>
-					<div class="flex flex-col lg:flex-row lg:items-center gap-4">
-						<!-- Client Info -->
-						<div class="flex items-center gap-4 flex-1">
-							<div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center font-bold text-white shadow-lg flex-shrink-0">
-								{request.clientName.charAt(0).toUpperCase()}
-							</div>
-							<div class="min-w-0 flex-1">
-								<h4 class="font-semibold text-white truncate">{request.clientName}</h4>
-								<p class="text-sm text-white/60 truncate">{request.clientEmail}</p>
-								{#if request.company}
-									<p class="text-xs text-white/40 truncate">{request.company}</p>
-								{/if}
-							</div>
-						</div>
-
-						<!-- Project Info -->
-						<div class="flex-1 min-w-0">
-							<p class="font-semibold text-white truncate">{request.projectTitle}</p>
-							<p class="text-sm text-white/60 line-clamp-1">{request.description}</p>
-							<p class="text-xs text-white/40 mt-1">{request.service.name}</p>
-						</div>
-
-						<!-- Budget -->
-						<div class="flex items-center gap-2 text-emerald-400 font-medium">
-							<DollarSign size="16" />
-							<span>{request.budget ? `${request.budget}` : 'N/A'}</span>
-						</div>
-
-						<!-- Status -->
-						<div>
-							<span class="px-3 py-1.5 text-xs font-semibold rounded-full border {getStatusColor(request.status)} whitespace-nowrap">
-								{request.status.replace('_', ' ')}
-							</span>
-						</div>
-
-						<!-- Date -->
-						<div class="text-sm text-white/40 whitespace-nowrap hidden xl:block">
-							{formatDate(request.createdAt)}
-						</div>
-
-						<!-- Actions -->
-						<div class="flex gap-2">
-							<button
-								on:click={() => showDetails(request)}
-								class="px-4 py-2 bg-blue-500/10 border border-blue-500/30 text-blue-400 rounded-lg hover:bg-blue-500/20 transition-all text-sm font-medium flex items-center gap-2"
-							>
-								<Eye size="16" />
-								<span class="hidden sm:inline">View</span>
-							</button>
-							<button
-								on:click={() => deleteRequest(request)}
-								class="px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg hover:bg-red-500/20 transition-all text-sm font-medium flex items-center gap-2"
-							>
-								<Trash2 size="16" />
-								<span class="hidden sm:inline">Delete</span>
-							</button>
-						</div>
-					</div>
-				</div>
-			{/each}
-		</div>
-	{/if}
+	<select class="a-select filter" bind:value={filterStatus}>
+		<option value="">All statuses</option>
+		{#each STATUSES as s}
+			<option value={s}>{s.replace('_', ' ')}</option>
+		{/each}
+	</select>
 </div>
 
-<!-- Detail Modal -->
-{#if showDetailModal && selectedRequest}
-	<div
-		class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0e0e0e]/90 backdrop-blur-sm"
-		on:click={() => (showDetailModal = false)}
-		transition:fade={{ duration: 200 }}
-	>
-		<div
-			class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
-			on:click|stopPropagation
-			transition:fly={{ y: 20, duration: 300 }}
-		>
-			<!-- Modal Header -->
-			<div class="sticky top-0 bg-[#0e0e0e]/80 backdrop-blur-lg border-b border-white/10 p-6 flex justify-between items-center">
-				<h3 class="text-2xl font-bold text-white">Service Request Details</h3>
-				<button
-					on:click={() => (showDetailModal = false)}
-					class="p-2 hover:bg-white/10 rounded-lg transition-colors"
-				>
-					<X size="24" class="text-white/60" />
-				</button>
+{#if loading}
+	<div class="a-loading" in:fade>
+		<div class="a-spinner"></div>
+		<p>Loading</p>
+	</div>
+{:else if requests.length === 0}
+	<div class="a-card a-empty" in:fade>
+		<div class="a-empty-icon"><Icon name="messages" size={30} /></div>
+		<h3>No service requests</h3>
+		<p>When clients submit requests, they appear here.</p>
+	</div>
+{:else}
+	<div class="rows">
+		{#each requests as r, i}
+			<div class="a-card row" in:fly={{ y: 14, duration: 360, delay: i * 45 }}>
+				<img class="a-avatar" src={avatar(r.clientEmail || r.clientName)} alt="" width="44" height="44" />
+				<div class="client">
+					<span class="name">{r.clientName}</span>
+					<span class="email">{r.clientEmail}</span>
+				</div>
+				<div class="project">
+					<span class="ptitle">{r.projectTitle}</span>
+					<span class="pdesc">{r.description}</span>
+				</div>
+				<span class="a-pill" style="color:{statusColor(r.status)}">{r.status.replace('_', ' ')}</span>
+				<span class="date">{formatDate(r.createdAt)}</span>
+				<div class="actions">
+					<button class="a-btn" on:click={() => showDetails(r)}>
+						<Icon name="eye" size={14} /> View
+					</button>
+					<button class="a-btn a-btn--danger" on:click={() => deleteRequest(r)} aria-label="Delete">
+						<Icon name="trash" size={14} />
+					</button>
+				</div>
 			</div>
+		{/each}
+	</div>
+{/if}
 
-			<!-- Modal Body -->
-			<div class="p-6 space-y-6">
-				<!-- Client Information -->
-				<div class="bg-white/5 border border-white/10 rounded-xl p-6">
-					<h4 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-						<User size="20" />
-						Client Information
-					</h4>
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<div>
-							<span class="text-sm text-white/50 block mb-1">Name</span>
-							<p class="text-white font-medium">{selectedRequest.clientName}</p>
-						</div>
-						<div>
-							<span class="text-sm text-white/50 block mb-1">Email</span>
-							<p class="text-white font-medium">{selectedRequest.clientEmail}</p>
-						</div>
+{#if showDetailModal && selectedRequest}
+	<div class="a-modal" on:click={() => (showDetailModal = false)} transition:fade={{ duration: 180 }}>
+		<div class="a-modal-box" on:click|stopPropagation transition:fly={{ y: 18, duration: 260 }}>
+			<header class="modal-head">
+				<div class="modal-head-id">
+					<img class="a-avatar" src={avatar(selectedRequest.clientEmail || selectedRequest.clientName)} alt="" width="38" height="38" />
+					<h3>{selectedRequest.clientName}</h3>
+				</div>
+				<button class="icon-btn" on:click={() => (showDetailModal = false)} aria-label="Close">
+					<Icon name="close-circle" size={20} />
+				</button>
+			</header>
+
+			<div class="modal-body">
+				<section>
+					<h4 class="a-section-title"><Icon name="user" size={13} /> Client</h4>
+					<dl class="defs">
+						<div><dt>Email</dt><dd>{selectedRequest.clientEmail}</dd></div>
 						{#if selectedRequest.clientPhone}
-							<div>
-								<span class="text-sm text-white/50 block mb-1">Phone</span>
-								<p class="text-white font-medium">{selectedRequest.clientPhone}</p>
-							</div>
+							<div><dt>Phone</dt><dd>{selectedRequest.clientPhone}</dd></div>
 						{/if}
 						{#if selectedRequest.company}
-							<div>
-								<span class="text-sm text-white/50 block mb-1">Company</span>
-								<p class="text-white font-medium">{selectedRequest.company}</p>
-							</div>
+							<div><dt>Company</dt><dd>{selectedRequest.company}</dd></div>
 						{/if}
-					</div>
-				</div>
+					</dl>
+				</section>
 
-				<!-- Project Information -->
-				<div class="bg-white/5 border border-white/10 rounded-xl p-6">
-					<h4 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-						<FileText size="20" />
-						Project Information
-					</h4>
-					<div class="space-y-4">
-						<div>
-							<span class="text-sm text-white/50 block mb-1">Project Title</span>
-							<p class="text-white font-medium">{selectedRequest.projectTitle}</p>
-						</div>
-						<div>
-							<span class="text-sm text-white/50 block mb-1">Service Requested</span>
-							<p class="text-white font-medium">{selectedRequest.service.name}</p>
-						</div>
-						<div>
-							<span class="text-sm text-white/50 block mb-1">Description</span>
-							<p class="text-white/80 whitespace-pre-wrap">{selectedRequest.description}</p>
-						</div>
+				<section>
+					<h4 class="a-section-title"><Icon name="box" size={13} /> Project</h4>
+					<dl class="defs">
+						<div><dt>Title</dt><dd>{selectedRequest.projectTitle}</dd></div>
+						<div><dt>Service</dt><dd>{selectedRequest.service?.name ?? '—'}</dd></div>
+						<div class="wide"><dt>Description</dt><dd>{selectedRequest.description}</dd></div>
 						{#if selectedRequest.requirements}
-							<div>
-								<span class="text-sm text-white/50 block mb-1">Requirements</span>
-								<p class="text-white/80 whitespace-pre-wrap">{selectedRequest.requirements}</p>
-							</div>
+							<div class="wide"><dt>Requirements</dt><dd>{selectedRequest.requirements}</dd></div>
 						{/if}
-						<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-							{#if selectedRequest.budget}
-								<div>
-									<span class="text-sm text-white/50 block mb-1">Budget</span>
-									<p class="text-emerald-400 font-semibold flex items-center gap-1">
-										<DollarSign size="16" />
-										{selectedRequest.budget}
-									</p>
-								</div>
-							{/if}
-							{#if selectedRequest.timeline}
-								<div>
-									<span class="text-sm text-white/50 block mb-1">Timeline</span>
-									<p class="text-white font-medium flex items-center gap-1">
-										<Clock size="16" />
-										{selectedRequest.timeline}
-									</p>
-								</div>
-							{/if}
-						</div>
-					</div>
-				</div>
+						{#if selectedRequest.budget}
+							<div><dt>Budget</dt><dd>{selectedRequest.budget}</dd></div>
+						{/if}
+						{#if selectedRequest.timeline}
+							<div><dt>Timeline</dt><dd>{selectedRequest.timeline}</dd></div>
+						{/if}
+					</dl>
+				</section>
 
-				<!-- Status Management -->
-				<div class="bg-white/5 border border-white/10 rounded-xl p-6">
-					<h4 class="text-lg font-bold text-white mb-4">Status Management</h4>
-					<div class="flex items-center gap-4 mb-4">
-						<span class="text-white/60">Current Status:</span>
-						<span class="px-3 py-1.5 text-xs font-semibold rounded-full border {getStatusColor(selectedRequest.status)}">
+				<section>
+					<h4 class="a-section-title"><Icon name="flag" size={13} /> Status</h4>
+					<p class="current">
+						Current:
+						<span class="a-pill" style="color:{statusColor(selectedRequest.status)}">
 							{selectedRequest.status.replace('_', ' ')}
 						</span>
+					</p>
+					<div class="status-grid">
+						{#each STATUSES.filter((s) => s !== selectedRequest.status) as s}
+							<button
+								class="a-btn"
+								style="color:{statusColor(s)}"
+								on:click={() => updateRequestStatus(selectedRequest, s)}
+							>
+								{s.replace('_', ' ')}
+							</button>
+						{/each}
 					</div>
-					<div>
-						<span class="text-white/60 mb-3 block">Change Status:</span>
-						<div class="flex flex-wrap gap-2">
-							{#each getStatusOptions(selectedRequest.status) as status}
-								<button
-									on:click={() => updateRequestStatus(selectedRequest, status)}
-									class="px-4 py-2 rounded-lg border text-sm font-medium transition-all {getStatusColor(status)} hover:scale-105"
-								>
-									{status.replace('_', ' ')}
-								</button>
-							{/each}
-						</div>
-					</div>
-				</div>
+				</section>
 
 				{#if selectedRequest.notes}
-					<div class="bg-white/5 border border-white/10 rounded-xl p-6">
-						<h4 class="text-lg font-bold text-white mb-4">Internal Notes</h4>
-						<p class="text-white/80 whitespace-pre-wrap">{selectedRequest.notes}</p>
-					</div>
+					<section>
+						<h4 class="a-section-title"><Icon name="edit" size={13} /> Internal notes</h4>
+						<p class="notes">{selectedRequest.notes}</p>
+					</section>
 				{/if}
 			</div>
 
-			<!-- Modal Actions -->
-			<div class="sticky bottom-0 bg-[#0e0e0e]/80 backdrop-blur-lg border-t border-white/10 p-6 flex flex-wrap gap-3 justify-between">
-				<div class="flex flex-wrap gap-3">
-					<a
-						href="mailto:{selectedRequest.clientEmail}"
-						class="px-6 py-3 bg-blue-500/10 border border-blue-500/30 text-blue-400 rounded-xl font-semibold hover:bg-blue-500/20 transition-all flex items-center gap-2"
-					>
-						<Mail size="16" />
-						<span>Email Client</span>
+			<footer class="modal-foot">
+				<div class="foot-l">
+					<a class="a-btn" href="mailto:{selectedRequest.clientEmail}">
+						<Icon name="sms" size={14} /> Email
 					</a>
 					{#if selectedRequest.clientPhone}
-						<a
-							href="tel:{selectedRequest.clientPhone}"
-							class="px-6 py-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl font-semibold hover:bg-emerald-500/20 transition-all flex items-center gap-2"
-						>
-							<Phone size="16" />
-							<span>Call Client</span>
+						<a class="a-btn" href="tel:{selectedRequest.clientPhone}">
+							<Icon name="call" size={14} /> Call
 						</a>
 					{/if}
 				</div>
-				<div class="flex gap-3">
-					<button
-						on:click={() => deleteRequest(selectedRequest)}
-						class="px-6 py-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl font-semibold hover:bg-red-500/20 transition-all"
-					>
+				<div class="foot-r">
+					<button class="a-btn a-btn--danger" on:click={() => deleteRequest(selectedRequest)}>
 						Delete
 					</button>
-					<button
-						on:click={() => (showDetailModal = false)}
-						class="px-6 py-3 bg-white/5 border border-white/20 text-white rounded-xl font-semibold hover:bg-white/10 transition-all"
-					>
+					<button class="a-btn a-btn--solid" on:click={() => (showDetailModal = false)}>
 						Close
 					</button>
 				</div>
-			</div>
+			</footer>
 		</div>
 	</div>
 {/if}
+
+<style>
+	.filter {
+		width: auto;
+		min-width: 180px;
+	}
+	.rows {
+		display: grid;
+		gap: 10px;
+	}
+	.row {
+		display: grid;
+		grid-template-columns: 44px 1.1fr 1.4fr auto auto auto;
+		align-items: center;
+		gap: 16px;
+		padding: 14px 18px;
+	}
+	.client,
+	.project {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		min-width: 0;
+	}
+	.name,
+	.ptitle {
+		font-size: 14px;
+		font-weight: 500;
+		color: var(--ink);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.email,
+	.pdesc {
+		font-family: var(--mono);
+		font-size: 11px;
+		color: var(--mute);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.pdesc {
+		font-family: var(--sans);
+	}
+	.date {
+		font-family: var(--mono);
+		font-size: 10.5px;
+		color: var(--mute-2);
+		white-space: nowrap;
+	}
+	.actions {
+		display: flex;
+		gap: 8px;
+	}
+	@media (max-width: 900px) {
+		.row {
+			grid-template-columns: 44px 1fr auto;
+			grid-auto-rows: auto;
+		}
+		.project {
+			grid-column: 2 / -1;
+		}
+		.date {
+			display: none;
+		}
+		.actions {
+			grid-column: 2 / -1;
+		}
+	}
+
+	/* modal */
+	.modal-head {
+		position: sticky;
+		top: 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		padding: 18px 22px;
+		background: var(--panel);
+		border-bottom: 1px solid var(--hairline);
+	}
+	.modal-head-id {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.modal-head h3 {
+		font-family: 'Google Sans Display', var(--sans);
+		font-weight: 500;
+		font-size: 20px;
+		color: var(--ink);
+		margin: 0;
+	}
+	.icon-btn {
+		background: transparent;
+		border: none;
+		color: var(--mute);
+		cursor: pointer;
+		padding: 4px;
+		display: inline-flex;
+	}
+	.icon-btn:hover {
+		color: var(--ink);
+	}
+	.modal-body {
+		padding: 22px;
+		display: grid;
+		gap: 26px;
+	}
+	.defs {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 16px;
+		margin: 0;
+	}
+	.defs .wide {
+		grid-column: 1 / -1;
+	}
+	.defs dt {
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--mute);
+		margin-bottom: 4px;
+	}
+	.defs dd {
+		margin: 0;
+		font-size: 14px;
+		color: var(--ink-2);
+		line-height: 1.5;
+		white-space: pre-wrap;
+	}
+	.current {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--mono);
+		font-size: 11px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--mute);
+		margin: 0 0 14px;
+	}
+	.status-grid {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	.notes {
+		font-size: 14px;
+		color: var(--ink-2);
+		line-height: 1.6;
+		white-space: pre-wrap;
+		margin: 0;
+	}
+	.modal-foot {
+		position: sticky;
+		bottom: 0;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 12px;
+		padding: 16px 22px;
+		background: var(--panel);
+		border-top: 1px solid var(--hairline);
+	}
+	.foot-l,
+	.foot-r {
+		display: flex;
+		gap: 8px;
+	}
+	@media (max-width: 560px) {
+		.defs {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

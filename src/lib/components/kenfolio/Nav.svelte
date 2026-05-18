@@ -105,7 +105,7 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 18px;
-		padding: clamp(12px, 1.8vw, 18px) clamp(16px, 4vw, 40px);
+		padding: clamp(96px, 12vh, 140px) clamp(20px, 5vw, 80px) clamp(80px, 10vh, 120px);
 		transition:
 			transform 0.38s cubic-bezier(0.4, 0, 0.2, 1),
 			background 0.3s ease,
