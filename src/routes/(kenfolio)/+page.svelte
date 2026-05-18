@@ -847,7 +847,6 @@
 		<a href="#{s.id}" data-id={s.id} data-label={s.label} aria-label={s.label}></a>
 	{/each}
 </nav>
-<div class="colophon">© 26</div>
 
 <!-- 00 / HERO -->
 <section id="hero" class="stage stage--hero" data-screen-label="00 Hero">
