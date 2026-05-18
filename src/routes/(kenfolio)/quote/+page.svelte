@@ -87,11 +87,8 @@
 </main>
 
 <style>
-	.page {
-		place-items: center !important;
-	}
 	.ask {
-		max-width: 640px;
+		max-width: var(--page-w);
 		width: 100%;
 	}
 	.ask .prompt {

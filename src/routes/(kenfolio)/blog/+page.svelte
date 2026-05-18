@@ -28,12 +28,9 @@
 </main>
 
 <style>
-	.page {
-		place-items: center !important;
-	}
 	.notes {
 		width: 100%;
-		max-width: 720px;
+		max-width: var(--page-w);
 	}
 	.notes h1 {
 		font-family: 'Google Sans Display', var(--sans);

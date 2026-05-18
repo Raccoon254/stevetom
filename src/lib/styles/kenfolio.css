@@ -184,15 +184,18 @@ body.kenfolio ::selection {
 
 /* ─────────── page layout ─────────── */
 .kenfolio .page {
+	--page-w: 880px;
 	min-height: 100vh;
 	min-height: 100svh;
 	padding: clamp(96px, 12vh, 140px) clamp(20px, 5vw, 80px) clamp(80px, 10vh, 120px);
 	display: grid;
-	place-items: start center;
+	/* stretch → the container fills the column, then max-width caps it at
+	   --page-w and the leftover alignment falls back to start (left) */
+	place-items: center stretch;
 }
 .kenfolio .page > .wrap {
 	width: 100%;
-	max-width: 880px;
+	max-width: var(--page-w);
 }
 
 /* ─────────── type helpers ─────────── */

@@ -98,12 +98,9 @@
 </main>
 
 <style>
-	.page {
-		place-items: center !important;
-	}
 	.partners {
 		width: 100%;
-		max-width: 760px;
+		max-width: var(--page-w);
 	}
 
 	.partners h1 {

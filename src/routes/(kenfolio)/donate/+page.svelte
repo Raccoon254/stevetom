@@ -163,12 +163,9 @@
 </main>
 
 <style>
-	.page {
-		place-items: center !important;
-	}
 	.support {
 		width: 100%;
-		max-width: 600px;
+		max-width: var(--page-w);
 	}
 	.eyebrow {
 		display: inline-flex;

@@ -58,12 +58,9 @@
 </main>
 
 <style>
-	.page {
-		place-items: center !important;
-	}
 	.contact {
 		width: 100%;
-		max-width: 640px;
+		max-width: var(--page-w);
 		display: flex;
 		flex-direction: column;
 	}

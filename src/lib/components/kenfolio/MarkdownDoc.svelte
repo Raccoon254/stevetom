@@ -23,12 +23,9 @@
 </main>
 
 <style>
-	.page {
-		place-items: start center !important;
-	}
 	.doc {
 		width: 100%;
-		max-width: 720px;
+		max-width: var(--page-w);
 	}
 	.doc-meta {
 		font-family: var(--mono);

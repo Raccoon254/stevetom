@@ -31,12 +31,9 @@
 </main>
 
 <style>
-	.page {
-		place-items: center !important;
-	}
 	.proj {
 		width: 100%;
-		max-width: 720px;
+		max-width: var(--page-w);
 	}
 	.proj .head {
 		display: flex;
