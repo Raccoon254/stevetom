@@ -1,118 +1,180 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
-	import type { ActionData } from './$types'
-	import { Lock, ArrowLeft } from 'lucide-svelte'
+	import { enhance } from '$app/forms';
+	import type { ActionData } from './$types';
+	import Icon from '$lib/components/Icon.svelte';
+	import '$lib/styles/kenfolio.css';
 
-	export let form: ActionData
+	export let form: ActionData;
 </script>
 
 <svelte:head>
-	<title>Admin Login | KenTom</title>
+	<title>Admin Login · kenTom</title>
 	<meta name="description" content="Authorized access only. Please sign in to continue." />
-
-	<!-- Open Graph / Facebook -->
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://stevetom.vercel.app/login" />
-	<meta property="og:title" content="Admin Login | KenTom" />
-	<meta property="og:description" content="Authorized access only. Please sign in to continue." />
-	<meta property="og:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
-
-	<!-- Twitter -->
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:url" content="https://stevetom.vercel.app/login" />
-	<meta name="twitter:title" content="Admin Login | KenTom" />
-	<meta name="twitter:description" content="Authorized access only. Please sign in to continue." />
-	<meta name="twitter:image" content="https://stevetom.vercel.app/kentom_website_banner.jpg" />
 </svelte:head>
 
-<div
-	class="bg-[#0e0e0e]/10 min-h-screen relative overflow-x-hidden flex items-center justify-center p-6"
->
-	<!-- Background Decorations -->
-	<div
-		class="hidden lg:block absolute rotate-[65deg] top-20 -left-20 opacity-10"
-		style="border-top: 120px solid transparent; border-bottom: 120px solid transparent; border-right: 80px solid white;"
-	></div>
-	<div
-		class="hidden lg:block absolute rotate-[-65deg] bottom-20 -right-20 opacity-10"
-		style="border-top: 120px solid transparent; border-bottom: 120px solid transparent; border-left: 80px solid white;"
-	></div>
-
-	<!-- Background Pattern -->
-	<div class="hero-section absolute inset-0"></div>
-
-	<!-- Login Container -->
-	<main class="relative z-10 w-full max-w-md">
-		<!-- Back Button -->
-		<a
-			href="/"
-			class="group inline-flex items-center gap-2 text-white/60 hover:text-white mb-8 transition-colors"
-		>
-			<ArrowLeft size="20" class="transition-transform group-hover:-translate-x-1" />
-			<span>Back to Home</span>
+<div class="login">
+	<main class="wrap">
+		<a class="back" href="/">
+			<Icon name="arrow-left" size={13} /> Back to site
 		</a>
 
-		<!-- Login Card -->
-		<div
-			class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl overflow-hidden"
-		>
-			<!-- Header -->
-			<div class="bg-white/5 border-b border-white/10 p-8 text-center">
-				<div
-					class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 border border-white/20 mb-4"
-				>
-					<Lock size="32" class="text-white" />
+		<div class="card">
+			<div class="lock"><Icon name="lock" size={22} /></div>
+			<h1>Admin access</h1>
+			<p class="sub">Enter your credentials to continue.</p>
+
+			<form method="POST" use:enhance>
+				<div class="field">
+					<label for="password">Password</label>
+					<input
+						type="password"
+						name="password"
+						id="password"
+						placeholder="Enter your password"
+						required
+						autocomplete="current-password"
+					/>
 				</div>
-				<h1 class="text-3xl font-bold text-white mb-2">Admin Access</h1>
-				<p class="text-white/60 text-sm">Enter your credentials to continue</p>
-			</div>
 
-			<!-- Form -->
-			<div class="p-8">
-				<form method="POST" use:enhance class="space-y-6">
-					<div>
-						<label for="password" class="block text-sm font-semibold text-white/80 mb-2">
-							Password
-						</label>
-						<input
-							type="password"
-							name="password"
-							id="password"
-							class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white/40 transition-all"
-							placeholder="Enter your password"
-							required
-							autocomplete="current-password"
-						/>
-					</div>
+				{#if form?.error}
+					<p class="err">{form.error}</p>
+				{/if}
 
-					{#if form?.error}
-						<div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
-							<p class="text-red-400 text-sm font-medium text-center">{form.error}</p>
-						</div>
-					{/if}
-
-					<button
-						type="submit"
-						class="w-full bg-white text-[#0e0e0e] px-6 py-3 rounded-full font-bold text-lg hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-					>
-						Sign In
-					</button>
-				</form>
-
-				<!-- Footer Info -->
-				<div class="mt-6 text-center">
-					<p class="text-white/40 text-xs">Protected area • Authorized access only</p>
-				</div>
-			</div>
+				<button type="submit" class="submit">Sign in</button>
+			</form>
 		</div>
 
-		<!-- Hint Text -->
-		<div class="mt-6 text-center">
-			<p class="text-white/30 text-sm">
-				Tip: Press <kbd class="px-2 py-1 bg-white/10 border border-white/20 rounded text-xs"
-					>Shift</kbd
-				> three times from anywhere to access this page
-			</p>
-		</div>
+		<p class="hint">Protected area · authorized access only</p>
 	</main>
 </div>
+
+<style>
+	.login {
+		/* always dark, like the admin */
+		--bg: #050505;
+		--ink: #f4fffc;
+		--ink-2: #cfeee6;
+		--mute: #6fa89c;
+		--spark: #ff7a1a;
+		--danger: #ff5a52;
+		--hairline: rgba(255, 255, 255, 0.1);
+		--hairline-2: rgba(255, 255, 255, 0.22);
+
+		min-height: 100vh;
+		background: var(--bg);
+		color: var(--ink);
+		font-family: var(--sans);
+		display: grid;
+		place-items: center;
+		padding: 40px 20px;
+	}
+	.wrap {
+		width: 100%;
+		max-width: 380px;
+	}
+	.back {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--mute);
+		margin-bottom: 24px;
+		transition: color 0.2s;
+	}
+	.back:hover {
+		color: var(--ink);
+	}
+	.card {
+		border: 1px solid var(--hairline);
+		border-radius: 16px;
+		background: rgba(255, 255, 255, 0.025);
+		padding: 32px 28px;
+	}
+	.lock {
+		display: inline-flex;
+		padding: 12px;
+		border: 1px solid var(--hairline);
+		border-radius: 999px;
+		color: var(--spark);
+		margin-bottom: 18px;
+	}
+	h1 {
+		font-family: 'Google Sans Display', var(--sans);
+		font-weight: 500;
+		font-size: 26px;
+		letter-spacing: -0.02em;
+		color: var(--ink);
+		margin: 0 0 6px;
+	}
+	.sub {
+		font-size: 13px;
+		color: var(--mute);
+		margin: 0 0 26px;
+	}
+	.field {
+		display: grid;
+		gap: 8px;
+		margin-bottom: 18px;
+	}
+	.field label {
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--mute);
+	}
+	.field input {
+		font: inherit;
+		font-size: 15px;
+		color: var(--ink);
+		background: rgba(255, 255, 255, 0.03);
+		border: 1px solid var(--hairline-2);
+		border-radius: 9px;
+		padding: 11px 13px;
+		outline: none;
+		transition: border-color 0.2s;
+	}
+	.field input:focus {
+		border-color: var(--spark);
+	}
+	.err {
+		font-family: var(--mono);
+		font-size: 11px;
+		color: var(--danger);
+		margin: 0 0 14px;
+	}
+	.submit {
+		width: 100%;
+		font-family: var(--mono);
+		font-size: 11px;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--bg);
+		background: var(--ink);
+		border: 1px solid var(--ink);
+		border-radius: 9px;
+		padding: 12px;
+		cursor: pointer;
+		transition:
+			background 0.2s,
+			border-color 0.2s;
+	}
+	.submit:hover {
+		background: var(--spark);
+		border-color: var(--spark);
+		color: #fff;
+	}
+	.hint {
+		text-align: center;
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--mute);
+		margin-top: 22px;
+		opacity: 0.6;
+	}
+</style>

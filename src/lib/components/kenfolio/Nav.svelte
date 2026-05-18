@@ -105,7 +105,8 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 18px;
-		padding: clamp(96px, 12vh, 140px) clamp(20px, 5vw, 80px) clamp(80px, 10vh, 120px);
+		padding-block: 15px;
+		padding-inline: clamp(20px, 5vw, 80px);
 		transition:
 			transform 0.38s cubic-bezier(0.4, 0, 0.2, 1),
 			background 0.3s ease,
@@ -132,8 +133,8 @@
 		flex: 0 0 auto;
 	}
 	.logo svg {
-		width: 22px;
-		height: 22px;
+		width: 32px;
+		height: 32px;
 		display: block;
 	}
 	.wordmark {
