@@ -3,7 +3,7 @@ title: Terms of Service
 updated: 2026-01-31
 ---
 
-These Terms of Service ("Terms") govern your use of our website and services. By accessing the website or engaging our services, you agree to these Terms. If you don't agree, please don't use our services. We've kept this straightforward — if anything is unclear, reach out.
+These Terms of Service ("Terms") govern your use of our website and services. By accessing the website or engaging our services, you agree to these Terms. If you don't agree, please don't use our services. We've kept this straightforward, so if anything is unclear, reach out.
 
 ## 1. Services We Provide
 
@@ -19,7 +19,7 @@ Each project is governed by a specific agreement covering the scope of work, tim
 
 ## 4. Payment Terms
 
-Our standard structure: a 30–50% upfront deposit to begin work, milestone payments for larger projects, and a final payment due on completion before final delivery. We accept bank transfers, PayPal, Stripe and other agreed methods. Late fees may apply to overdue payments. All prices are quoted in USD unless otherwise specified. Terms may vary by project and will be outlined in your agreement.
+Our standard structure: a 30 to 50% upfront deposit to begin work, milestone payments for larger projects, and a final payment due on completion before final delivery. We accept bank transfers, PayPal, Stripe and other agreed methods. Late fees may apply to overdue payments. All prices are quoted in USD unless otherwise specified. Terms may vary by project and will be outlined in your agreement.
 
 ## 5. Intellectual Property Rights
 
@@ -35,7 +35,7 @@ We will not disclose your business information, trade secrets or project details
 
 ## 7. Warranties and Guarantees
 
-We commit to delivering work that meets professional standards, functional code that meets agreed specifications, bug fixes within the warranty period (typically 30–90 days), and our best efforts to meet timelines. Beyond those commitments, services are provided "as is" — we cannot guarantee uninterrupted operation, compatibility with all future third-party services, specific business outcomes, or freedom from all security vulnerabilities (though we follow best practices).
+We commit to delivering work that meets professional standards, functional code that meets agreed specifications, bug fixes within the warranty period (typically 30 to 90 days), and our best efforts to meet timelines. Beyond those commitments, services are provided "as is". We cannot guarantee uninterrupted operation, compatibility with all future third-party services, specific business outcomes, or freedom from all security vulnerabilities (though we follow best practices).
 
 ## 8. Limitation of Liability
 
@@ -69,4 +69,4 @@ These Terms, along with project agreements, constitute the entire agreement. If 
 
 ## Contact
 
-Questions about these Terms? Email [tomsteve187@gmail.com](mailto:tomsteve187@gmail.com) or reach us on GitHub at [@Raccoon254](https://github.com/Raccoon254). We typically respond within 48 hours.
+Questions about these Terms? Email [me@kentom.co.ke](mailto:me@kentom.co.ke) or reach us on GitHub at [@Raccoon254](https://github.com/Raccoon254). We typically respond within 48 hours.

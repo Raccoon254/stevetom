@@ -10,8 +10,8 @@
 		USD: [5, 10, 25, 50, 100]
 	};
 
-	let currency: Currency = 'KES';
-	let amount = 1000;
+	let currency: Currency = 'USD';
+	let amount = 10;
 	let email = '';
 	let status: Status = 'idle';
 	let message = '';
@@ -26,12 +26,12 @@
 		try {
 			const res = await fetch('https://ipapi.co/json/');
 			const data = await res.json();
-			if (data.country_code && data.country_code !== 'KE') {
-				currency = 'USD';
-				amount = 10;
+			if (data.country_code === 'KE') {
+				currency = 'KES';
+				amount = 1000;
 			}
 		} catch {
-			/* default to KES */
+			/* default to USD */
 		}
 	});
 
@@ -157,9 +157,12 @@
 							<span class="cur">{currency === 'KES' ? 'KSh' : '$'}</span>
 							<input id="amount" type="number" min="1" bind:value={amount} />
 						</div>
+						{#if currency === 'USD'}
+							<p class="fx-note">Charged in KES at today's exchange rate, via Paystack.</p>
+						{/if}
 					</div>
 					<div class="field">
-						<label for="email">Email — for the receipt</label>
+						<label for="email">Email for the receipt</label>
 						<input
 							id="email"
 							type="email"
@@ -312,12 +315,12 @@
 		background: var(--ink);
 	}
 
-	/* amount pills */
+	/* amount grid */
 	.amounts {
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
 		gap: 8px;
-		margin: 0 0 clamp(24px, 4vh, 32px);
+		margin: 0 0 clamp(20px, 3vh, 26px);
 	}
 	.amt {
 		font-family: var(--mono);
@@ -326,8 +329,8 @@
 		color: var(--ink-2);
 		background: transparent;
 		border: 1px solid var(--hairline-2);
-		border-radius: 999px;
-		padding: 9px 16px;
+		border-radius: 10px;
+		padding: 12px 8px;
 		cursor: pointer;
 		transition: color 0.2s, border-color 0.2s, background 0.2s;
 	}
@@ -343,7 +346,7 @@
 	.field {
 		display: grid;
 		gap: 6px;
-		margin-bottom: clamp(18px, 2.4vh, 24px);
+		margin-bottom: clamp(16px, 2.4vh, 20px);
 	}
 	.field label {
 		font-family: var(--mono);
@@ -351,6 +354,22 @@
 		letter-spacing: 0.26em;
 		text-transform: uppercase;
 		color: var(--mute);
+	}
+	.amount-input {
+		display: flex;
+		align-items: baseline;
+		gap: 8px;
+		border-bottom: 1px solid var(--hairline-2);
+		transition: border-color 0.25s;
+	}
+	.amount-input:focus-within {
+		border-bottom-color: var(--spark);
+	}
+	.amount-input .cur {
+		font-family: var(--mono);
+		font-size: 13px;
+		color: var(--mute);
+		flex: 0 0 auto;
 	}
 	.field input {
 		font: inherit;
@@ -365,21 +384,59 @@
 		outline: none;
 		transition: border-color 0.25s;
 	}
+	.amount-input input {
+		border-bottom: none;
+	}
 	.field input::placeholder {
 		color: var(--mute);
 	}
 	.field input:focus {
-		border-bottom-color: var(--ink-2);
+		border-bottom-color: var(--spark);
 	}
 
 	.err {
 		font-family: var(--mono);
 		font-size: 11px;
 		letter-spacing: 0.04em;
-		color: var(--spark);
-		margin: 4px 0 0;
+		color: var(--error);
+		margin: 6px 0 0;
 	}
 
+	.fx-note {
+		font-size: 12px;
+		line-height: 1.45;
+		color: var(--mute);
+		margin: 8px 0 0;
+	}
+
+	.give {
+		width: 100%;
+		justify-content: center;
+		margin-top: 14px;
+		font: inherit;
+		cursor: pointer;
+	}
+	.give:disabled {
+		cursor: progress;
+		opacity: 0.7;
+	}
+	.secured {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		margin-top: 14px;
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--mute);
+	}
+	.secured :global(svg) {
+		color: var(--mute);
+	}
+
+	/* success-state cta */
 	.cta-row {
 		display: flex;
 		align-items: center;
@@ -387,19 +444,11 @@
 		flex-wrap: wrap;
 		margin-top: clamp(28px, 4vh, 40px);
 	}
-	.cta-row button {
-		font: inherit;
-		cursor: pointer;
-	}
-	.cta-row button:disabled {
-		cursor: progress;
-		opacity: 0.7;
-	}
-	.alt {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.22em;
-		text-transform: uppercase;
-		color: var(--mute);
+
+	@media (max-width: 720px) {
+		.body {
+			grid-template-columns: 1fr;
+			gap: clamp(28px, 5vh, 40px);
+		}
 	}
 </style>

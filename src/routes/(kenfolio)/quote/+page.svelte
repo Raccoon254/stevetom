@@ -106,7 +106,7 @@
 
 <svelte:head>
 	<title>kenTom · Quote</title>
-	<meta name="description" content="Tell Steve Tom what you're building — a sentence and an email." />
+	<meta name="description" content="Tell Steve Tom what you're building: a sentence and an email." />
 </svelte:head>
 
 <main class="page">
@@ -149,16 +149,16 @@
 					<span>{busy ? 'Sending code' : 'Continue'}</span>
 					<span class="ar" aria-hidden="true"><Icon name="arrow-right" size={14} /></span>
 				</button>
-				<span class="alt">or <a href="mailto:tomsteve187@gmail.com">email</a></span>
+				<span class="alt">or <a href="mailto:me@kentom.co.ke">email</a></span>
 			</div>
 		</form>
 	{:else if step === 'verify'}
 		<div class="ask verify">
 			<div class="vmark" aria-hidden="true"><Icon name="sms" size={20} /></div>
-			<h1 class="prompt">Quick check — <em>can I reach you?</em></h1>
+			<h1 class="prompt">Quick check. <em>Can I reach you?</em></h1>
 			<p class="vnote">
 				I sent a 6-digit code to <strong>{email}</strong>. Enter it below so I know this inbox is
-				yours — that way my reply actually lands.
+				yours, that way my reply actually lands.
 			</p>
 
 			<div class="otp" class:shake={error}>
@@ -198,7 +198,7 @@
 			<h1 class="prompt">That's <em>through</em>.</h1>
 			<p class="vnote">
 				Your email is verified and your request is in. I read everything myself and will reply,
-				usually within a day — check your inbox for a confirmation.
+				usually within a day. Check your inbox for a confirmation.
 			</p>
 			<div class="send-row">
 				<a class="pill pill--solid" href="/">

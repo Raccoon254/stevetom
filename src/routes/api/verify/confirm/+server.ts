@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { verifyToken } from '$lib/server/otp';
 import { createServiceRequest } from '$lib/server/requests';
 
-/** Step 2 — verify the code, then create the request + send the emails. */
+/** Step 2: verify the code, then create the request + send the emails. */
 export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const { token, code } = await request.json();

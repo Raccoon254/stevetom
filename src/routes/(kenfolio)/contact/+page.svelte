@@ -44,7 +44,7 @@
 
 <svelte:head>
 	<title>kenTom · Contact</title>
-	<meta name="description" content="Get in touch with Steve Tom — start a conversation or find me on TikTok, GitHub, YouTube and WhatsApp." />
+	<meta name="description" content="Get in touch with Steve Tom. Start a conversation or find me on TikTok, GitHub, YouTube and WhatsApp." />
 </svelte:head>
 
 <main class="page">
@@ -52,7 +52,7 @@
 		<div class="eyebrow"><Icon name="messages" size={13} /> contact</div>
 		<h1 class="headline">Start a <em>conversation</em>.</h1>
 		<p class="lede">
-			A project, a question, or just hello — tell me what's on your mind. Every message lands in
+			A project, a question, or just hello. Tell me what's on your mind. Every message lands in
 			my inbox and I usually reply within a day.
 		</p>
 
@@ -85,9 +85,9 @@
 				</div>
 
 				{#if status === 'error'}
-					<p class="note note--err">Something's off — check your email and message, then retry.</p>
+					<p class="note note--err">Something's off. Check your email and message, then retry.</p>
 				{:else if status === 'sent'}
-					<p class="note note--ok">Got it. Thanks for reaching out — I'll be in touch shortly.</p>
+					<p class="note note--ok">Got it. Thanks for reaching out, I'll be in touch shortly.</p>
 				{/if}
 
 				<div class="send-row">
@@ -101,7 +101,7 @@
 							<Icon name={status === 'sent' ? 'tick-circle' : 'direct-send'} size={14} />
 						</span>
 					</button>
-					<span class="alt">or email <a href="mailto:tomsteve187@gmail.com">directly</a></span>
+					<span class="alt">or email <a href="mailto:me@kentom.co.ke">directly</a></span>
 				</div>
 			</form>
 
@@ -265,7 +265,7 @@
 		border-color: var(--spark);
 	}
 
-	/* aside — social links */
+	/* aside: social links */
 	.aside-label {
 		display: block;
 		font-family: var(--mono);

@@ -1,5 +1,5 @@
 /* ──────────────────────────────────────────────────────────────────
-   kenTom · KenFolio redesign — shared design tokens + chrome
+   kenTom · KenFolio redesign · shared design tokens + chrome
    Ported from the KenFolio design bundle (design-source/kenfolio).
    ────────────────────────────────────────────────────────────────── */
 
@@ -27,7 +27,7 @@
     --mono:
         "Google Sans Mono", "DM Mono", ui-monospace, "SFMono-Regular", Menlo,
         monospace;
-    /* syntax palette — dark */
+    /* syntax palette · dark */
     --syn-key: #ff7ab6;
     --syn-str: #9fe2a0;
     --syn-num: #ffd166;
@@ -59,7 +59,7 @@
     --mono:
         "Google Sans Mono", "DM Mono", ui-monospace, "SFMono-Regular", Menlo,
         monospace;
-    /* syntax palette — light */
+    /* syntax palette · light */
     --syn-key: #c01f6b;
     --syn-str: #2c8a3d;
     --syn-num: #b16500;
@@ -68,7 +68,7 @@
     --syn-cmt: rgba(14, 17, 15, 0.4);
 }
 
-/* html surface — keep the root element (overscroll / rubber-band area,
+/* html surface: keep the root element (overscroll / rubber-band area,
    address-bar fill) on-theme, not just the body */
 :root[data-theme="dark"],
 :root[data-theme="light"] {
@@ -76,7 +76,7 @@
     transition: background-color 0.35s ease;
 }
 
-/* page surface — applied by the KenFolio layout via the .kenfolio body class */
+/* page surface: applied by the KenFolio layout via the .kenfolio body class */
 body.kenfolio {
     margin: 0;
     background: var(--bg) !important;

@@ -7,7 +7,7 @@ At KenTom, we believe privacy is a fundamental right, not a privilege. This poli
 
 ## Information We Collect
 
-**Information you provide.** When you contact us or use our services, you may provide contact information (name, email, phone), project details, communication records, and payment information — the last processed securely through third-party payment providers.
+**Information you provide.** When you contact us or use our services, you may provide contact information (name, email, phone), project details, communication records, and payment information. That last item is processed securely through third-party payment providers.
 
 **Information collected automatically.** When you visit the site we collect usage data (pages visited, time spent, interaction patterns), device information (browser, operating system, identifiers), general geographic location (country/city level), and technical data (IP address, cookies and similar technologies).
 
@@ -15,12 +15,12 @@ At KenTom, we believe privacy is a fundamental right, not a privilege. This poli
 
 We use the information we collect to:
 
-- **Provide services** — deliver what you request and communicate about projects.
-- **Improve experience** — enhance the website, services, and usability.
-- **Communicate** — send updates and respond to inquiries, with your consent.
-- **Analytics** — understand how the website is used to make informed improvements.
-- **Security** — protect against fraud, abuse, and security threats.
-- **Legal compliance** — meet legal obligations and enforce our terms.
+- **Provide services.** Deliver what you request and communicate about projects.
+- **Improve experience.** Enhance the website, services, and usability.
+- **Communicate.** Send updates and respond to inquiries, with your consent.
+- **Analytics.** Understand how the website is used to make informed improvements.
+- **Security.** Protect against fraud, abuse, and security threats.
+- **Legal compliance.** Meet legal obligations and enforce our terms.
 
 ## Data Sharing and Third Parties
 
@@ -30,7 +30,7 @@ We only share your information in limited circumstances: with trusted service pr
 
 ## Cookies and Tracking
 
-We use essential cookies (required for the site to function), analytics cookies, preference cookies, and — with consent — marketing cookies. You can control cookies through your browser settings, though disabling some may affect functionality.
+We use essential cookies (required for the site to function), analytics cookies, preference cookies, and, with your consent, marketing cookies. You can control cookies through your browser settings, though disabling some may affect functionality.
 
 ## Data Security
 
@@ -38,7 +38,7 @@ We implement industry-standard measures: encrypted transmission (HTTPS/SSL), sec
 
 ## Your Rights and Choices
 
-You can **access** a copy of your data, **correct** inaccurate information, **delete** your data (subject to legal obligations), **object** to certain processing, **restrict** how we use it, request **portability**, and **withdraw consent** to marketing at any time. To exercise these rights, email [tomsteve187@gmail.com](mailto:tomsteve187@gmail.com).
+You can **access** a copy of your data, **correct** inaccurate information, **delete** your data (subject to legal obligations), **object** to certain processing, **restrict** how we use it, request **portability**, and **withdraw consent** to marketing at any time. To exercise these rights, email [me@kentom.co.ke](mailto:me@kentom.co.ke).
 
 ## Data Retention
 
@@ -58,7 +58,7 @@ We may update this policy to reflect changes in our practices or legal requireme
 
 ## Contact Us
 
-Questions or requests about this policy? Email [tomsteve187@gmail.com](mailto:tomsteve187@gmail.com) or reach us on GitHub at [@Raccoon254](https://github.com/Raccoon254). We aim to respond within 48 hours.
+Questions or requests about this policy? Email [me@kentom.co.ke](mailto:me@kentom.co.ke) or reach us on GitHub at [@Raccoon254](https://github.com/Raccoon254). We aim to respond within 48 hours.
 
 ## In Short
 

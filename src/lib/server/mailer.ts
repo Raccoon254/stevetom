@@ -1,11 +1,11 @@
 /**
- * Axene Mailer — transactional email for kenTom.
+ * Axene Mailer: transactional email for kenTom.
  * Docs: https://axene.io/docs/mailer/sending/api
  *
  * Sending goes through the Axene REST API with AXENE_MAILER_API_KEY.
  * The HTML templates follow the Axene system-email style: white ground,
  * #111 text, Georgia body, monospace labels, hairline #e2e2e0 dividers,
- * dark buttons — table-based for legacy mail-client support.
+ * dark buttons, table-based for legacy mail-client support.
  *
  * Verified senders (all forward to tomsteve187@gmail.com):
  *   i@kentom.co.ke         "KenTom HQ"
@@ -24,8 +24,11 @@ export const SENDERS = {
 	partners: { email: 'partners@kentom.co.ke', name: 'Kentom Partners' } as Addr
 };
 
-/** Where internal notifications land. */
+/** Where internal notifications land: the only place the personal inbox is used. */
 export const NOTIFY_TO: Addr = { email: 'tomsteve187@gmail.com', name: 'Steve Tom' };
+
+/** Public-facing reply-to address (forwards to the inbox above). */
+export const CONTACT: Addr = { email: 'me@kentom.co.ke', name: 'KenTom HQ' };
 
 export type SendOptions = {
 	from: Addr;
@@ -39,7 +42,7 @@ export type SendOptions = {
 
 /**
  * Send one email through Axene Mailer. Resolves with the queued message
- * info (202). Throws on a missing key or non-2xx response — callers
+ * info (202). Throws on a missing key or non-2xx response, so callers
  * decide whether an email failure is fatal.
  */
 export async function sendEmail(opts: SendOptions): Promise<{ id?: string; status?: string }> {
@@ -125,7 +128,7 @@ export function buttonDark(text: string, url: string): string {
 	);
 }
 
-/** One-time-code block — large monospace code on a soft panel. */
+/** One-time-code block: large monospace code on a soft panel. */
 export function otpBlock(code: string): string {
 	return (
 		`<div style="margin:22px 0;padding:24px;background:#f9f8f5;border-radius:6px;text-align:center">` +
@@ -137,7 +140,7 @@ export function otpBlock(code: string): string {
 }
 
 /**
- * Master email template — dark kenTom logo, left-aligned content,
+ * Master email template: dark kenTom logo, left-aligned content,
  * a subtle footer. `bodyHtml` is composed from the primitives above.
  */
 export function renderEmail(opts: {

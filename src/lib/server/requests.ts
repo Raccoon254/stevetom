@@ -3,7 +3,18 @@
  * Shared by the email-verification confirm endpoint.
  */
 import { PrismaClient } from '@prisma/client';
-import { sendEmail, renderEmail, p, label, value, divider, esc, SENDERS, NOTIFY_TO } from './mailer';
+import {
+	sendEmail,
+	renderEmail,
+	p,
+	label,
+	value,
+	divider,
+	esc,
+	SENDERS,
+	NOTIFY_TO,
+	CONTACT
+} from './mailer';
 
 const prisma = new PrismaClient();
 
@@ -22,7 +33,7 @@ export type RequestInput = {
 /**
  * Persist a service request and send both the admin notification and the
  * customised confirmation back to the sender. Email failures are logged,
- * never thrown — the request is always saved.
+ * never thrown, so the request is always saved.
  */
 export async function createServiceRequest(data: RequestInput): Promise<{ id: string }> {
 	const { name, email, company, phone, message, budget, timeline, service, mode } = data;
@@ -93,7 +104,7 @@ export async function createServiceRequest(data: RequestInput): Promise<{ id: st
 			from: SENDERS.hq,
 			to: [NOTIFY_TO],
 			replyTo: { email },
-			subject: isQuote ? `New quote request — ${who}` : `New contact message — ${who}`,
+			subject: isQuote ? `New quote request from ${who}` : `New contact message from ${who}`,
 			tags: ['notification', isQuote ? 'quote' : 'contact'],
 			html: renderEmail({
 				heading: isQuote ? 'New quote request' : 'New contact message',
@@ -109,12 +120,12 @@ export async function createServiceRequest(data: RequestInput): Promise<{ id: st
 
 		// customised confirmation to the sender
 		const intro = isQuote
-			? `Thanks ${who} — I have your request${service ? ` about <strong>${esc(service)}</strong>` : ''}.`
-			: `Thanks ${who} — I have your message.`;
+			? `Thanks ${who}, I have your request${service ? ` about <strong>${esc(service)}</strong>` : ''}.`
+			: `Thanks ${who}, I have your message.`;
 		await sendEmail({
 			from: SENDERS.hq,
 			to: [{ email, name: who }],
-			replyTo: NOTIFY_TO,
+			replyTo: CONTACT,
 			subject: isQuote ? 'I have your request' : 'I have your message',
 			tags: ['confirmation', isQuote ? 'quote' : 'contact'],
 			html: renderEmail({
@@ -128,7 +139,7 @@ export async function createServiceRequest(data: RequestInput): Promise<{ id: st
 						}`
 					) +
 					p('If anything is urgent, just reply to this email.') +
-					p('— Steve', 0)
+					p('Steve', 0)
 			})
 		});
 	} catch (mailError) {

@@ -7,7 +7,7 @@
 
 <svelte:head>
 	<title>kenTom · {project.name}</title>
-	<meta name="description" content="{project.name} — {project.meta}." />
+	<meta name="description" content="{project.name}: {project.meta}." />
 </svelte:head>
 
 <main class="page">

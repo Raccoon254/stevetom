@@ -5,9 +5,9 @@
 
 	const links = [
 		{ href: '/', label: 'Home' },
-		{ href: '/blog', label: 'Notes' },
 		{ href: '/partners', label: 'Partners' },
 		{ href: '/quote', label: 'Quote' },
+		{ href: '/blog', label: 'Notes' },
 		{ href: '/contact', label: 'Contact' }
 	];
 
@@ -45,7 +45,7 @@
 </script>
 
 <header class="nav" class:hidden class:scrolled class:menu-open={menuOpen}>
-	<a class="logo" href="/" aria-label="kenTom — home">
+	<a class="logo" href="/" aria-label="kenTom, home">
 		<svg viewBox="0 0 576 596" xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M 0 0 L 319.02 -1 L 318.946 402.932 L 158 595 L 158 183 L -1 183 L 0 0 Z"

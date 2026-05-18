@@ -100,7 +100,7 @@
 
 <main class="page">
 	<div class="err">
-		<!-- the ECG pulse, behind the text — red to signal an error -->
+		<!-- the ECG pulse, behind the text: red to signal an error -->
 		<div class="pulse" aria-hidden="true">
 			<svg viewBox="0 150 1280 470" preserveAspectRatio="xMidYMid meet">
 				<defs>

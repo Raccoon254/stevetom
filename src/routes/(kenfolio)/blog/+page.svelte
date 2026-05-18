@@ -4,7 +4,7 @@
 
 <svelte:head>
 	<title>kenTom · Notes</title>
-	<meta name="description" content="Notes from the workshop — writing by Steve Tom." />
+	<meta name="description" content="Notes from the workshop, writing by Steve Tom." />
 </svelte:head>
 
 <main class="page">

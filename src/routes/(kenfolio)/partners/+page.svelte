@@ -10,7 +10,7 @@
 		{
 			n: '02',
 			title: 'You reach the right room.',
-			body: 'Quiet but engaged — engineers, founders, and students across East Africa. Your name lives on the homepage, the notes, and one slide at every event I host.'
+			body: 'Quiet but engaged: engineers, founders, and students across East Africa. Your name lives on the homepage, the notes, and one slide at every event I host.'
 		},
 		{
 			n: '03',
@@ -22,26 +22,26 @@
 	const tiers = [
 		{
 			label: 'Standard',
-			amount: '$1 – $5',
+			amount: '$1 to $5',
 			period: '/ month',
 			what: 'Listed on the partners page. A thank-you and the quarterly note.'
 		},
 		{
 			label: 'Workshop',
-			amount: '$10 – $20',
+			amount: '$10 to $20',
 			period: '/ month',
 			what: 'A line on the homepage. Logo at SkillKenya events. Early access to write-ups.'
 		},
 		{
 			label: 'Custom',
-			amount: 'By arrangement',
+			amount: 'Arranged',
 			period: '',
 			what: 'Co-built. We pick one project or cohort a year and put your name on it. Pricing is scoped to what we build together.',
-			link: 'mailto:tomsteve187@gmail.com?subject=Custom%20partnership'
+			link: 'mailto:partners@kentom.co.ke?subject=Custom%20partnership'
 		}
 	];
 
-	// no partners on board yet — backend wiring comes later
+	// no partners on board yet; backend wiring comes later
 	const partners: { name: string; logo?: string }[] = [];
 </script>
 
@@ -49,7 +49,7 @@
 	<title>kenTom · Partners</title>
 	<meta
 		name="description"
-		content="Back the work, not the noise. Sponsorship tiers and reasons to partner with kenTom — funding SkillKenya tutoring and open-source work."
+		content="Back the work, not the noise. Sponsorship tiers and reasons to partner with kenTom, funding SkillKenya tutoring and open-source work."
 	/>
 </svelte:head>
 
@@ -57,7 +57,7 @@
 	<div class="partners">
 		<h1>Back the work, <em>not the noise</em>.</h1>
 		<p class="lede">
-			I keep the calendar light so the work can stay good. Sponsorship buys time — for SkillKenya
+			I keep the calendar light so the work can stay good. Sponsorship buys time, for SkillKenya
 			tutoring, for the small open-source pieces that keep my own projects alive, and for the next
 			few things on the bench.
 		</p>
@@ -70,7 +70,7 @@
 					<span class="empty-ic"><Icon name="ai-heart-square" size={44} /></span>
 					<p class="empty-title">No partners yet.</p>
 					<p class="empty-sub">
-						This wall is waiting. Sponsors appear here once they go live — your logo could be the
+						This wall is waiting. Sponsors appear here once they go live. Your logo could be the
 						first.
 					</p>
 				</div>
@@ -122,7 +122,7 @@
 		</section>
 
 		<div class="cta-row">
-			<a class="pill pill--solid" href="mailto:tomsteve187@gmail.com?subject=Sponsorship">
+			<a class="pill pill--solid" href="mailto:partners@kentom.co.ke?subject=Sponsorship">
 				<span>Start a conversation</span>
 				<span class="ar" aria-hidden="true"><Icon name="messages" size={14} /></span>
 			</a>
@@ -177,7 +177,7 @@
 		border-bottom: 1px solid var(--hairline);
 	}
 
-	/* 1 · partners — empty state */
+	/* 1 · partners · empty state */
 	.empty {
 		border: 1px dashed var(--hairline-2);
 		border-radius: 14px;
@@ -231,7 +231,7 @@
 		}
 	}
 
-	/* 2 · pricing — borderless divider grid */
+	/* 2 · pricing · borderless divider grid */
 	.tiers {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);

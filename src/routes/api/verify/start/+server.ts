@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { newCode, makeToken } from '$lib/server/otp';
 import { sendEmail, renderEmail, p, otpBlock, SENDERS } from '$lib/server/mailer';
 
-/** Step 1 — issue a verification code to the email on a contact/quote form. */
+/** Step 1: issue a verification code to the email on a contact/quote form. */
 export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const data = await request.json();

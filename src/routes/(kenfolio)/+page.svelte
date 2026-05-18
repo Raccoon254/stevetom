@@ -838,7 +838,7 @@
 	<title>kenTom</title>
 	<meta
 		name="description"
-		content="kenTom — Steve Tom. A guy who codes. Selected work, tutoring, partnerships and a small lab of side rigs."
+		content="kenTom, by Steve Tom. A guy who codes. Selected work, tutoring, partnerships and a small lab of side rigs."
 	/>
 </svelte:head>
 
@@ -1031,7 +1031,7 @@
 	</div>
 	<div class="content">
 		<div class="eyebrow"><Icon name="messages" size={13} /> contact</div>
-		<a class="email" href="mailto:tomsteve187@gmail.com">tomsteve187@gmail.com</a>
+		<a class="email" href="mailto:me@kentom.co.ke">me@kentom.co.ke</a>
 		<div class="socials">
 			<a href="https://github.com/Raccoon254" target="_blank" rel="noopener">GitHub</a>
 			<a href="https://www.linkedin.com/in/steve-tom-822a81230/" target="_blank" rel="noopener"
@@ -1054,7 +1054,7 @@
 		}
 	}
 
-	/* dot index — fixed right, hover reveals label */
+	/* dot index: fixed right, hover reveals label */
 	.index {
 		position: fixed;
 		z-index: 60;
@@ -1275,14 +1275,14 @@
 		gap: 14px;
 		align-items: center;
 	}
-	/* minimal scroll indicator — spark glides down a hairline, then
+	/* minimal scroll indicator: spark glides down a hairline, then
 	   a clean ripple blooms from the foot of the line */
 	.scroll-cue {
 		--cue-dur: 3.6s;
 		--cue-ease: cubic-bezier(0.65, 0, 0.35, 1);
-		/* drop accelerates as it falls — never eases out */
+		/* drop accelerates as it falls, never eases out */
 		--drop-ease: cubic-bezier(0.42, 0, 1, 1);
-		/* ripples decelerate as they spread — natural surface feel */
+		/* ripples decelerate as they spread, natural surface feel */
 		--ripple-ease: cubic-bezier(0.12, 0.78, 0.28, 1);
 		--ripple-peak: 0.85;
 		position: relative;
@@ -1291,7 +1291,7 @@
 		display: flex;
 		justify-content: center;
 	}
-	/* invisible track — clips the falling drop, no visible guide line */
+	/* invisible track: clips the falling drop, no visible guide line */
 	.scroll-line {
 		position: relative;
 		width: 1px;
@@ -1326,7 +1326,7 @@
 		}
 	}
 
-	/* ripple — oval, foreshortened like a ripple on a surface,
+	/* ripple: oval, foreshortened like a ripple on a surface,
 	   sits at the bottom point of the line, unclipped */
 	.scroll-ripple {
 		position: absolute;

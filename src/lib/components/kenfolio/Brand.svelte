@@ -1,5 +1,5 @@
-<!-- KenFolio chrome — fixed top-left wordmark logo (inherits currentColor) -->
-<a class="brand" href="/" aria-label="kenTom — home">
+<!-- KenFolio chrome: fixed top-left wordmark logo (inherits currentColor) -->
+<a class="brand" href="/" aria-label="kenTom, home">
 	<span class="logo" aria-hidden="true">
 		<svg viewBox="0 0 576 596" xmlns="http://www.w3.org/2000/svg">
 			<path

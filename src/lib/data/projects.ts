@@ -1,11 +1,11 @@
 /**
- * Selected work — the four ventures shown in the KenFolio redesign.
+ * Selected work: the four ventures shown in the KenFolio redesign.
  * Each renders through the (kenfolio)/work/[slug] project page.
  */
 export type Project = {
 	slug: string;
 	name: string;
-	/** mono meta line under the title — e.g. "2024 · Builders find shelter" */
+	/** mono meta line under the title, e.g. "2024 · Builders find shelter" */
 	meta: string;
 	/** paragraphs; <em>…</em> is rendered as emphasised (ink) text */
 	body: string[];
@@ -29,7 +29,7 @@ export const projects: Project[] = [
 		meta: '2024 · Builders find shelter',
 		body: [
 			"A developer collective in Nairobi for early founders and the engineers around them. We host hackathons, run a quiet members' space, and pool the boring infrastructure so each team can spend its time on the part only it can do.",
-			'The site is the front door — a place to <em>apply, see who is in residence, and join an event</em>.'
+			'The site is the front door, a place to <em>apply, see who is in residence, and join an event</em>.'
 		],
 		link: { label: 'chiromo.tech', href: 'https://chiromo.tech' }
 	},
@@ -48,7 +48,7 @@ export const projects: Project[] = [
 		name: 'Pixen',
 		meta: 'Pixels meet desktop',
 		body: [
-			'A desktop design app for Windows and beyond — the canvas, the tools, and the export, without a browser tab in sight.',
+			'A desktop design app for Windows and beyond. The canvas, the tools, and the export, without a browser tab in sight.',
 			'Built for people who would rather <em>open an app than open a site</em>.'
 		],
 		link: { label: 'pixen.cc', href: 'https://pixen.cc' }

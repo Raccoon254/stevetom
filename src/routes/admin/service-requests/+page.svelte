@@ -200,7 +200,7 @@
 					<h4 class="a-section-title"><Icon name="box" size={13} /> Project</h4>
 					<dl class="defs">
 						<div><dt>Title</dt><dd>{selectedRequest.projectTitle}</dd></div>
-						<div><dt>Service</dt><dd>{selectedRequest.service?.name ?? '—'}</dd></div>
+						<div><dt>Service</dt><dd>{selectedRequest.service?.name ?? 'None'}</dd></div>
 						<div class="wide"><dt>Description</dt><dd>{selectedRequest.description}</dd></div>
 						{#if selectedRequest.requirements}
 							<div class="wide"><dt>Requirements</dt><dd>{selectedRequest.requirements}</dd></div>
@@ -247,7 +247,7 @@
 					<textarea
 						class="a-textarea reply"
 						bind:value={replyText}
-						placeholder="Write a reply — it is emailed to {selectedRequest.clientEmail} from KenTom HQ."
+						placeholder="Write a reply. It is emailed to {selectedRequest.clientEmail} from KenTom HQ."
 					></textarea>
 					{#if replyMsg}<p class="reply-msg">{replyMsg}</p>{/if}
 					<div class="reply-row">

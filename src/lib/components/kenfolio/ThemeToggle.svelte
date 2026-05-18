@@ -121,7 +121,7 @@
 		transform: scale(0.1);
 	}
 
-	/* half-filled disc — phone only. filled half = currentColor,
+	/* half-filled disc, phone only. filled half = currentColor,
 	   empty half reads as the page colour through the ring. */
 	.disc {
 		position: absolute;
@@ -187,7 +187,7 @@
 		}
 	}
 
-	/* phone: bare ◐ disc only — no border, no text */
+	/* phone: bare ◐ disc only, no border, no text */
 	@media (max-width: 640px) {
 		.theme {
 			border-color: transparent;

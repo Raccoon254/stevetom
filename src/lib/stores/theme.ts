@@ -1,5 +1,5 @@
 /**
- * KenFolio theme store — drives the [data-theme] attribute on <html>.
+ * KenFolio theme store: drives the [data-theme] attribute on <html>.
  * The initial value is set synchronously by the boot script in app.html
  * (to avoid a flash); this store keeps the toggle button in sync.
  */
@@ -27,7 +27,7 @@ export function toggleTheme(): void {
 			try {
 				localStorage.setItem(KEY, next);
 			} catch {
-				/* private mode — ignore */
+				/* private mode, ignore */
 			}
 		}
 		return next;

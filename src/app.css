@@ -29,7 +29,7 @@ body {
     position: relative;
 }
 
-/* Theme background — set from first paint via the [data-theme] attribute
+/* Theme background: set from first paint via the [data-theme] attribute
    (the boot script in app.html applies it before the page renders). */
 html,
 html[data-theme="dark"],

@@ -2,7 +2,7 @@
  * Markdown content pipeline for KenFolio.
  *
  * Blog posts live in src/lib/content/blog/*.md and legal docs in
- * src/lib/content/legal/*.md — each with a simple `---` frontmatter block.
+ * src/lib/content/legal/*.md, each with a simple `---` frontmatter block.
  * Files are bundled at build time via import.meta.glob; the body is
  * rendered to HTML with `marked`.
  */
