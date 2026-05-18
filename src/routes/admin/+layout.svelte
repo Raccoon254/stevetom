@@ -1,217 +1,328 @@
 <script lang="ts">
-    import { page } from '$app/stores';
-    import { fly, fade } from 'svelte/transition';
-    import { TrendingUp, Folder, Settings, Mail, ArrowLeft, LogOut, Menu, X } from 'lucide-svelte';
+	import { page } from '$app/stores';
+	import { fade, fly } from 'svelte/transition';
+	import Icon from '$lib/components/Icon.svelte';
+	import '$lib/styles/kenfolio.css';
 
-    $: currentPath = $page.route.id;
-    let mobileMenuOpen = false;
+	$: currentPath = $page.route.id;
+	let mobileMenuOpen = false;
 
-    function toggleMobileMenu() {
-        mobileMenuOpen = !mobileMenuOpen;
-    }
+	const nav = [
+		{ href: '/admin', label: 'Dashboard', icon: 'chart' },
+		{ href: '/admin/projects', label: 'Projects', icon: 'box' },
+		{ href: '/admin/services', label: 'Services', icon: 'setting' },
+		{ href: '/admin/service-requests', label: 'Requests', icon: 'messages' }
+	];
+
+	$: isActive = (href: string) =>
+		currentPath === href || (currentPath?.startsWith(href + '/') ?? false);
 </script>
 
-<div class="min-h-screen bg-[#0e0e0e] text-white relative overflow-hidden">
-    <!-- Background Pattern -->
-    <div class="hero-section fixed inset-0 pointer-events-none"></div>
+<div class="admin">
+	<!-- mobile menu button -->
+	<button
+		class="burger"
+		class:open={mobileMenuOpen}
+		on:click={() => (mobileMenuOpen = !mobileMenuOpen)}
+		aria-label="Menu"
+		aria-expanded={mobileMenuOpen}
+	>
+		<span></span>
+		<span></span>
+	</button>
 
-    <!-- Background Decorations -->
-    <div
-        class="hidden lg:block absolute rotate-[65deg] top-20 -left-20 opacity-5 pointer-events-none"
-        style="border-top: 120px solid transparent; border-bottom: 120px solid transparent; border-right: 80px solid white;"
-    ></div>
+	<div class="shell">
+		<!-- desktop sidebar -->
+		<aside class="side" in:fly={{ x: -160, duration: 380 }}>
+			<a class="brand" href="/">
+				<span class="logo" aria-hidden="true">
+					<svg viewBox="0 0 576 596" xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M 0 0 L 319.02 -1 L 318.946 402.932 L 158 595 L 158 183 L -1 183 L 0 0 Z"
+							fill="currentColor"
+							transform="translate(1,1)"
+						></path>
+						<path
+							d="M 0 0 C 110.421 0 191.846 0 191.846 0 L 0 183.628 C 0 183.628 0 65.96 0 0 Z"
+							fill="currentColor"
+							transform="translate(384,0)"
+						></path>
+					</svg>
+				</span>
+				<span class="brand-label">kenTom <em>· admin</em></span>
+			</a>
 
-    <div class="relative z-10 flex min-h-screen">
-        <!-- Sidebar - Desktop -->
-        <aside
-            class="hidden lg:flex w-72 min-h-screen border-r border-white/10 relative bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm"
-            in:fly={{ x: -200, duration: 500 }}
-        >
-            <div class="p-6 flex flex-col h-full w-full">
-                <!-- Header -->
-                <div class="mb-8" in:fade={{ duration: 600 }}>
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
-                            <TrendingUp size="24" class="text-white" />
-                        </div>
-                        <div>
-                            <h1 class="text-2xl font-bold text-white">Admin</h1>
-                            <p class="text-white/60 text-sm">Control Panel</p>
-                        </div>
-                    </div>
-                    <div class="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                </div>
+			<nav class="nav">
+				{#each nav as link (link.href)}
+					<a href={link.href} class="nav-link" class:active={isActive(link.href)}>
+						<Icon name={link.icon} size={17} />
+						<span>{link.label}</span>
+					</a>
+				{/each}
+			</nav>
 
-                <!-- Navigation -->
-                <nav class="space-y-2 flex-1">
-                    {#each [
-                        { href: '/admin', label: 'Dashboard', icon: TrendingUp },
-                        { href: '/admin/projects', label: 'Projects', icon: Folder },
-                        { href: '/admin/services', label: 'Services', icon: Settings },
-                        { href: '/admin/service-requests', label: 'Requests', icon: Mail }
-                    ] as link (link.href)}
-                        <a
-                            href={link.href}
-                            class="nav-link group relative {currentPath === link.href || currentPath?.startsWith(link.href + '/') ? 'active' : ''}"
-                            in:fade={{ duration: 400 }}
-                        >
-                            <svelte:component this={link.icon} size="20" />
-                            <span>{link.label}</span>
-                            <!-- Active indicator -->
-                            {#if currentPath === link.href || currentPath?.startsWith(link.href + '/')}
-                                <div class="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full"></div>
-                            {/if}
-                        </a>
-                    {/each}
-                </nav>
+			<div class="side-foot">
+				<a href="/" class="nav-link subtle">
+					<Icon name="arrow-left" size={17} />
+					<span>Back to site</span>
+				</a>
+				<form action="/logout" method="POST">
+					<button type="submit" class="nav-link subtle danger">
+						<Icon name="logout" size={17} />
+						<span>Log out</span>
+					</button>
+				</form>
+			</div>
+		</aside>
 
-                <!-- Bottom Section -->
-                <div class="mt-auto space-y-2" in:fade={{ duration: 600 }}>
-                    <div class="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-4"></div>
-                    <a href="/" class="nav-link hover:text-emerald-400 transition-all duration-300">
-                        <ArrowLeft size="20" />
-                        <span>Back to Site</span>
-                    </a>
-                    <form action="/logout" method="POST" class="w-full">
-                        <button type="submit" class="nav-link w-full hover:text-red-400 transition-all duration-300">
-                            <LogOut size="20" />
-                            <span>Logout</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </aside>
+		<!-- mobile sidebar -->
+		{#if mobileMenuOpen}
+			<div
+				class="scrim"
+				on:click={() => (mobileMenuOpen = false)}
+				transition:fade={{ duration: 200 }}
+			>
+				<aside
+					class="side mobile"
+					on:click|stopPropagation
+					transition:fly={{ x: -200, duration: 260 }}
+				>
+					<a class="brand" href="/">
+						<span class="logo" aria-hidden="true">
+							<svg viewBox="0 0 576 596" xmlns="http://www.w3.org/2000/svg">
+								<path
+									d="M 0 0 L 319.02 -1 L 318.946 402.932 L 158 595 L 158 183 L -1 183 L 0 0 Z"
+									fill="currentColor"
+									transform="translate(1,1)"
+								></path>
+								<path
+									d="M 0 0 C 110.421 0 191.846 0 191.846 0 L 0 183.628 C 0 183.628 0 65.96 0 0 Z"
+									fill="currentColor"
+									transform="translate(384,0)"
+								></path>
+							</svg>
+						</span>
+						<span class="brand-label">kenTom <em>· admin</em></span>
+					</a>
+					<nav class="nav">
+						{#each nav as link (link.href)}
+							<a
+								href={link.href}
+								class="nav-link"
+								class:active={isActive(link.href)}
+								on:click={() => (mobileMenuOpen = false)}
+							>
+								<Icon name={link.icon} size={17} />
+								<span>{link.label}</span>
+							</a>
+						{/each}
+					</nav>
+					<div class="side-foot">
+						<a href="/" class="nav-link subtle">
+							<Icon name="arrow-left" size={17} />
+							<span>Back to site</span>
+						</a>
+						<form action="/logout" method="POST">
+							<button type="submit" class="nav-link subtle danger">
+								<Icon name="logout" size={17} />
+								<span>Log out</span>
+							</button>
+						</form>
+					</div>
+				</aside>
+			</div>
+		{/if}
 
-        <!-- Mobile Menu Button -->
-        <button
-            on:click={toggleMobileMenu}
-            class="lg:hidden fixed top-4 left-4 z-50 p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full hover:bg-white/20 transition-all"
-        >
-            {#if mobileMenuOpen}
-                <X size="24" />
-            {:else}
-                <Menu size="24" />
-            {/if}
-        </button>
-
-        <!-- Mobile Sidebar -->
-        {#if mobileMenuOpen}
-            <div
-                class="lg:hidden fixed inset-0 z-40 bg-[#0e0e0e]/95 backdrop-blur-md"
-                on:click={toggleMobileMenu}
-                transition:fade={{ duration: 300 }}
-            >
-                <aside
-                    class="w-72 min-h-screen border-r border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm"
-                    on:click|stopPropagation
-                    transition:fly={{ x: -200, duration: 300 }}
-                >
-                    <div class="p-6 flex flex-col h-full">
-                        <!-- Header -->
-                        <div class="mb-8">
-                            <div class="flex items-center gap-3 mb-6">
-                                <div class="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
-                                    <TrendingUp size="24" class="text-white" />
-                                </div>
-                                <div>
-                                    <h1 class="text-2xl font-bold text-white">Admin</h1>
-                                    <p class="text-white/60 text-sm">Control Panel</p>
-                                </div>
-                            </div>
-                            <div class="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                        </div>
-
-                        <!-- Navigation -->
-                        <nav class="space-y-2 flex-1">
-                            {#each [
-                                { href: '/admin', label: 'Dashboard', icon: TrendingUp },
-                                { href: '/admin/projects', label: 'Projects', icon: Folder },
-                                { href: '/admin/services', label: 'Services', icon: Settings },
-                                { href: '/admin/service-requests', label: 'Requests', icon: Mail }
-                            ] as link (link.href)}
-                                <a
-                                    href={link.href}
-                                    class="nav-link group relative {currentPath === link.href || currentPath?.startsWith(link.href + '/') ? 'active' : ''}"
-                                    on:click={toggleMobileMenu}
-                                >
-                                    <svelte:component this={link.icon} size="20" />
-                                    <span>{link.label}</span>
-                                    {#if currentPath === link.href || currentPath?.startsWith(link.href + '/')}
-                                        <div class="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full"></div>
-                                    {/if}
-                                </a>
-                            {/each}
-                        </nav>
-
-                        <!-- Bottom Section -->
-                        <div class="mt-auto space-y-2">
-                            <div class="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-4"></div>
-                            <a href="/" class="nav-link hover:text-emerald-400 transition-all duration-300">
-                                <ArrowLeft size="20" />
-                                <span>Back to Site</span>
-                            </a>
-                            <form action="/logout" method="POST" class="w-full">
-                                <button type="submit" class="nav-link w-full hover:text-red-400 transition-all duration-300">
-                                    <LogOut size="20" />
-                                    <span>Logout</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-        {/if}
-
-        <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto" in:fade={{ duration: 600 }}>
-            <div class="p-6 lg:p-8 animate-fadeIn">
-                <slot />
-            </div>
-        </main>
-    </div>
+		<main class="content">
+			<div class="content-inner">
+				<slot />
+			</div>
+		</main>
+	</div>
 </div>
 
 <style>
+	/* admin runs always-dark, independent of the site theme toggle */
+	.admin {
+		--bg: #050505;
+		--bg-rgb: 5, 5, 5;
+		--panel: #0c0d0d;
+		--ink: #f4fffc;
+		--ink-2: #cfeee6;
+		--mute: #6fa89c;
+		--mute-2: #2c6258;
+		--spark: #ff7a1a;
+		--danger: #ff5a52;
+		--hairline: rgba(255, 255, 255, 0.1);
+		--hairline-2: rgba(255, 255, 255, 0.2);
 
-    .nav-link {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.875rem 1rem;
-        border-radius: 1rem;
-        text-decoration: none;
-        color: rgba(255, 255, 255, 0.6);
-        position: relative;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.02);
-    }
+		min-height: 100vh;
+		background: var(--bg);
+		color: var(--ink);
+		font-family: var(--sans);
+	}
 
-    .nav-link:hover {
-        color: white;
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
-        transform: translateX(4px);
-    }
+	.shell {
+		display: flex;
+		min-height: 100vh;
+	}
 
-    .nav-link.active {
-        color: white;
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 255, 255, 0.3);
-    }
+	/* sidebar */
+	.side {
+		width: 264px;
+		flex: 0 0 264px;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: clamp(20px, 2.4vw, 30px) 18px;
+		border-right: 1px solid var(--hairline);
+		background: var(--panel);
+	}
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 11px;
+		padding: 6px 8px;
+		margin-bottom: 22px;
+		color: var(--ink);
+	}
+	.brand .logo {
+		width: 22px;
+		height: 22px;
+		flex: 0 0 auto;
+	}
+	.brand .logo svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+	.brand-label {
+		font-family: var(--mono);
+		font-size: 11px;
+		letter-spacing: 0.24em;
+		text-transform: uppercase;
+	}
+	.brand-label em {
+		font-style: normal;
+		color: var(--mute);
+	}
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+	.nav {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		flex: 1;
+	}
+	.nav-link {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 11px 12px;
+		border-radius: 9px;
+		border: 1px solid transparent;
+		font-family: var(--mono);
+		font-size: 11px;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--mute);
+		background: transparent;
+		cursor: pointer;
+		width: 100%;
+		text-align: left;
+		transition:
+			color 0.2s ease,
+			background 0.2s ease,
+			border-color 0.2s ease;
+	}
+	.nav-link:hover {
+		color: var(--ink);
+		background: rgba(255, 255, 255, 0.04);
+	}
+	.nav-link.active {
+		color: var(--ink);
+		background: rgba(255, 255, 255, 0.06);
+		border-color: var(--hairline);
+	}
+	.nav-link.active :global(svg) {
+		color: var(--spark);
+	}
+	.side-foot {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		padding-top: 14px;
+		margin-top: 14px;
+		border-top: 1px solid var(--hairline);
+	}
+	.nav-link.subtle {
+		font-size: 10px;
+	}
+	.nav-link.danger:hover {
+		color: var(--danger);
+	}
 
-    .animate-fadeIn {
-        animation: fadeIn 0.6s ease-in-out;
-    }
+	/* content */
+	.content {
+		flex: 1;
+		min-width: 0;
+		overflow-y: auto;
+	}
+	.content-inner {
+		padding: clamp(20px, 3vw, 40px);
+		max-width: 1200px;
+	}
+
+	/* mobile */
+	.burger {
+		display: none;
+		position: fixed;
+		top: 14px;
+		left: 14px;
+		z-index: 50;
+		width: 42px;
+		height: 42px;
+		flex-direction: column;
+		justify-content: center;
+		gap: 5px;
+		background: var(--panel);
+		border: 1px solid var(--hairline);
+		border-radius: 10px;
+		cursor: pointer;
+	}
+	.burger span {
+		display: block;
+		width: 16px;
+		height: 1.5px;
+		margin: 0 auto;
+		background: var(--ink);
+		transition: transform 0.25s ease;
+	}
+	.burger.open span:first-child {
+		transform: translateY(3.25px) rotate(45deg);
+	}
+	.burger.open span:last-child {
+		transform: translateY(-3.25px) rotate(-45deg);
+	}
+	.scrim {
+		position: fixed;
+		inset: 0;
+		z-index: 40;
+		background: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(4px);
+	}
+	.side.mobile {
+		height: 100vh;
+	}
+
+	@media (max-width: 900px) {
+		.side:not(.mobile) {
+			display: none;
+		}
+		.burger {
+			display: flex;
+		}
+		.content-inner {
+			padding-top: 70px;
+		}
+	}
 </style>

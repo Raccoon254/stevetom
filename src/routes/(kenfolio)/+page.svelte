@@ -944,7 +944,7 @@
 <section id="work" class="stage stage--work" data-screen-label="02 Work">
 	<div class="bg"><canvas id="bgRipple"></canvas></div>
 	<div class="content">
-		<div class="eyebrow"><Icon name="briefcase" size={13} /> selected work</div>
+		<div class="eyebrow"><Icon name="coffee" size={13} /> selected work</div>
 		<ul class="works">
 			{#each works as w}
 				<li>
@@ -962,7 +962,7 @@
 				rel="noopener"
 			>
 				<span>See all work</span>
-				<span class="ar" aria-hidden="true"><Icon name="export-arrow" size={13} /></span>
+				<span class="ar" aria-hidden="true"><Icon name="star2" size={13} /></span>
 			</a>
 		</div>
 	</div>
@@ -972,7 +972,7 @@
 <section id="tutoring" class="stage stage--tutoring" data-screen-label="02b Tutoring">
 	<div class="bg"><canvas id="bgPulse"></canvas></div>
 	<div class="content">
-		<div class="eyebrow"><Icon name="book" size={13} /> tutoring</div>
+		<div class="eyebrow"><Icon name="mirroring-screen" size={13} /> tutoring</div>
 		<p class="line">
 			One-on-one tutoring on <em>whatever you want to learn</em>. Pick a subject, we go deep on it
 			together. I also own
@@ -985,7 +985,7 @@
 <section id="partnerships" class="stage stage--partnerships" data-screen-label="02c Partnerships">
 	<div class="bg"><canvas id="bgPartners"></canvas></div>
 	<div class="content">
-		<div class="eyebrow"><Icon name="people" size={13} /> partnerships</div>
+		<div class="eyebrow"><Icon name="ai-shape-triangle" size={13} /> partnerships</div>
 		<p class="line">
 			Open to building things together. <em>Especially the kind that take a while to become
 				obvious.</em>
@@ -1378,7 +1378,7 @@
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) 100px minmax(0, 1fr);
 		gap: clamp(20px, 3vw, 36px);
-		align-items: baseline;
+		align-items: center;
 		transition: opacity 0.3s;
 	}
 	.stage--work .works .ttl {
@@ -1454,7 +1454,7 @@
 		border-color: var(--ink-2);
 	}
 	.stage--work .see-all:hover .ar {
-		transform: translate(2px, -2px);
+		transform: scale(1.2);
 	}
 
 	/* 02c partnerships */
@@ -1490,7 +1490,7 @@
 		border-color: var(--ink-2);
 	}
 	.stage--partnerships .partner-pill:hover .ar {
-		transform: translateY(2px);
+		transform: scale(1.2);
 	}
 
 	/* 04 contact */

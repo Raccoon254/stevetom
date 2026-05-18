@@ -257,7 +257,7 @@ body.kenfolio ::selection {
 	border-color: var(--ink-2);
 }
 .kenfolio .pill:hover .ar {
-	transform: translate(2px, -2px);
+	transform: scale(1.2);
 }
 .kenfolio .pill--solid {
 	background: var(--ink);

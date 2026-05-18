@@ -163,7 +163,7 @@
 	}
 	ul.lines a:hover .ar {
 		color: var(--spark);
-		transform: translate(2px, -2px);
+		transform: scale(1.2);
 	}
 
 	@media (max-width: 600px) {
