@@ -100,9 +100,7 @@
 
 <main class="page">
 	<div class="err">
-		<div class="eyebrow">error · {status}</div>
-		<h1>{headline}</h1>
-
+		<!-- the ECG pulse, behind the text — red to signal an error -->
 		<div class="pulse" aria-hidden="true">
 			<svg viewBox="0 150 1280 470" preserveAspectRatio="xMidYMid meet">
 				<defs>
@@ -117,14 +115,17 @@
 			</svg>
 		</div>
 
-		<p class="detail">{detail}</p>
-
-		<div class="cta-row">
-			<a class="pill pill--solid" href="/">
-				<span>Back home</span>
-				<span class="ar" aria-hidden="true"><Icon name="arrow-left" size={13} /></span>
-			</a>
-			<a class="alt" href="/contact">or get in touch</a>
+		<div class="err-content">
+			<div class="eyebrow">error · {status}</div>
+			<h1>{headline}</h1>
+			<p class="detail">{detail}</p>
+			<div class="cta-row">
+				<a class="pill pill--solid" href="/">
+					<span>Back home</span>
+					<span class="ar" aria-hidden="true"><Icon name="arrow-left" size={13} /></span>
+				</a>
+				<a class="alt" href="/contact">or get in touch</a>
+			</div>
 		</div>
 	</div>
 </main>
@@ -138,16 +139,50 @@
 		padding: clamp(96px, 14vh, 160px) clamp(20px, 5vw, 80px);
 	}
 	.err {
+		position: relative;
 		width: 100%;
 		max-width: 600px;
 		text-align: center;
+	}
+
+	/* pulse sits behind the text */
+	.pulse {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: min(980px, 94vw);
+		z-index: 0;
+		pointer-events: none;
+	}
+	.pulse svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		overflow: visible;
+	}
+	.ghost {
+		fill: none;
+		stroke: var(--error);
+		stroke-width: 1.5;
+		stroke-opacity: 0.16;
+		vector-effect: non-scaling-stroke;
+	}
+	.ribbon {
+		stroke: var(--error);
+	}
+
+	/* text in front */
+	.err-content {
+		position: relative;
+		z-index: 1;
 	}
 	.eyebrow {
 		font-family: var(--mono);
 		font-size: 11px;
 		letter-spacing: 0.32em;
 		text-transform: uppercase;
-		color: var(--mute);
+		color: var(--error);
 		margin: 0 0 clamp(18px, 3vh, 26px);
 	}
 	h1 {
@@ -160,27 +195,6 @@
 		margin: 0 0 clamp(20px, 4vh, 36px);
 		text-wrap: balance;
 	}
-
-	/* the ECG pulse, same heartbeat as the landing hero */
-	.pulse {
-		margin: 0 auto clamp(20px, 4vh, 36px);
-	}
-	.pulse svg {
-		display: block;
-		width: 100%;
-		height: auto;
-		overflow: visible;
-	}
-	.ghost {
-		fill: none;
-		stroke: var(--hairline-2);
-		stroke-width: 1.5;
-		vector-effect: non-scaling-stroke;
-	}
-	.ribbon {
-		stroke: var(--spark);
-	}
-
 	.detail {
 		font-size: clamp(15px, 1.4vw, 18px);
 		line-height: 1.6;
@@ -188,7 +202,6 @@
 		margin: 0 0 clamp(32px, 5vh, 44px);
 		text-wrap: pretty;
 	}
-
 	.cta-row {
 		display: flex;
 		align-items: center;
@@ -205,7 +218,7 @@
 		border-bottom: 1px solid var(--mute-2);
 	}
 	.cta-row .alt:hover {
-		color: var(--spark);
-		border-color: var(--spark);
+		color: var(--error);
+		border-color: var(--error);
 	}
 </style>

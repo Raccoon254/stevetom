@@ -927,7 +927,6 @@
 		<div class="scroll-cue" aria-hidden="true">
 			<span class="scroll-line"><span class="scroll-track"></span></span>
 			<span class="scroll-ripple"></span>
-			<span class="scroll-ripple scroll-ripple--2"></span>
 		</div>
 	</div>
 </section>
@@ -1281,6 +1280,8 @@
 	.scroll-cue {
 		--cue-dur: 3.6s;
 		--cue-ease: cubic-bezier(0.65, 0, 0.35, 1);
+		/* drop accelerates as it falls — never eases out */
+		--drop-ease: cubic-bezier(0.42, 0, 1, 1);
 		/* ripples decelerate as they spread — natural surface feel */
 		--ripple-ease: cubic-bezier(0.12, 0.78, 0.28, 1);
 		--ripple-peak: 0.85;
@@ -1290,11 +1291,11 @@
 		display: flex;
 		justify-content: center;
 	}
+	/* invisible track — clips the falling drop, no visible guide line */
 	.scroll-line {
 		position: relative;
 		width: 1px;
 		height: 100%;
-		background: var(--hairline);
 		overflow: hidden;
 	}
 	.scroll-track {
@@ -1304,7 +1305,7 @@
 		width: 100%;
 		height: 42%;
 		background: linear-gradient(to bottom, transparent, var(--spark));
-		animation: scroll-cue-travel var(--cue-dur) var(--cue-ease) infinite;
+		animation: scroll-cue-travel var(--cue-dur) var(--drop-ease) infinite;
 	}
 	@keyframes scroll-cue-travel {
 		0% {
@@ -1340,11 +1341,6 @@
 		opacity: 0;
 		animation: scroll-cue-ripple var(--cue-dur) var(--ripple-ease) infinite;
 	}
-	/* trailing ring — slower to appear, much fainter */
-	.scroll-ripple--2 {
-		--ripple-peak: 0.22;
-		animation-delay: 0.34s;
-	}
 	@keyframes scroll-cue-ripple {
 		0%,
 		50% {
@@ -1356,7 +1352,7 @@
 			opacity: var(--ripple-peak);
 		}
 		100% {
-			transform: scale(3.1);
+			transform: scale(4.4);
 			opacity: 0;
 		}
 	}
