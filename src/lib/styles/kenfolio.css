@@ -17,10 +17,18 @@
 	--hairline: rgba(255, 255, 255, 0.1);
 	--hairline-2: rgba(255, 255, 255, 0.22);
 	--wave: 207, 238, 230;
+	--ripple: 111, 168, 156;
 	--chrome-ink: #f0f0f0;
 	--colophon: rgba(160, 180, 176, 0.5);
 	--sans: 'Google Sans', 'Google Sans Display', 'DM Sans', system-ui, -apple-system, sans-serif;
 	--mono: 'Google Sans Mono', 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+	/* syntax palette — dark */
+	--syn-key: #ff7ab6;
+	--syn-str: #9fe2a0;
+	--syn-num: #ffd166;
+	--syn-fn: #7ecbff;
+	--syn-pun: #cfeee6;
+	--syn-cmt: rgba(207, 238, 230, 0.42);
 }
 :root[data-theme='light'] {
 	color-scheme: light;
@@ -36,10 +44,18 @@
 	--hairline: rgba(14, 17, 15, 0.1);
 	--hairline-2: rgba(14, 17, 15, 0.22);
 	--wave: 90, 130, 120;
+	--ripple: 90, 130, 120;
 	--chrome-ink: #101010;
 	--colophon: rgba(60, 80, 76, 0.55);
 	--sans: 'Google Sans', 'Google Sans Display', 'DM Sans', system-ui, -apple-system, sans-serif;
 	--mono: 'Google Sans Mono', 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+	/* syntax palette — light */
+	--syn-key: #c01f6b;
+	--syn-str: #2c8a3d;
+	--syn-num: #b16500;
+	--syn-fn: #176aa4;
+	--syn-pun: #2a3d38;
+	--syn-cmt: rgba(14, 17, 15, 0.4);
 }
 
 /* page surface — applied by the KenFolio layout via the .kenfolio body class */
