@@ -1,8 +1,18 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
 
+	const services = [
+		'Web app',
+		'Mobile app',
+		'Infrastructure / APIs',
+		'Custom software',
+		'Design',
+		'Something else'
+	];
+
 	let brief = '';
 	let email = '';
+	let service = '';
 	let status: 'idle' | 'sending' | 'sent' | 'error' = 'idle';
 
 	async function submit() {
@@ -12,7 +22,7 @@
 			const res = await fetch('/api/send-email', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ email, message: brief, mode: 'quote' })
+				body: JSON.stringify({ email, message: brief, service, mode: 'quote' })
 			});
 			status = res.ok ? 'sent' : 'error';
 		} catch {
@@ -41,6 +51,18 @@
 
 		<div class="field">
 			<input type="text" placeholder="A sentence about it" aria-label="Brief" bind:value={brief} />
+		</div>
+
+		<div class="pick">
+			<span class="pick-label">What is it</span>
+			<div class="choices">
+				{#each services as s}
+					<label>
+						<input type="radio" name="service" value={s} bind:group={service} />
+						{s}
+					</label>
+				{/each}
+			</div>
 		</div>
 
 		<div class="field">
@@ -109,6 +131,18 @@
 	}
 	.ask .field input:focus {
 		border-bottom-color: var(--ink-2);
+	}
+	.ask .pick {
+		margin: 0 0 clamp(28px, 4vh, 36px);
+		display: grid;
+		gap: 12px;
+	}
+	.ask .pick-label {
+		font-family: var(--mono);
+		font-size: 10.5px;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
+		color: var(--mute);
 	}
 	.ask .send-row {
 		margin-top: clamp(36px, 5vh, 48px);

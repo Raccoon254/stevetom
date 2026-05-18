@@ -7,6 +7,7 @@
 		{ href: '/', label: 'Home' },
 		{ href: '/blog', label: 'Notes' },
 		{ href: '/partners', label: 'Partners' },
+		{ href: '/donate', label: 'Support' },
 		{ href: '/quote', label: 'Quote' },
 		{ href: '/contact', label: 'Contact' }
 	];
