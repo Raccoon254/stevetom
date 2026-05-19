@@ -14,6 +14,11 @@
 		'Been writing software since 2019, well before the machines started writing back.',
 		'I learned to code in 2019, back when the keyboard only ever answered to me.',
 		'Started coding in 2019, in the quiet years before AI began finishing the sentence.',
+		// first code: Termux in 2019, C at Chuka in 2020
+		'My first real line of code was C, written in a 2020 computer class at Chuka University.',
+		'Before C in that 2020 Chuka class, 2019 me was already deep in Termux, VPNs and tunneling.',
+		'It started on Android: Termux, VPNs and tunneling in 2019, then C at Chuka in 2020.',
+		'First real code was C, at Chuka in 2020, but the tinkering started in Termux back in 2019.',
 		// Steve is kenTom
 		'I am Steve. kenTom is the same person, one name for the work and one for me.',
 		'Steve, kenTom, Raccoon254 — three names you might see, all of them just me.',
