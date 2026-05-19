@@ -92,10 +92,12 @@
 	}
 </script>
 
-<svelte:head>
-	<title>kenTom · Support</title>
-	<meta name="description" content="Support Steve Tom's work with a one-off gift." />
-</svelte:head>
+<Seo
+	title="Support"
+	description="Support Steve Tom's work with a one-off gift — it goes straight back into tools, tutoring, and open-source."
+	path="/donate"
+	breadcrumbs={[{ name: 'Support', path: '/donate' }]}
+/>
 
 <main class="page">
 	<div class="support">

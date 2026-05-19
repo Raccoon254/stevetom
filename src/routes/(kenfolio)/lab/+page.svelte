@@ -1,15 +1,16 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import { experiments } from '$lib/data/labExperiments';
 </script>
 
-<svelte:head>
-	<title>kenTom · Lab</title>
-	<meta
-		name="description"
-		content="The lab: side rigs, animations, and interaction experiments built for the joy of it."
-	/>
-</svelte:head>
+<Seo
+	title="Lab"
+	description="The lab — side rigs, animations, and interaction experiments built for the joy of it, each with a live demo and a write-up."
+	path="/lab"
+	keywords="UI experiments, animation studies, SVG canvas CSS, creative coding"
+	breadcrumbs={[{ name: 'Lab', path: '/lab' }]}
+/>
 
 <main class="page">
 	<div class="lab">

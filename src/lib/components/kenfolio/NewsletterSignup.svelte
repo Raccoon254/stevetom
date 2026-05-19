@@ -161,10 +161,9 @@
 
 <style>
 	.nl.framed {
-		border: 1px solid var(--hairline);
-		border-radius: 16px;
-		padding: clamp(24px, 4vw, 40px);
-		background: rgba(var(--bg-rgb), 0.4);
+		border-top: 1px solid var(--hairline);
+		border-bottom: 1px solid var(--hairline);
+		padding: clamp(28px, 5vh, 48px) 0;
 	}
 	.nl-label {
 		display: inline-flex;
