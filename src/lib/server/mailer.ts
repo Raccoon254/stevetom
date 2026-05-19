@@ -38,6 +38,7 @@ export type SendOptions = {
 	text?: string;
 	replyTo?: Addr;
 	tags?: string[];
+	headers?: Record<string, string>;
 };
 
 /**
@@ -62,7 +63,8 @@ export async function sendEmail(opts: SendOptions): Promise<{ id?: string; statu
 			...(opts.html ? { html: opts.html } : {}),
 			...(opts.text ? { text: opts.text } : {}),
 			...(opts.replyTo ? { reply_to: opts.replyTo } : {}),
-			...(opts.tags ? { tags: opts.tags } : {})
+			...(opts.tags ? { tags: opts.tags } : {}),
+			...(opts.headers ? { headers: opts.headers } : {})
 		})
 	});
 

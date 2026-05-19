@@ -1,5 +1,23 @@
 <script lang="ts">
 	import { posts, shortDate } from '$lib/content';
+	import NewsletterSignup from '$lib/components/kenfolio/NewsletterSignup.svelte';
+
+	// Build a lowercased search blob per post once, up front. Posts are
+	// already bundled in memory, so filtering is an instant in-memory pass,
+	// no network, no index to load.
+	const indexed = posts.map((post) => ({
+		post,
+		blob: [post.title, post.excerpt, post.category, post.html.replace(/<[^>]+>/g, ' ')]
+			.join(' ')
+			.toLowerCase()
+	}));
+
+	let query = '';
+
+	$: terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+	$: filtered = terms.length
+		? indexed.filter((item) => terms.every((t) => item.blob.includes(t))).map((item) => item.post)
+		: posts;
 </script>
 
 <svelte:head>
@@ -13,17 +31,36 @@
 		{#if posts.length === 0}
 			<p class="empty">Nothing here yet.</p>
 		{:else}
-			<ol class="list">
-				{#each posts as post}
-					<li>
-						<a href="/blog/{post.slug}">
-							<span class="when">{shortDate(post.date)}</span>
-							<span class="title">{post.title}</span>
-						</a>
-					</li>
-				{/each}
-			</ol>
+			<div class="search">
+				<input
+					type="search"
+					placeholder="Search notes"
+					aria-label="Search notes"
+					bind:value={query}
+				/>
+				<span class="count" class:invisible={!terms.length} aria-hidden={!terms.length}>
+					{filtered.length} of {posts.length}
+				</span>
+			</div>
+			{#if filtered.length === 0}
+				<p class="empty">No notes match “{query}”.</p>
+			{:else}
+				<ol class="list">
+					{#each filtered as post (post.slug)}
+						<li>
+							<a href="/blog/{post.slug}">
+								<span class="when">{shortDate(post.date)}</span>
+								<span class="title">{post.title}</span>
+							</a>
+						</li>
+					{/each}
+				</ol>
+			{/if}
 		{/if}
+
+		<div class="nl-wrap">
+			<NewsletterSignup />
+		</div>
 	</div>
 </main>
 
@@ -39,7 +76,7 @@
 		line-height: 1.05;
 		letter-spacing: -0.025em;
 		color: var(--ink);
-		margin: 0 0 clamp(48px, 8vh, 80px);
+		margin: 0 0 clamp(28px, 4.5vh, 44px);
 	}
 	.notes h1 em {
 		font-style: normal;
@@ -51,6 +88,52 @@
 		letter-spacing: 0.2em;
 		text-transform: uppercase;
 		color: var(--mute);
+	}
+	.nl-wrap {
+		margin-top: clamp(48px, 9vh, 88px);
+	}
+
+	/* search */
+	.search {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin: 0 0 clamp(36px, 6vh, 60px);
+	}
+	.search input {
+		flex: 1;
+		min-width: 0;
+		font: inherit;
+		font-family: var(--sans);
+		font-size: 16px;
+		color: var(--ink);
+		background: transparent;
+		border: none;
+		border-bottom: 1px solid var(--hairline-2);
+		padding: 10px 2px;
+		outline: none;
+		transition: border-color 0.25s;
+	}
+	.search input::placeholder {
+		color: var(--mute);
+	}
+	.search input:focus {
+		border-bottom-color: var(--spark);
+	}
+	.search .count {
+		/* reserve a fixed slot so the input width never changes when the
+		   count toggles, keeping the post list from shifting */
+		flex: 0 0 auto;
+		width: 72px;
+		text-align: right;
+		font-family: var(--mono);
+		font-size: 10.5px;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--mute);
+	}
+	.search .count.invisible {
+		visibility: hidden;
 	}
 
 	ol.list {

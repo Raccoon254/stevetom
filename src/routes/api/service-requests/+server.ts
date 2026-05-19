@@ -1,8 +1,11 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db.js'
+import { requireAdmin } from '$lib/server/auth'
 import type { RequestHandler } from './$types'
 
-export const GET: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url, cookies }) => {
+	const denied = requireAdmin(cookies)
+	if (denied) return denied
 	try {
 		const status = url.searchParams.get('status')
 		const serviceId = url.searchParams.get('serviceId')
@@ -44,10 +47,12 @@ export const GET: RequestHandler = async ({ url }) => {
 	}
 }
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, cookies }) => {
+	const denied = requireAdmin(cookies)
+	if (denied) return denied
 	try {
 		const data = await request.json()
-		
+
 		// Validate required fields
 		if (!data.serviceId || !data.clientName || !data.clientEmail || !data.projectTitle || !data.description) {
 			return json(

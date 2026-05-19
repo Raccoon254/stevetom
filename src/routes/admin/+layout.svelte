@@ -13,10 +13,11 @@
 		{ href: '/admin/projects', label: 'Projects', icon: 'box' },
 		{ href: '/admin/services', label: 'Services', icon: 'setting' },
 		{ href: '/admin/service-requests', label: 'Requests', icon: 'messages' },
+		{ href: '/admin/newsletter', label: 'Newsletter', icon: 'sms' },
 		{ href: '/admin/logs', label: 'Logs', icon: 'activity' }
 	];
 
-	// exact match only — the dashboard (/admin) is a prefix of every other
+	// exact match only: the dashboard (/admin) is a prefix of every other
 	// route, so a startsWith() rule would keep it permanently highlighted.
 	$: isActive = (href: string) => currentPath === href;
 </script>
@@ -167,19 +168,21 @@
 
 	.shell {
 		display: flex;
-		min-height: 100vh;
+		height: 100vh;
 	}
 
 	/* sidebar */
 	.side {
 		width: 264px;
 		flex: 0 0 264px;
+		height: 100vh;
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
 		padding: clamp(20px, 2.4vw, 30px) 18px;
 		border-right: 1px solid var(--hairline);
 		background: var(--panel);
+		overflow-y: auto;
 	}
 	.brand {
 		display: inline-flex;
@@ -268,6 +271,7 @@
 	.content {
 		flex: 1;
 		min-width: 0;
+		height: 100vh;
 		overflow-y: auto;
 	}
 	.content-inner {

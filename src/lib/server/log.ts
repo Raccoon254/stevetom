@@ -1,12 +1,12 @@
 /**
- * Admin activity log — an append-only trail written to the ActivityLog table.
+ * Admin activity log: an append-only trail written to the ActivityLog table.
  * Logging never throws; a failed log must not break the action it describes.
  */
 import { prisma } from '$lib/db.js';
 
 export type LogEntry = {
 	action: string;
-	entity: 'request' | 'project' | 'service' | 'donation';
+	entity: 'request' | 'project' | 'service' | 'donation' | 'newsletter';
 	entityId?: string | null;
 	summary: string;
 	actor?: 'system' | 'admin' | 'client';

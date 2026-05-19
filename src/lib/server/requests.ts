@@ -2,7 +2,7 @@
  * Service-request creation + the notification / confirmation emails.
  * Shared by the email-verification confirm endpoint.
  */
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '$lib/db.js';
 import {
 	sendEmail,
 	renderEmail,
@@ -16,8 +16,6 @@ import {
 	CONTACT
 } from './mailer';
 import { logActivity } from './log';
-
-const prisma = new PrismaClient();
 
 export type RequestInput = {
 	name?: string;

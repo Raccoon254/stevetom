@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db.js'
 import { logActivity } from '$lib/server/log'
+import { requireAdmin } from '$lib/server/auth'
 import type { RequestHandler } from './$types'
 
 export const GET: RequestHandler = async ({ url }) => {
@@ -37,7 +38,9 @@ export const GET: RequestHandler = async ({ url }) => {
 	}
 }
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, cookies }) => {
+	const denied = requireAdmin(cookies)
+	if (denied) return denied
 	try {
 		const data = await request.json()
 		

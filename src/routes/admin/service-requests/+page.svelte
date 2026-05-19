@@ -172,7 +172,7 @@
 		<h3>{view === 'archived' ? 'Nothing archived' : 'No service requests'}</h3>
 		<p>
 			{view === 'archived'
-				? 'Archived requests show up here — they are never destroyed.'
+				? 'Archived requests show up here. They are never destroyed.'
 				: 'When clients submit requests, they appear here.'}
 		</p>
 	</div>

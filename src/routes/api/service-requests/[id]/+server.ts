@@ -1,9 +1,12 @@
 import { json } from '@sveltejs/kit'
 import { prisma } from '$lib/db.js'
 import { logActivity } from '$lib/server/log'
+import { requireAdmin } from '$lib/server/auth'
 import type { RequestHandler } from './$types'
 
-export const GET: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({ params, cookies }) => {
+	const denied = requireAdmin(cookies)
+	if (denied) return denied
 	try {
 		const serviceRequest = await prisma.serviceRequest.findUnique({
 			where: { id: params.id },
@@ -35,7 +38,9 @@ export const GET: RequestHandler = async ({ params }) => {
 	}
 }
 
-export const PUT: RequestHandler = async ({ params, request }) => {
+export const PUT: RequestHandler = async ({ params, request, cookies }) => {
+	const denied = requireAdmin(cookies)
+	if (denied) return denied
 	try {
 		const data = await request.json()
 
@@ -105,8 +110,10 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 	}
 }
 
-// "Delete" is a soft delete — the row is archived, never destroyed.
-export const DELETE: RequestHandler = async ({ params }) => {
+// "Delete" is a soft delete: the row is archived, never destroyed.
+export const DELETE: RequestHandler = async ({ params, cookies }) => {
+	const denied = requireAdmin(cookies)
+	if (denied) return denied
 	try {
 		const archived = await prisma.serviceRequest.update({
 			where: { id: params.id },

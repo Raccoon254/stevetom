@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
+	import NewsletterSignup from '$lib/components/kenfolio/NewsletterSignup.svelte';
 
 	const works = [
 		{ name: 'Axene.io', href: 'https://axene.io', quip: 'Send, build, ship' },
@@ -17,6 +18,15 @@
 		{ id: 'partnerships', label: 'Partners' },
 		{ id: 'lab', label: 'Lab' },
 		{ id: 'contact', label: 'Contact' }
+	];
+
+	// kept in sync with the /contact page
+	const socials = [
+		{ label: 'TikTok', href: 'https://www.tiktok.com/@raccoon.254', icon: 'tiktok', external: true },
+		{ label: 'GitHub', href: 'https://github.com/Raccoon254', icon: 'github', external: true },
+		{ label: 'YouTube', href: 'https://www.youtube.com/@iamkentom', icon: 'youtube-logo', external: true },
+		{ label: 'WhatsApp', href: 'https://wa.link/w1774n', icon: 'whatsapp-logo', external: true },
+		{ label: 'More', href: '/contact', icon: 'messages', external: false }
 	];
 
 	onMount(() => {
@@ -1004,7 +1014,10 @@
 	<div class="bg"><canvas id="bgRain"></canvas></div>
 	<div class="content">
 		<div class="eyebrow"><Icon name="flash" size={13} /> lab</div>
-		<p class="line">Side rigs. Things that <em>move for the joy of it</em>.</p>
+		<p class="line">
+			<a href="/lab" class="skilink">Side rigs</a>. Things that
+			<em>move for the joy of it</em>.
+		</p>
 	</div>
 </section>
 
@@ -1033,17 +1046,39 @@
 		<div class="eyebrow"><Icon name="messages" size={13} /> contact</div>
 		<a class="email" href="mailto:me@kentom.co.ke">me@kentom.co.ke</a>
 		<div class="socials">
-			<a href="https://github.com/Raccoon254" target="_blank" rel="noopener">GitHub</a>
-			<a href="https://www.linkedin.com/in/steve-tom-822a81230/" target="_blank" rel="noopener"
-				>LinkedIn</a
-			>
-			<a href="https://wa.link/w1774n" target="_blank" rel="noopener">WhatsApp</a>
-			<a href="/contact">More</a>
+			{#each socials as s}
+				<a
+					href={s.href}
+					target={s.external ? '_blank' : undefined}
+					rel={s.external ? 'noopener' : undefined}
+				>
+					<Icon name={s.icon} size={15} />
+					<span>{s.label}</span>
+				</a>
+			{/each}
 		</div>
 	</div>
 </section>
 
+<!-- ─────────── 05 / NEWSLETTER ─────────── -->
+<section class="news-band">
+	<div class="news-inner">
+		<NewsletterSignup />
+	</div>
+</section>
+
 <style>
+	/* newsletter band — a normal-flow section after the snap stages */
+	.news-band {
+		padding: clamp(64px, 13vh, 130px) clamp(20px, 5vw, 80px);
+		display: grid;
+		place-items: center;
+	}
+	.news-inner {
+		width: 100%;
+		max-width: 720px;
+	}
+
 	/* soft scroll-snap, only while the landing page is mounted */
 	:global(html.kf-snap) {
 		scroll-snap-type: y proximity;
@@ -1176,8 +1211,8 @@
 		stroke-width: 1.5;
 	}
 	.line {
-		font-size: clamp(22px, 2.8vw, 36px);
-		line-height: 1.35;
+		font-size: clamp(26px, 3.4vw, 44px);
+		line-height: 1.32;
 		font-weight: 400;
 		letter-spacing: -0.012em;
 		color: var(--ink);
@@ -1530,8 +1565,11 @@
 		color: var(--mute);
 	}
 	.stage--contact .socials a {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
 		border: 1px solid var(--hairline);
-		padding: 10px 18px;
+		padding: 10px 16px;
 		border-radius: 999px;
 		transition:
 			border-color 0.25s,
@@ -1553,8 +1591,8 @@
 		.line {
 			max-width: 28ch;
 			margin: 0;
-			font-size: clamp(20px, 5.4vw, 26px);
-			line-height: 1.4;
+			font-size: clamp(23px, 6vw, 31px);
+			line-height: 1.38;
 			letter-spacing: -0.006em;
 		}
 		.stage--work .works li {

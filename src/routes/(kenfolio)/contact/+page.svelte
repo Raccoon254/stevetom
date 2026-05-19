@@ -183,10 +183,10 @@
 			</div>
 		{:else if step === 'verify'}
 			<div class="vmark" aria-hidden="true"><Icon name="sms" size={20} /></div>
-			<h1 class="headline">Quick check — <em>can I reach you?</em></h1>
+			<h1 class="headline">Quick check. <em>Can I reach you?</em></h1>
 			<p class="vnote">
 				I sent a 6-digit code to <strong>{email}</strong>. Enter it below so I know this inbox is
-				yours — that way my reply actually lands.
+				yours, that way my reply actually lands.
 			</p>
 
 			<div class="otp" class:shake={error}>
@@ -224,12 +224,12 @@
 			<h1 class="headline">Message <em>sent</em>.</h1>
 			<p class="vnote">
 				Your email is verified and your message is in. I read everything myself and will reply,
-				usually within a day — check your inbox for a confirmation.
+				usually within a day. Check your inbox for a confirmation.
 			</p>
 			<div class="send-row">
 				<a class="pill pill--solid" href="/">
 					<span>Back home</span>
-					<span class="ar" aria-hidden="true"><Icon name="arrow-left" size={14} /></span>
+					<span class="ar" aria-hidden="true"><Icon name="ai-homepage" size={14} /></span>
 				</a>
 			</div>
 		{/if}

@@ -21,6 +21,19 @@ function secret(): string {
 const b64 = (s: string) => Buffer.from(s).toString('base64url');
 const unb64 = (s: string) => Buffer.from(s, 'base64url').toString();
 
+/** HMAC-sign an arbitrary value (e.g. for one-click unsubscribe links). */
+export function sign(value: string): string {
+	return crypto.createHmac('sha256', secret()).update(value).digest('base64url');
+}
+
+/** Constant-time check of a value against its signature. */
+export function verifySigned(value: string, signature: string): boolean {
+	const expected = sign(value);
+	const a = Buffer.from(signature);
+	const b = Buffer.from(expected);
+	return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
 /** Six-digit numeric one-time code. */
 export function newCode(): string {
 	return String(crypto.randomInt(0, 1_000_000)).padStart(6, '0');

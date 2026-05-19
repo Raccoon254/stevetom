@@ -3,12 +3,12 @@ import type { RequestHandler } from './$types';
 import { prisma } from '$lib/db.js';
 import { sendEmail, renderEmail, p, esc, SENDERS, CONTACT } from '$lib/server/mailer';
 import { logActivity } from '$lib/server/log';
+import { requireAdmin } from '$lib/server/auth';
 
 /** Admin → client reply. Gated by the admin session cookie. */
 export const POST: RequestHandler = async ({ params, request, cookies }) => {
-	if (cookies.get('session') !== 'admin') {
-		return json({ success: false, error: 'Unauthorized' }, { status: 401 });
-	}
+	const denied = requireAdmin(cookies);
+	if (denied) return denied;
 	try {
 		const { message } = await request.json();
 		const text = String(message || '').trim();

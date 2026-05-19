@@ -27,8 +27,9 @@ function logDonationEvent(event: string, details: any) {
   fs.appendFileSync(logPath, logMsg);
 }
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, url }) => {
   const { amount, email } = await request.json();
+  const origin = process.env.ORIGIN || url.origin;
   logDonationEvent('Received donation request', { amount, email });
   if (!amount || isNaN(amount) || amount < 1) {
     logDonationEvent('Invalid donation amount', { amount });
@@ -47,10 +48,10 @@ export const POST: RequestHandler = async ({ request }) => {
       }
     ],
     application_context: {
-      brand_name: 'Your Project',
+      brand_name: 'kenTom',
       user_action: 'PAY_NOW',
-      return_url: 'http://localhost:5173/api/donations/complete',
-      cancel_url: 'http://localhost:5173/api/donations/cancel'
+      return_url: `${origin}/api/donations/complete`,
+      cancel_url: `${origin}/api/donations/cancel`
     }
   };
 

@@ -1,9 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { PAYSTACK_SECRET_KEY } from '$env/static/private';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '$lib/db.js';
 
 // Initialize transaction endpoint
 export const POST: RequestHandler = async ({ request }) => {

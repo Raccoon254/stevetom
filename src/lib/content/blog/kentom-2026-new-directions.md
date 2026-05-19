@@ -40,9 +40,9 @@ Every business, school, church, and sports team in Kenya needs branded apparel. 
 - Bulk orders: KES 400 to 700 per piece (schools, events, companies)
 - Premium work: KES 1,000 to 2,000 (embroidery, specialty prints)
 
-**First-quarter target:** 40 to 60 pieces a month, KES 35,000 to 55,000 in revenue. That's a conservative estimate, assuming I run this part-time while building up a client base.
+**Month one target:** 10 to 25 pieces, KES 8,000 to 20,000 in revenue, growing month on month as the client base builds. That's a deliberately small start, assuming I run this part-time at first.
 
-**Investment required:** a decent entry-level heat press (KES 40,000 to 55,000), starting materials (KES 15,000 to 25,000), and some sample inventory (KES 10,000 to 15,000). That works out to roughly **KES 65,000 to 95,000** in total. With consistent orders, I'd expect to break even in 2 to 3 months.
+**Investment required:** a decent entry-level heat press (KES 40,000 to 55,000), starting materials (KES 15,000 to 25,000), and some sample inventory (KES 10,000 to 15,000). That works out to roughly **KES 65,000 to 95,000** in total. With orders building steadily, I'd expect to break even in 4 to 6 months.
 
 ## Path 2: 3D Printing Services
 
@@ -56,7 +56,7 @@ Kenya's innovation scene is growing, but affordable local 3D printing is still h
 - Replacement parts: KES 300 to 3,000
 - Custom gifts and decor: KES 250 to 1,500
 
-**First-quarter target:** 12 to 20 projects a month, KES 25,000 to 45,000 in revenue. **Investment:** an entry-level 3D printer (KES 38,000 to 48,000), plus filament, tools, and supplies. Roughly **KES 47,000 to 63,000** in total.
+**Month one target:** 5 to 12 projects, KES 6,000 to 15,000 in revenue, building up as word spreads. **Investment:** an entry-level 3D printer (KES 38,000 to 48,000), plus filament, tools, and supplies. Roughly **KES 47,000 to 63,000** in total.
 
 The marketing doubles as education: a "3D Print Kenya" channel with tutorials, showcases, and time-lapses, plus partnerships with innovation hubs, architects, and inventors.
 
@@ -70,7 +70,7 @@ AI can produce content, but it can't read local market nuance, build a client re
 - **Growth: KES 35,000 to 55,000.** Everything in Starter, plus a professional website, a month of content and posting, basic SEO, email marketing, and a product photography session.
 - **Premium: KES 75,000 to 120,000.** Everything in Growth, plus custom website development, three months of managed social media, two professional videos, paid ads management, and monthly analytics and strategy calls.
 
-**First-quarter target:** 3 to 5 quality clients, KES 70,000 to 140,000 in monthly revenue. The setup cost here is the lowest of the four paths (KES 16,000 to 30,000), and it builds on skills and hardware I already have, so I can start straight away.
+**Month one target:** 1 to 2 quality clients, KES 18,000 to 40,000 in revenue, with room to grow as I take on more. The setup cost here is the lowest of the four paths (KES 16,000 to 30,000), and it builds on skills and hardware I already have, so I can start straight away.
 
 ## Path 4: Video Production & Content Creation
 
@@ -86,15 +86,15 @@ Every business needs video, but quality local production is expensive. By starti
 
 **Phased equipment.** Phase 1 is a smartphone setup (gimbal, mic, ring light, tripod, free editing software) for KES 18,000 to 30,000. Phase 2, a semi-pro mirrorless setup at KES 90,000 to 150,000, only comes after 4 to 6 months, once revenue justifies it.
 
-**First-quarter target:** 3 to 5 videos a month, KES 20,000 to 45,000 in revenue, starting with reels and testimonials while I build a portfolio.
+**Month one target:** 2 to 4 videos, KES 6,000 to 18,000 in revenue, starting with reels and testimonials while I build a portfolio.
 
 ## Realistic Financial Projections
 
-**Quarter 1 (January to March 2026).** Total investment needed: KES 80,000 to 150,000 (I'll choose 1 to 2 primary service lines to start). Expected monthly revenue by the end of Q1: KES 85,000 to 165,000, combining two service lines.
+**Quarter 1 (January to March 2026).** Total investment needed: KES 80,000 to 150,000 (I'll choose 1 to 2 primary service lines to start). Month one is small on purpose, KES 15,000 to 35,000 combined; by the end of Q1 I'd expect monthly revenue around KES 35,000 to 70,000 as the client base builds.
 
-**Quarter 2 to 3 growth.** Monthly revenue rising to KES 140,000 to 250,000 in Q2 and KES 200,000 to 350,000 in Q3, with operating costs around 40 to 50%.
+**Quarter 2 to 3 growth.** Monthly revenue rising to KES 60,000 to 110,000 in Q2 and KES 100,000 to 180,000 in Q3, with operating costs around 40 to 50%.
 
-**Year 1 (conservative).** Total annual revenue of KES 1.8M to 3.2M across all service lines, with net profit of KES 900K to 1.9M after reinvestment and expenses.
+**Year 1 (conservative).** Total annual revenue of KES 700K to 1.4M across all service lines, with net profit of KES 300K to 700K after reinvestment and expenses.
 
 Key assumptions: I start from home with no rent overhead, handle most of the work myself at first, hire freelancers only when I need them, market through organic social media and word of mouth, buy equipment gradually out of profit, and reinvest 30 to 40% of profit back into growth.
 
@@ -102,8 +102,8 @@ Key assumptions: I start from home with no rent overhead, handle most of the wor
 
 **Digital marketing plus one physical service.** I'll start with digital marketing (immediate cash flow, low investment), then add either apparel printing or video production depending on my interest and local demand.
 
-- **Option A, Marketing plus Apparel.** Best if I prefer tangible products and have space for equipment. Investment KES 80K to 120K, Q1 target KES 85K to 135K a month, break-even in 2 to 3 months.
-- **Option B, Marketing plus Video.** Best if I lean into storytelling and want a YouTube presence. Investment KES 35K to 65K, Q1 target KES 75K to 125K a month, break-even in 1 to 2 months.
+- **Option A, Marketing plus Apparel.** Best if I prefer tangible products and have space for equipment. Investment KES 80K to 120K, end-of-Q1 target KES 30K to 60K a month, break-even in 3 to 5 months.
+- **Option B, Marketing plus Video.** Best if I lean into storytelling and want a YouTube presence. Investment KES 35K to 65K, end-of-Q1 target KES 25K to 50K a month, break-even in 2 to 4 months.
 
 Why this works: digital marketing brings in cash flow right away, the physical service sets me apart from pure digital agencies, there's a natural cross-sell (branding plus branded merchandise), my own marketing becomes a live showcase of my services, and starting from home keeps the risk low.
 
