@@ -6,7 +6,7 @@
 
 <Seo
 	title="Lab"
-	description="The lab — side rigs, animations, and interaction experiments built for the joy of it, each with a live demo and a write-up."
+	description="The lab: side rigs, animations, and interaction experiments built for the joy of it, each with a live demo and a write-up."
 	path="/lab"
 	keywords="UI experiments, animation studies, SVG canvas CSS, creative coding"
 	breadcrumbs={[{ name: 'Lab', path: '/lab' }]}

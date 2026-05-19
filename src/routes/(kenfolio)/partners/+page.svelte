@@ -48,7 +48,7 @@
 
 <Seo
 	title="Partners"
-	description="Back the work, not the noise. Sponsorship tiers and reasons to partner with kenTom — funding SkillKenya tutoring and open-source work."
+	description="Back the work, not the noise. Sponsorship tiers and reasons to partner with kenTom, funding SkillKenya tutoring and open-source work."
 	path="/partners"
 	keywords="sponsor developer, partner with kenTom, open-source sponsorship Kenya"
 	breadcrumbs={[{ name: 'Partners', path: '/partners' }]}

@@ -11,7 +11,7 @@ export const SITE = {
 	url: 'https://kentom.co.ke',
 	name: 'kenTom',
 	/** default <title> for the home page */
-	title: 'kenTom — Steve Tom · Full-Stack Developer in Kenya',
+	title: 'kenTom · Steve Tom · Full-Stack Developer in Kenya',
 	description:
 		'Steve Tom (kenTom) is a full-stack developer in Kenya building web apps, mobile apps, and custom software. Selected work, field notes, and a lab of interface experiments.',
 	locale: 'en_KE',
@@ -37,12 +37,12 @@ export const PERSON = {
 	]
 } as const;
 
-/** Primary navigation — drives both the sitemap and SiteNavigationElement JSON-LD. */
+/** Primary navigation: drives both the sitemap and SiteNavigationElement JSON-LD. */
 export const NAV: { name: string; path: string; description: string }[] = [
-	{ name: 'Home', path: '/', description: 'kenTom — Steve Tom, full-stack developer in Kenya' },
+	{ name: 'Home', path: '/', description: 'kenTom · Steve Tom, full-stack developer in Kenya' },
 	{ name: 'Notes', path: '/blog', description: 'Field notes on building software, products, and the work' },
 	{ name: 'Lab', path: '/lab', description: 'Interface experiments and animation studies, explained' },
-	{ name: 'Partners', path: '/partners', description: 'Sponsor the work — tiers, reasons, and how to partner' },
+	{ name: 'Partners', path: '/partners', description: 'Sponsor the work: tiers, reasons, and how to partner' },
 	{ name: 'Quote', path: '/quote', description: 'Tell Steve Tom what you are building and get a quote' },
 	{ name: 'Contact', path: '/contact', description: 'Start a conversation with Steve Tom' }
 ];

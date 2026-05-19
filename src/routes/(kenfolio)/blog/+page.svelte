@@ -23,7 +23,7 @@
 
 <Seo
 	title="Notes"
-	description="Field notes from the workshop — writing by Steve Tom on building software, products, and the work."
+	description="Field notes from the workshop, writing by Steve Tom on building software, products, and the work."
 	path="/blog"
 	keywords="kenTom notes, Steve Tom blog, developer writing Kenya, software engineering notes"
 />

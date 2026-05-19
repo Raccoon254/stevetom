@@ -6,54 +6,59 @@
 	import NewsletterSignup from '$lib/components/kenfolio/NewsletterSignup.svelte';
 
 	// ── about · rotating facts ──────────────────────────────────────────
-	// Each theme has four variations that mean the same thing — kept to a
+	// Each theme has four variations that mean the same thing, kept to a
 	// similar length so the line box (and the reload button) never shift.
 	const facts = [
 		// coding since 2019, before AI
-		'A guy who codes. Started back in 2019, before the machines learned the trick.',
-		'Been writing software since 2019, well before the machines started writing back.',
-		'I learned to code in 2019, back when the keyboard only ever answered to me.',
-		'Started coding in 2019, in the quiet years before AI began finishing the sentence.',
+		'A guy who codes. I started in 2019, back before the machines ever learned the trick.',
+		'I have written software since 2019, in the years a wrong answer was only ever mine.',
+		'I learned to code in 2019, back when the keyboard still answered to me and no one else.',
+		'I started coding in 2019, in the quiet years before AI began finishing my sentences.',
 		// first code: Termux in 2019, C at Chuka in 2020
 		'My first real line of code was C, written in a 2020 computer class at Chuka University.',
-		'Before C in that 2020 Chuka class, 2019 me was already deep in Termux, VPNs and tunneling.',
-		'It started on Android: Termux, VPNs and tunneling in 2019, then C at Chuka in 2020.',
-		'First real code was C, at Chuka in 2020, but the tinkering started in Termux back in 2019.',
+		'Before C in that 2020 Chuka class, the 2019 me was already lost in Termux and tunneling.',
+		'It began on a cheap Android phone: Termux, VPNs and tunneling in 2019, then C at Chuka.',
+		'My first real code was C, at Chuka in 2020, but the love of it started in Termux in 2019.',
 		// Steve is kenTom
-		'I am Steve. kenTom is the same person, one name for the work and one for me.',
-		'Steve, kenTom, Raccoon254 — three names you might see, all of them just me.',
-		'kenTom is not a studio or a team. It is me, Steve, and the work that I sign.',
-		'There is no team here. kenTom is one person, Steve, and everything that he ships.',
+		'I am Steve. kenTom is the same person, one name for the work and one for the man behind it.',
+		'Steve, kenTom, Raccoon254: three names you might run into, and every one of them is just me.',
+		'kenTom was never a studio or a team. It is only me, Steve, and the work I choose to sign.',
+		'There is no team standing behind this. kenTom is one person, Steve, and everything he ships.',
 		// schooling
-		'I studied at Chuka University, and at Maranda High School in the years before that.',
-		'Maranda High School first, then Chuka University, the long way into the craft.',
-		'School ran through Maranda and then Chuka University; the rest I taught myself.',
-		'Chuka University handed me the degree; Maranda High School handed me the start.',
+		'I studied at Chuka University, and at Maranda High School in the long years before that.',
+		'Maranda High School first, then Chuka University, the slow and patient way into this craft.',
+		'School ran through Maranda and then Chuka University, and most of the rest I taught myself.',
+		'Chuka University handed me a degree, but Maranda High School is where the hunger first began.',
 		// fast, loves Java
-		'I move fast and I love Java, give me a problem and a runtime and I am happy.',
-		'Fast is a habit, not a sprint, and Java is still the language I reach for first.',
-		'I like to ship fast, and I have a soft spot for Java that has never worn off.',
-		'Quick hands, steady taste, and a love of Java that outlived every new framework.',
+		'I move fast and I love Java; give me a problem and a runtime and I am genuinely happy.',
+		'Moving fast is a habit, not a sprint, and Java is still the language I reach for first.',
+		'I like to ship fast, and I have a soft spot for Java that has honestly never worn off.',
+		'Quick hands, steady taste, and a love of Java that has outlived every shiny new framework.',
 		// design first
-		'The first thing I ever did was graphic design, and I am still very good at it.',
-		'I came up through graphic design long before code, and that eye never left me.',
-		'Design was the first craft I learned; I still draw about as well as I write code.',
-		'Before a single line of code there was graphic design, and that hand stays sharp.',
-		// drawing — a talent that never fully grew up
-		'My first talent was drawing art. It never fully developed, but the eye it gave me did.',
-		'I could always draw. That art talent was there early; it just never fully grew up.',
-		'Drawing was my earliest gift. The art stayed half-finished, yet it still shapes my taste.',
-		'My talent was drawing art. It never quite matured, and somehow it still guides the work.',
+		'The first thing I ever truly made was graphic design, and I am still quietly proud of it.',
+		'I came up through graphic design long before code, and that eye has never once left me.',
+		'Design was the first craft I fell for, and I still draw about as well as I write code.',
+		'Before a single line of code there was graphic design, and that hand has stayed sharp.',
+		// drawing, a talent that never fully grew up
+		'My first real talent was drawing. It never fully grew up, but the eye it gave me did.',
+		'I could always draw. The gift was there early; it just never quite finished becoming itself.',
+		'Drawing was my earliest gift. The art stayed half-finished, and yet it still shapes the work.',
+		'My talent was drawing art. It never quite matured, and somehow it still guides every choice.',
 		// fascinated by AI
-		'I am fascinated by AI: what it quietly changes, and the parts it still cannot touch.',
-		'AI keeps me curious, less the hype and more what it shifts in how we actually build.',
-		'I watch AI closely. The interesting question is always what it cannot do for you.',
-		'Fascinated by AI, and just as interested in where its honest limits really sit.',
+		'I am fascinated by AI: what it quietly changes, and the tender parts it still cannot touch.',
+		'AI keeps me curious, less for the hype and more for what it shifts in how we really build.',
+		'I watch AI closely, and the question that moves me is always what it still cannot do alone.',
+		'Fascinated by AI, and just as moved by where its honest, human-shaped limits really sit.',
 		// video games
-		'I play video games, partly for the fun and mostly to study how good interfaces feel.',
-		'Video games are a quiet research habit; I read their design the whole time I play.',
-		'I love video games, half of it play and half a lesson in pacing, feedback and feel.',
-		'When I am not building, I am playing video games and noticing just why they work.'
+		'I play video games, a little for the joy and mostly to feel how good interfaces breathe.',
+		'Video games are a quiet kind of study; I read their design the whole time I am playing.',
+		'I love video games, half of it pure play and half a slow lesson in pacing and in feel.',
+		'When I am not building, I am playing games and quietly falling for the reasons they work.',
+		// youtube
+		'I love watching YouTube, seeing what other people are building and how they think.',
+		'YouTube is where I keep an ear out: what others are making, and the why behind it.',
+		'I watch a lot of YouTube, less for the noise and more for how other people think.',
+		'YouTube keeps me curious about other people, their work, their ideas, their thinking.'
 	];
 	let factIdx = 0;
 	let spins = 0;
@@ -64,7 +69,7 @@
 		spins += 1;
 	}
 
-	// a clean blur "dissolve" — text scatters into / settles out of a haze
+	// a clean blur "dissolve": text scatters into / settles out of a haze
 	const dustIn = (_node: Element) => ({
 		duration: 560,
 		easing: cubicOut,
@@ -924,7 +929,7 @@
 </script>
 
 <Seo
-	title="kenTom — Steve Tom · Full-Stack Developer in Kenya"
+	title="kenTom · Steve Tom · Full-Stack Developer in Kenya"
 	description="Steve Tom (kenTom) is a full-stack developer in Kenya building web apps, mobile apps, and custom software. Selected work, field notes, and a lab of interface experiments."
 	path="/"
 	type="profile"
@@ -1032,7 +1037,7 @@
 		</div>
 		<button class="reload" type="button" on:click={reloadFact} aria-label="Another fact">
 			<span class="reload-ic" style="transform:rotate({spins * 180}deg)">
-				<Icon name="refresh" size={14} />
+				<Icon name="ai-sand-timer" size={14} />
 			</span>
 			<span>Another</span>
 		</button>
@@ -1328,7 +1333,7 @@
 		text-decoration-color: var(--spark);
 	}
 
-	/* about — rotating facts */
+	/* about · rotating facts */
 	.stage--about .line-wrap {
 		position: relative;
 		display: flex;

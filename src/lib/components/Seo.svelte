@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { SITE, abs } from '$lib/seo';
 
-	/** Page title — for inner pages the site name is appended automatically. */
+	/** Page title: for inner pages the site name is appended automatically. */
 	export let title: string;
 	export let description: string;
 	/** Route path, used for canonical + og:url. */
 	export let path: string = '/';
-	/** Social card image — absolute URL or a /static path. */
+	/** Social card image: absolute URL or a /static path. */
 	export let image: string = SITE.ogImage;
 	export let type: 'website' | 'article' | 'profile' = 'website';
 	export let keywords: string = '';

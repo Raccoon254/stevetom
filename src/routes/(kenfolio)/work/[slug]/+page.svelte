@@ -8,7 +8,7 @@
 
 <Seo
 	title={project.name}
-	description={`${project.name} — ${project.meta}. Selected work by Steve Tom (kenTom).`}
+	description={`${project.name}: ${project.meta}. Selected work by Steve Tom (kenTom).`}
 	path="/work/{project.slug}"
 	breadcrumbs={[
 		{ name: 'Work', path: '/' },

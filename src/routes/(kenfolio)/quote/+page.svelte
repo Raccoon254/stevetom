@@ -107,7 +107,7 @@
 
 <Seo
 	title="Quote"
-	description="Tell Steve Tom what you're building — a sentence and an email is enough to start a project quote."
+	description="Tell Steve Tom what you're building. A sentence and an email is enough to start a project quote."
 	path="/quote"
 	keywords="hire developer Kenya, project quote, custom software quote, web app development"
 	breadcrumbs={[{ name: 'Quote', path: '/quote' }]}
