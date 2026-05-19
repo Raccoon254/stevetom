@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	const reasons = [
 		{

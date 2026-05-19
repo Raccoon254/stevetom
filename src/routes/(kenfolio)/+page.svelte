@@ -34,6 +34,11 @@
 		'I came up through graphic design long before code, and that eye never left me.',
 		'Design was the first craft I learned; I still draw about as well as I write code.',
 		'Before a single line of code there was graphic design, and that hand stays sharp.',
+		// drawing — a talent that never fully grew up
+		'My first talent was drawing art. It never fully developed, but the eye it gave me did.',
+		'I could always draw. That art talent was there early; it just never fully grew up.',
+		'Drawing was my earliest gift. The art stayed half-finished, yet it still shapes my taste.',
+		'My talent was drawing art. It never quite matured, and somehow it still guides the work.',
 		// fascinated by AI
 		'I am fascinated by AI: what it quietly changes, and the parts it still cannot touch.',
 		'AI keeps me curious, less the hype and more what it shifts in how we actually build.',

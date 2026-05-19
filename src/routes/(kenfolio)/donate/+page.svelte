@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	type Currency = 'KES' | 'USD';
 	type Status = 'idle' | 'loading' | 'success' | 'error';
