@@ -1325,7 +1325,6 @@
 		justify-content: center;
 		align-items: flex-start;
 		/* fixed slot so swapping facts never shifts the button below */
-		min-height: clamp(100px, 22vh, 200px);
 	}
 	.stage--about .line-wrap .line {
 		margin: 0;

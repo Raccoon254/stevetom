@@ -239,6 +239,20 @@
 		cursor: not-allowed;
 	}
 
+	/* on phones, stack the button under the email input */
+	@media (max-width: 520px) {
+		.row {
+			flex-direction: column;
+			align-items: stretch;
+		}
+		.row input {
+			min-width: 0;
+		}
+		.row button {
+			justify-content: center;
+		}
+	}
+
 	.otp {
 		display: flex;
 		gap: clamp(8px, 1.6vw, 14px);
