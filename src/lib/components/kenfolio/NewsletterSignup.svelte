@@ -122,7 +122,7 @@
 	{:else if step === 'verify'}
 		<h2>Confirming <em>I can reach you</em>.</h2>
 		<p class="nl-note">
-			I sent a 6-digit code to <strong>{email}</strong>. Pop it in below — it just confirms this
+			I sent a 6-digit code to <strong>{email}</strong>. Enter it below — it just confirms this
 			inbox is reachable before I add you to the list.
 		</p>
 		<div class="otp" class:shake={error}>

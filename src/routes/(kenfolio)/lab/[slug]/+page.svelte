@@ -37,7 +37,7 @@
 			<span>{x.name}</span>
 		</nav>
 
-		<div class="meta">
+		<div class="spec">
 			<span class="tag">{x.tag}</span>
 			<span class="year">{x.year}</span>
 		</div>
@@ -107,7 +107,7 @@
 		color: var(--mute-2);
 	}
 
-	.meta {
+	.spec {
 		display: flex;
 		align-items: center;
 		gap: 10px;
