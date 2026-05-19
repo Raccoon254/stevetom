@@ -120,9 +120,10 @@
 		</form>
 		{#if error}<p class="err">{error}</p>{/if}
 	{:else if step === 'verify'}
-		<h2>Confirm <em>your email</em>.</h2>
+		<h2>Confirming <em>I can reach you</em>.</h2>
 		<p class="nl-note">
-			I sent a 6-digit code to <strong>{email}</strong>. Enter it so I know the inbox is yours.
+			I sent a 6-digit code to <strong>{email}</strong>. Pop it in below — it just confirms this
+			inbox is reachable before I add you to the list.
 		</p>
 		<div class="otp" class:shake={error}>
 			{#each digits as d, i}
@@ -241,20 +242,20 @@
 
 	.otp {
 		display: flex;
-		gap: clamp(6px, 1.4vw, 12px);
+		gap: clamp(8px, 1.6vw, 14px);
 		flex-wrap: wrap;
 	}
 	.otp input {
-		width: clamp(40px, 8vw, 52px);
-		height: clamp(48px, 9vw, 60px);
+		width: clamp(44px, 9vw, 60px);
+		height: clamp(54px, 11vw, 72px);
 		text-align: center;
 		font-family: 'Google Sans Display', var(--sans);
 		font-weight: 500;
-		font-size: clamp(20px, 2.6vw, 26px);
+		font-size: clamp(22px, 3vw, 30px);
 		color: var(--ink);
-		background: rgba(var(--bg-rgb), 0.6);
+		background: rgba(var(--bg-rgb), 0.5);
 		border: 1px solid var(--hairline-2);
-		border-radius: 10px;
+		border-radius: 12px;
 		outline: none;
 		transition:
 			border-color 0.2s,
@@ -262,7 +263,7 @@
 	}
 	.otp input:focus {
 		border-color: var(--spark);
-		background: rgba(var(--bg-rgb), 0.9);
+		background: rgba(var(--bg-rgb), 0.85);
 	}
 	.otp.shake {
 		animation: nl-shake 0.32s ease;
