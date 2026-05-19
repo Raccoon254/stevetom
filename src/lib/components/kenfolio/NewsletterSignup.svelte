@@ -140,11 +140,18 @@
 			{/each}
 		</div>
 		{#if error}<p class="err">{error}</p>{/if}
-		<div class="vlinks">
-			<button type="button" class="link" on:click={confirm} disabled={busy || code.length !== 6}>
-				{busy ? 'Verifying' : 'Verify'}
+		<div class="verify-row">
+			<button
+				class="pill pill--solid"
+				type="button"
+				on:click={confirm}
+				disabled={busy || code.length !== 6}
+			>
+				<span>{busy ? 'Verifying' : 'Verify & subscribe'}</span>
+				<span class="ar" aria-hidden="true"><Icon name="tick-circle" size={13} /></span>
 			</button>
-			<span class="dot">·</span>
+		</div>
+		<div class="vlinks">
 			<button type="button" class="link" on:click={resend} disabled={busy}>Resend code</button>
 			<span class="dot">·</span>
 			<button type="button" class="link" on:click={() => ((step = 'idle'), (error = ''))}>
@@ -301,8 +308,19 @@
 		color: var(--spark);
 		margin: 10px 0 0;
 	}
+	.verify-row {
+		margin-top: 20px;
+	}
+	.verify-row button {
+		font: inherit;
+		cursor: pointer;
+	}
+	.verify-row button:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
 	.vlinks {
-		margin-top: 16px;
+		margin-top: 14px;
 		display: flex;
 		align-items: center;
 		gap: 12px;
