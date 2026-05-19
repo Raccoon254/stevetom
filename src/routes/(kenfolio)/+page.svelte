@@ -6,15 +6,44 @@
 	import NewsletterSignup from '$lib/components/kenfolio/NewsletterSignup.svelte';
 
 	// ── about · rotating facts ──────────────────────────────────────────
+	// Each theme has four variations that mean the same thing — kept to a
+	// similar length so the line box (and the reload button) never shift.
 	const facts = [
-		'A guy who codes. Started in 2019, before the machines learned the trick.',
-		'I am Steve. kenTom is me too — same person, two names.',
-		'Learned to code in 2019, before the machines started writing back.',
-		'I am fast. I love Java.',
-		'Design came first. I still draw about as well as I code.',
-		'Chuka University, and Maranda High School before that.',
-		'Fascinated by AI — what it shifts, and what it quietly cannot.',
-		'I play video games. Call it research.'
+		// coding since 2019, before AI
+		'A guy who codes. Started back in 2019, before the machines learned the trick.',
+		'Been writing software since 2019, well before the machines started writing back.',
+		'I learned to code in 2019, back when the keyboard only ever answered to me.',
+		'Started coding in 2019, in the quiet years before AI began finishing the sentence.',
+		// Steve is kenTom
+		'I am Steve. kenTom is the same person, one name for the work and one for me.',
+		'Steve, kenTom, Raccoon254 — three names you might see, all of them just me.',
+		'kenTom is not a studio or a team. It is me, Steve, and the work that I sign.',
+		'There is no team here. kenTom is one person, Steve, and everything that he ships.',
+		// schooling
+		'I studied at Chuka University, and at Maranda High School in the years before that.',
+		'Maranda High School first, then Chuka University, the long way into the craft.',
+		'School ran through Maranda and then Chuka University; the rest I taught myself.',
+		'Chuka University handed me the degree; Maranda High School handed me the start.',
+		// fast, loves Java
+		'I move fast and I love Java, give me a problem and a runtime and I am happy.',
+		'Fast is a habit, not a sprint, and Java is still the language I reach for first.',
+		'I like to ship fast, and I have a soft spot for Java that has never worn off.',
+		'Quick hands, steady taste, and a love of Java that outlived every new framework.',
+		// design first
+		'The first thing I ever did was graphic design, and I am still very good at it.',
+		'I came up through graphic design long before code, and that eye never left me.',
+		'Design was the first craft I learned; I still draw about as well as I write code.',
+		'Before a single line of code there was graphic design, and that hand stays sharp.',
+		// fascinated by AI
+		'I am fascinated by AI: what it quietly changes, and the parts it still cannot touch.',
+		'AI keeps me curious, less the hype and more what it shifts in how we actually build.',
+		'I watch AI closely. The interesting question is always what it cannot do for you.',
+		'Fascinated by AI, and just as interested in where its honest limits really sit.',
+		// video games
+		'I play video games, partly for the fun and mostly to study how good interfaces feel.',
+		'Video games are a quiet research habit; I read their design the whole time I play.',
+		'I love video games, half of it play and half a lesson in pacing, feedback and feel.',
+		'When I am not building, I am playing video games and noticing just why they work.'
 	];
 	let factIdx = 0;
 	let spins = 0;
@@ -1294,6 +1323,9 @@
 		position: relative;
 		display: flex;
 		justify-content: center;
+		align-items: flex-start;
+		/* fixed slot so swapping facts never shifts the button below */
+		min-height: clamp(100px, 22vh, 200px);
 	}
 	.stage--about .line-wrap .line {
 		margin: 0;

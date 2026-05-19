@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import { experiments } from '$lib/data/labExperiments';
 	import EcgRibbonDemo from '$lib/components/lab/EcgRibbonDemo.svelte';
 	import HalftoneWaveDemo from '$lib/components/lab/HalftoneWaveDemo.svelte';
@@ -24,10 +25,17 @@
 	$: next = experiments[(idx + 1) % experiments.length];
 </script>
 
-<svelte:head>
-	<title>kenTom · Lab · {x.name}</title>
-	<meta name="description" content={x.summary} />
-</svelte:head>
+<Seo
+	title="{x.name} · Lab"
+	description={x.summary}
+	path="/lab/{x.slug}"
+	type="article"
+	keywords="{x.tag} experiment, {x.name}, interface animation, creative coding"
+	breadcrumbs={[
+		{ name: 'Lab', path: '/lab' },
+		{ name: x.name, path: `/lab/${x.slug}` }
+	]}
+/>
 
 <main class="page">
 	<article class="exp">
