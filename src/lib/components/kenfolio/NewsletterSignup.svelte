@@ -2,6 +2,9 @@
 	import { tick } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
 
+	/** framed = bordered card (blog); unframed = bare, like a landing section */
+	export let framed = true;
+
 	let step: 'idle' | 'verify' | 'done' = 'idle';
 	let email = '';
 	let busy = false;
@@ -92,7 +95,7 @@
 	}
 </script>
 
-<section class="nl">
+<section class="nl" class:framed>
 	<div class="nl-label"><Icon name="sms" size={12} /> Newsletter</div>
 
 	{#if step === 'idle'}
@@ -156,7 +159,7 @@
 </section>
 
 <style>
-	.nl {
+	.nl.framed {
 		border: 1px solid var(--hairline);
 		border-radius: 16px;
 		padding: clamp(24px, 4vw, 40px);

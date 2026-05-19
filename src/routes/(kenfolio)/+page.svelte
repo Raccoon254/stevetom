@@ -1063,7 +1063,7 @@
 <!-- ─────────── 05 / NEWSLETTER ─────────── -->
 <section class="news-band">
 	<div class="news-inner">
-		<NewsletterSignup />
+		<NewsletterSignup framed={false} />
 	</div>
 </section>
 
