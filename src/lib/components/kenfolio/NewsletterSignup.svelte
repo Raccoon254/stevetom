@@ -122,7 +122,7 @@
 	{:else if step === 'verify'}
 		<h2>Confirming <em>I can reach you</em>.</h2>
 		<p class="nl-note">
-			I sent a 6-digit code to <strong>{email}</strong>. Enter it below — it just confirms this
+			I sent a 6-digit code to <strong>{email}</strong>. Enter it below. It just confirms this
 			inbox is reachable before I add you to the list.
 		</p>
 		<div class="otp" class:shake={error}>
@@ -154,7 +154,7 @@
 	{:else}
 		<h2>You're <em>subscribed</em>.</h2>
 		<p class="nl-note">
-			Thanks — check your inbox for a welcome note. New posts will land there as they go up.
+			Thanks. Check your inbox for a welcome note. New posts will land there as they go up.
 		</p>
 	{/if}
 </section>

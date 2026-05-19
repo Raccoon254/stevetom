@@ -12,12 +12,12 @@ async function run(emailRaw: string | null, tokenRaw: string | null) {
 	return { ok, email };
 }
 
-// GET — the visible "Unsubscribe" link in the email opens this page.
+// GET: the visible "Unsubscribe" link in the email opens this page.
 export const load: PageServerLoad = async ({ url }) => {
 	return run(url.searchParams.get('e'), url.searchParams.get('t'));
 };
 
-// POST — RFC 8058 one-click unsubscribe (mail-client "Unsubscribe" button).
+// POST: RFC 8058 one-click unsubscribe (mail-client "Unsubscribe" button).
 export const actions: Actions = {
 	default: async ({ url }) => run(url.searchParams.get('e'), url.searchParams.get('t'))
 };

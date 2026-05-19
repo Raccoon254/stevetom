@@ -1,14 +1,20 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
 	$: project = data.project;
 </script>
 
-<svelte:head>
-	<title>kenTom · {project.name}</title>
-	<meta name="description" content="{project.name}: {project.meta}." />
-</svelte:head>
+<Seo
+	title={project.name}
+	description={`${project.name} — ${project.meta}. Selected work by Steve Tom (kenTom).`}
+	path="/work/{project.slug}"
+	breadcrumbs={[
+		{ name: 'Work', path: '/' },
+		{ name: project.name, path: `/work/${project.slug}` }
+	]}
+/>
 
 <main class="page">
 	<article class="proj">

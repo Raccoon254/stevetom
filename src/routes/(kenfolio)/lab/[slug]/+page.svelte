@@ -49,7 +49,7 @@
 			<div class="stage-frame">
 				<svelte:component this={Demo} />
 			</div>
-			<figcaption><span class="dot"></span> Live — running now</figcaption>
+			<figcaption><span class="dot"></span> Live · running now</figcaption>
 		</figure>
 
 		<!-- write-up -->
@@ -155,13 +155,10 @@
 	}
 	.stage-frame {
 		height: clamp(220px, 40vh, 360px);
-		border: 1px solid var(--hairline);
-		border-radius: 16px;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: rgba(var(--bg-rgb), 0.5);
 	}
 	.stage--compact .stage-frame {
 		height: clamp(180px, 28vh, 240px);
@@ -185,7 +182,7 @@
 		box-shadow: 0 0 8px var(--spark-glow);
 	}
 
-	/* write-up — numbered, borderless */
+	/* write-up: numbered, borderless */
 	.notes {
 		border-top: 1px solid var(--hairline);
 		margin-bottom: clamp(36px, 6vh, 56px);

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 
 	const links = [
 		{ label: 'TikTok', handle: '@raccoon.254', href: 'https://www.tiktok.com/@raccoon.254', icon: 'tiktok' },
@@ -106,13 +107,13 @@
 	}
 </script>
 
-<svelte:head>
-	<title>kenTom · Contact</title>
-	<meta
-		name="description"
-		content="Get in touch with Steve Tom. Start a conversation or find me on TikTok, GitHub, YouTube and WhatsApp."
-	/>
-</svelte:head>
+<Seo
+	title="Contact"
+	description="Get in touch with Steve Tom. Start a conversation or find me on TikTok, GitHub, YouTube and WhatsApp."
+	path="/contact"
+	keywords="contact Steve Tom, hire developer Kenya, kenTom contact"
+	breadcrumbs={[{ name: 'Contact', path: '/contact' }]}
+/>
 
 <main class="page">
 	<div class="contact">

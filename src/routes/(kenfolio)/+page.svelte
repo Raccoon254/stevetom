@@ -1,7 +1,47 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { cubicOut } from 'svelte/easing';
 	import Icon from '$lib/components/Icon.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import NewsletterSignup from '$lib/components/kenfolio/NewsletterSignup.svelte';
+
+	// ── about · rotating facts ──────────────────────────────────────────
+	const facts = [
+		'A guy who codes. Started in 2019, before the machines learned the trick.',
+		'I am Steve. kenTom is me too — same person, two names.',
+		'Learned to code in 2019, before the machines started writing back.',
+		'I am fast. I love Java.',
+		'Design came first. I still draw about as well as I code.',
+		'Chuka University, and Maranda High School before that.',
+		'Fascinated by AI — what it shifts, and what it quietly cannot.',
+		'I play video games. Call it research.'
+	];
+	let factIdx = 0;
+	let spins = 0;
+	function reloadFact() {
+		let n = factIdx;
+		while (n === factIdx && facts.length > 1) n = Math.floor(Math.random() * facts.length);
+		factIdx = n;
+		spins += 1;
+	}
+
+	// a clean blur "dissolve" — text scatters into / settles out of a haze
+	const dustIn = (_node: Element) => ({
+		duration: 560,
+		easing: cubicOut,
+		css: (t: number) => {
+			const u = 1 - t;
+			return `opacity:${t};filter:blur(${u * 12}px);transform:scale(${1 + u * 0.04});`;
+		}
+	});
+	const dustOut = (_node: Element) => ({
+		duration: 420,
+		easing: cubicOut,
+		css: (t: number) => {
+			const u = 1 - t;
+			return `position:absolute;left:0;right:0;opacity:${t};filter:blur(${u * 16}px);transform:scale(${1 + u * 0.08}) translateY(${u * -6}px);`;
+		}
+	});
 
 	const works = [
 		{ name: 'Axene.io', href: 'https://axene.io', quip: 'Send, build, ship' },
@@ -844,13 +884,13 @@
 	});
 </script>
 
-<svelte:head>
-	<title>kenTom</title>
-	<meta
-		name="description"
-		content="kenTom, by Steve Tom. A guy who codes. Selected work, tutoring, partnerships and a small lab of side rigs."
-	/>
-</svelte:head>
+<Seo
+	title="kenTom — Steve Tom · Full-Stack Developer in Kenya"
+	description="Steve Tom (kenTom) is a full-stack developer in Kenya building web apps, mobile apps, and custom software. Selected work, field notes, and a lab of interface experiments."
+	path="/"
+	type="profile"
+	keywords="kenTom, Steve Tom, full-stack developer Kenya, web developer Nairobi, software engineer, custom software, mobile app developer, Raccoon254"
+/>
 
 <nav class="index" aria-label="sections">
 	{#each sections as s}
@@ -946,7 +986,17 @@
 	<div class="bg"><canvas id="bgWave"></canvas></div>
 	<div class="content">
 		<div class="eyebrow"><Icon name="user" size={13} /> about</div>
-		<p class="line">A guy who codes. Started in 2019, before the machines learned the trick.</p>
+		<div class="line-wrap">
+			{#key factIdx}
+				<p class="line" in:dustIn out:dustOut>{facts[factIdx]}</p>
+			{/key}
+		</div>
+		<button class="reload" type="button" on:click={reloadFact} aria-label="Another fact">
+			<span class="reload-ic" style="transform:rotate({spins * 180}deg)">
+				<Icon name="refresh" size={14} />
+			</span>
+			<span>Another</span>
+		</button>
 	</div>
 </section>
 
@@ -1068,7 +1118,7 @@
 </section>
 
 <style>
-	/* newsletter band — a normal-flow section after the snap stages */
+	/* newsletter band: a normal-flow section after the snap stages */
 	.news-band {
 		padding: clamp(64px, 13vh, 130px) clamp(20px, 5vw, 80px);
 		display: grid;
@@ -1237,6 +1287,44 @@
 	.line :global(.skilink):hover {
 		color: var(--spark);
 		text-decoration-color: var(--spark);
+	}
+
+	/* about — rotating facts */
+	.stage--about .line-wrap {
+		position: relative;
+		display: flex;
+		justify-content: center;
+	}
+	.stage--about .line-wrap .line {
+		margin: 0;
+	}
+	.stage--about .reload {
+		margin-top: clamp(22px, 3.5vh, 36px);
+		display: inline-flex;
+		align-items: center;
+		gap: 9px;
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.24em;
+		text-transform: uppercase;
+		color: var(--mute);
+		background: transparent;
+		border: 1px solid var(--hairline-2);
+		border-radius: 999px;
+		padding: 9px 16px;
+		cursor: pointer;
+		transition:
+			color 0.25s,
+			border-color 0.25s;
+	}
+	.stage--about .reload:hover {
+		color: var(--ink);
+		border-color: var(--ink-2);
+	}
+	.stage--about .reload-ic {
+		display: inline-flex;
+		color: var(--spark);
+		transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	/* 00 hero */

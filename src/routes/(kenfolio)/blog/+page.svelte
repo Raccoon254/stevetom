@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { posts, shortDate } from '$lib/content';
+	import Seo from '$lib/components/Seo.svelte';
 	import NewsletterSignup from '$lib/components/kenfolio/NewsletterSignup.svelte';
 
 	// Build a lowercased search blob per post once, up front. Posts are
@@ -20,10 +21,12 @@
 		: posts;
 </script>
 
-<svelte:head>
-	<title>kenTom · Notes</title>
-	<meta name="description" content="Notes from the workshop, writing by Steve Tom." />
-</svelte:head>
+<Seo
+	title="Notes"
+	description="Field notes from the workshop — writing by Steve Tom on building software, products, and the work."
+	path="/blog"
+	keywords="kenTom notes, Steve Tom blog, developer writing Kenya, software engineering notes"
+/>
 
 <main class="page">
 	<div class="notes">

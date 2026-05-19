@@ -5,7 +5,7 @@ import { sendIssue } from '$lib/server/newsletter';
 import { requireAdmin } from '$lib/server/auth';
 import type { RequestHandler } from './$types';
 
-/** Admin newsletter overview — subscriber count, sent issues, unsent posts. */
+/** Admin newsletter overview: subscriber count, sent issues, unsent posts. */
 export const GET: RequestHandler = async ({ cookies }) => {
 	const denied = requireAdmin(cookies);
 	if (denied) return denied;

@@ -117,7 +117,7 @@
 				{/each}
 			</div>
 			{#if subscribers === 0}
-				<p class="hint">No subscribers yet — nothing to send to.</p>
+				<p class="hint">No subscribers yet, nothing to send to.</p>
 			{/if}
 		{/if}
 	</section>

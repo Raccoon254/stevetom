@@ -7,7 +7,7 @@
 	<title>kenTom · Lab</title>
 	<meta
 		name="description"
-		content="The lab — side rigs, animations, and interaction experiments built for the joy of it."
+		content="The lab: side rigs, animations, and interaction experiments built for the joy of it."
 	/>
 </svelte:head>
 
@@ -16,9 +16,10 @@
 		<div class="eyebrow"><Icon name="flash" size={13} /> lab</div>
 		<h1>Side rigs, things that <em>move for the joy of it</em>.</h1>
 		<p class="lede">
-			The lab is the unserious shelf — small builds, animations, and interaction studies that
-			exist because they were fun to make. No roadmap, no clients. Each one has its own page with
-			the thing running live and a write-up of how it works.
+			This is where I keep the unserious stuff. Small builds, animations, and interaction studies
+			I made simply because they were fun to figure out. Nothing here is on a roadmap and none of
+			it is for a client. Every one has its own page where you can watch it run and read how I
+			put it together.
 		</p>
 
 		<div class="section-label">Experiments · {experiments.length}</div>
@@ -93,7 +94,7 @@
 		border-bottom: 1px solid var(--hairline);
 	}
 
-	/* borderless divider list — no boxed cards */
+	/* borderless divider list: no boxed cards */
 	.index {
 		list-style: none;
 		padding: 0;

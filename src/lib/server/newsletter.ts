@@ -1,5 +1,5 @@
 /**
- * Blog newsletter — verified subscribe, one-click unsubscribe, and
+ * Blog newsletter: verified subscribe, one-click unsubscribe, and
  * per-post issue sending through Axene Mailer.
  */
 import { PrismaClient } from '@prisma/client';
@@ -49,7 +49,7 @@ export async function subscribeEmail(email: string): Promise<void> {
 				footerNote: 'You subscribed to the kenTom newsletter at kentom.co.ke.',
 				bodyHtml:
 					p(
-						"Thanks for subscribing. When I publish a new note, you'll get it here — a short, plain email with a link. Nothing else."
+						"Thanks for subscribing. When I publish a new note, you'll get it here: a short, plain email with a link. Nothing else."
 					) +
 					`<p style="margin:18px 0 0;font-family:Georgia,serif;font-size:12px;color:#999">Changed your mind? <a href="${unsubscribeUrl(addr)}" style="color:#999;text-decoration:underline">Unsubscribe in one click</a>.</p>`
 			})

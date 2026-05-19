@@ -1,13 +1,16 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
 </script>
 
-<svelte:head>
-	<title>kenTom · Unsubscribe</title>
-	<meta name="robots" content="noindex" />
-</svelte:head>
+<Seo
+	title="Unsubscribe"
+	description="Manage your kenTom email subscription."
+	path="/unsubscribe"
+	noindex
+/>
 
 <main class="page">
 	<div class="unsub">
@@ -18,7 +21,7 @@
 			<h1>You're unsubscribed.</h1>
 			<p class="lede">
 				{#if data.email}<strong>{data.email}</strong> won't{:else}You won't{/if} get any more newsletter
-				emails. No hard feelings — you can subscribe again any time from the blog.
+				emails. No hard feelings, you can subscribe again any time from the blog.
 			</p>
 		{:else}
 			<h1>That link didn't work.</h1>
