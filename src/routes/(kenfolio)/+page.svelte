@@ -10,50 +10,50 @@
 	// similar length so the line box (and the reload button) never shift.
 	const facts = [
 		// coding since 2019, before AI
-		'A guy who codes. I started in 2019, back before the machines ever learned the trick.',
-		'I have written software since 2019, in the years a wrong answer was only ever mine.',
-		'I learned to code in 2019, back when the keyboard still answered to me and no one else.',
-		'I started coding in 2019, in the quiet years before AI began finishing my sentences.',
+		'A guy who codes. I started in 2019, before the machines learned the trick.',
+		'I have written software since 2019, when a wrong answer was always mine.',
+		'I learned to code in 2019, when the keyboard still answered only to me.',
+		'I started coding in 2019, before AI began finishing my sentences for me.',
 		// first code: Termux in 2019, C at Chuka in 2020
-		'My first real line of code was C, written in a 2020 computer class at Chuka University.',
-		'Before C in that 2020 Chuka class, the 2019 me was already lost in Termux and tunneling.',
-		'It began on a cheap Android phone: Termux, VPNs and tunneling in 2019, then C at Chuka.',
-		'My first real code was C, at Chuka in 2020, but the love of it started in Termux in 2019.',
+		'My first real line of code was C, in a 2020 class at Chuka University.',
+		'Before C in that 2020 Chuka class, 2019 me was already deep in Termux.',
+		'It began on a cheap Android phone: Termux and tunneling, back in 2019.',
+		'My first code was C at Chuka in 2020, but the love began in Termux in 2019.',
 		// Steve is kenTom
-		'I am Steve. kenTom is the same person, one name for the work and one for the man behind it.',
-		'Steve, kenTom, Raccoon254: three names you might run into, and every one of them is just me.',
-		'kenTom was never a studio or a team. It is only me, Steve, and the work I choose to sign.',
-		'There is no team standing behind this. kenTom is one person, Steve, and everything he ships.',
+		'I am Steve. kenTom is the same person, one name for me and one for the work.',
+		'Steve, kenTom, Raccoon254: three names you might see, all of them just me.',
+		'kenTom was never a studio or a team. It is only me, Steve, and my work.',
+		'There is no team here. kenTom is one person, Steve, and all that he ships.',
 		// schooling
-		'I studied at Chuka University, and at Maranda High School in the long years before that.',
-		'Maranda High School first, then Chuka University, the slow and patient way into this craft.',
-		'School ran through Maranda and then Chuka University, and most of the rest I taught myself.',
-		'Chuka University handed me a degree, but Maranda High School is where the hunger first began.',
+		'I studied at Chuka University, and at Maranda High School before that.',
+		'Maranda High School first, then Chuka University: the long way in.',
+		'School ran through Maranda, then Chuka University; the rest I taught myself.',
+		'Chuka University gave me a degree; Maranda High School gave me the hunger.',
 		// fast, loves Java
-		'I move fast and I love Java; give me a problem and a runtime and I am genuinely happy.',
-		'Moving fast is a habit, not a sprint, and Java is still the language I reach for first.',
-		'I like to ship fast, and I have a soft spot for Java that has honestly never worn off.',
-		'Quick hands, steady taste, and a love of Java that has outlived every shiny new framework.',
+		'I move fast and I love Java. Give me a problem and a runtime and I am happy.',
+		'Moving fast is a habit, and Java is still the language I reach for first.',
+		'I like to ship fast, with a soft spot for Java that has never worn off.',
+		'Quick hands, steady taste, and a love of Java that outlived every framework.',
 		// design first
-		'The first thing I ever truly made was graphic design, and I am still quietly proud of it.',
-		'I came up through graphic design long before code, and that eye has never once left me.',
-		'Design was the first craft I fell for, and I still draw about as well as I write code.',
-		'Before a single line of code there was graphic design, and that hand has stayed sharp.',
+		'The first thing I ever made was graphic design, and I am still proud of it.',
+		'I came up through graphic design long before code, and that eye never left.',
+		'Design was the first craft I loved; I still draw as well as I write code.',
+		'Before my first line of code there was graphic design, and that hand stays sharp.',
 		// drawing, a talent that never fully grew up
-		'My first real talent was drawing. It never fully grew up, but the eye it gave me did.',
-		'I could always draw. The gift was there early; it just never quite finished becoming itself.',
-		'Drawing was my earliest gift. The art stayed half-finished, and yet it still shapes the work.',
-		'My talent was drawing art. It never quite matured, and somehow it still guides every choice.',
+		'My first talent was drawing. It never grew up, but the eye it gave me did.',
+		'I could always draw. The gift was there early; it just never quite grew up.',
+		'Drawing was my earliest gift. The art stayed unfinished, but it shapes the work.',
+		'My talent was drawing. It never quite matured, yet it still guides every choice.',
 		// fascinated by AI
-		'I am fascinated by AI: what it quietly changes, and the tender parts it still cannot touch.',
-		'AI keeps me curious, less for the hype and more for what it shifts in how we really build.',
-		'I watch AI closely, and the question that moves me is always what it still cannot do alone.',
-		'Fascinated by AI, and just as moved by where its honest, human-shaped limits really sit.',
+		'I am fascinated by AI: what it quietly changes, and what it cannot touch.',
+		'AI keeps me curious, less for the hype than for what it shifts in how we build.',
+		'I watch AI closely, and what moves me is always what it still cannot do.',
+		'Fascinated by AI, and just as moved by where its honest limits really sit.',
 		// video games
-		'I play video games, a little for the joy and mostly to feel how good interfaces breathe.',
-		'Video games are a quiet kind of study; I read their design the whole time I am playing.',
-		'I love video games, half of it pure play and half a slow lesson in pacing and in feel.',
-		'When I am not building, I am playing games and quietly falling for the reasons they work.',
+		'I play video games, a little for joy and mostly to feel how interfaces breathe.',
+		'Video games are a quiet study; I read their design the whole time I play.',
+		'I love video games, half pure play and half a lesson in pacing and feel.',
+		'When I am not building, I am playing games and learning why they work.',
 		// youtube
 		'I love watching YouTube, seeing what other people are building and how they think.',
 		'YouTube is where I keep an ear out: what others are making, and the why behind it.',
@@ -1339,10 +1339,18 @@
 		display: flex;
 		justify-content: center;
 		align-items: flex-start;
-		/* fixed slot so swapping facts never shifts the button below */
+		/* fixed slot of exactly three lines, so every fact (short or long)
+		   occupies the same height and the reload button never shifts */
+		height: calc(clamp(26px, 3.4vw, 44px) * 1.32 * 3);
 	}
 	.stage--about .line-wrap .line {
 		margin: 0;
+		/* never spill past three lines, on any screen size */
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+		overflow: hidden;
 	}
 	.stage--about .reload {
 		margin-top: clamp(22px, 3.5vh, 36px);
@@ -1728,6 +1736,10 @@
 			font-size: clamp(23px, 6vw, 31px);
 			line-height: 1.38;
 			letter-spacing: -0.006em;
+		}
+		.stage--about .line-wrap {
+			/* three lines at the mobile type scale */
+			height: calc(clamp(23px, 6vw, 31px) * 1.38 * 3);
 		}
 		.stage--work .works li {
 			grid-template-columns: 1fr;
