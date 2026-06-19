@@ -88,6 +88,7 @@
 	});
 
 	const works = [
+		{ name: 'Ryde.ke', href: 'https://ryde.ke', quip: 'Rides arrive faster' },
 		{ name: 'Axene.io', href: 'https://axene.io', quip: 'Send, build, ship' },
 		{ name: 'Chiromo', href: 'https://chiromo.tech', quip: 'Builders find shelter' },
 		{ name: 'Qailly', href: 'https://qailly.com', quip: 'Strangers break apps' },
