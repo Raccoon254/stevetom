@@ -90,6 +90,7 @@
 	const works = [
 		{ name: 'Ryde.ke', href: 'https://ryde.ke', quip: 'Move how the city moves' },
 		{ name: 'Axene.io', href: 'https://axene.io', quip: 'Send, build, ship' },
+		{ name: 'Spaci', href: 'https://spaci.kentom.co.ke', quip: 'Disks breathe again' },
 		{ name: 'Chiromo', href: 'https://chiromo.tech', quip: 'Builders find shelter' },
 		{ name: 'Qailly', href: 'https://qailly.com', quip: 'Strangers break apps' },
 		{ name: 'Pixen', href: 'https://pixen.cc', quip: 'Pixels meet desktop' }
