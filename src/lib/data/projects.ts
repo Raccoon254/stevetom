@@ -1,5 +1,5 @@
 /**
- * Selected work: the four ventures shown in the KenFolio redesign.
+ * Selected work: the ventures shown in the KenFolio redesign.
  * Each renders through the (kenfolio)/work/[slug] project page.
  */
 export type Project = {
@@ -22,6 +22,16 @@ export const projects: Project[] = [
 			'The work is mostly invisible by design. The part you notice is that <em>the message arrived</em>.'
 		],
 		link: { label: 'axene.io', href: 'https://axene.io' }
+	},
+	{
+		slug: 'spaci',
+		name: 'Spaci',
+		meta: 'Reclaim your disk',
+		body: [
+			'A developer and Mac cleaner for the desktop. It finds the gigabytes hiding in build artifacts and regenerable caches, shows where your disk actually went, and clears it safely with a preview every time.',
+			'The promise is simple, <em>more space, and nothing you needed is gone</em>.'
+		],
+		link: { label: 'spaci.kentom.co.ke', href: 'https://spaci.kentom.co.ke' }
 	},
 	{
 		slug: 'chiromo-forge',
