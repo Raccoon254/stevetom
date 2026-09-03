@@ -7,7 +7,7 @@
 
 <Seo
 	title="Unsubscribe"
-	description="Manage your kenTom email subscription."
+	description="Unsubscribe from the kenTom newsletter."
 	path="/unsubscribe"
 	noindex
 />
@@ -21,7 +21,7 @@
 			<h1>You're unsubscribed.</h1>
 			<p class="lede">
 				{#if data.email}<strong>{data.email}</strong> won't{:else}You won't{/if} get any more newsletter
-				emails. No hard feelings, you can subscribe again any time from the blog.
+				emails. You can subscribe again any time from the notes page.
 			</p>
 		{:else}
 			<h1>That link didn't work.</h1>

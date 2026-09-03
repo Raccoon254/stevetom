@@ -28,6 +28,7 @@ import {
 } from '../mailer';
 
 const SITE = 'https://kentom.co.ke';
+import { EMAIL_TAGS } from '$lib/emailTags';
 
 /**
  * Mirrors ONE_TIME_LISTING_MONTHS in ../sponsors. Held as a literal so the
@@ -303,7 +304,7 @@ export async function sendSponsorThankYou(input: SponsorEmailInput): Promise<voi
 			to: [to],
 			replyTo: CONTACT,
 			subject,
-			tags: ['sponsor', 'thank-you'],
+			tags: [EMAIL_TAGS.SPONSOR_THANK_YOU, 'sponsor', 'thank-you'],
 			html,
 			text: textParts.join('\n')
 		});
@@ -397,7 +398,7 @@ export async function sendSponsorNotification(input: SponsorEmailInput): Promise
 			to: [NOTIFY_TO],
 			...(input.to?.email ? { replyTo: { email: input.to.email } } : {}),
 			subject,
-			tags: ['sponsor', 'notification'],
+			tags: [EMAIL_TAGS.SPONSOR_NOTIFICATION, 'sponsor', 'notification'],
 			html,
 			text: textParts.join('\n')
 		});

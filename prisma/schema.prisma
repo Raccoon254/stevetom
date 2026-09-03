@@ -581,3 +581,50 @@ enum CampaignDeliveryStatus {
   FAILED
   SKIPPED
 }
+
+// ---------------------------------------------------------------------------
+// Scheduled monthly work
+//
+// One row per (job, month). That pair carries a unique index, and the index is
+// the entire idempotency story: claiming a run is an INSERT, so a cron that
+// fires twice, a Vercel retry after a timeout, and the owner pressing "run now"
+// at the same moment all collide on the constraint instead of racing. Only the
+// invocation whose INSERT succeeded may send anything. A read-then-write check
+// would have a window between the read and the send; this has none.
+//
+// `campaignId` is how a bulk send survives a function that dies part way
+// through: the Campaign and its CampaignDelivery rows hold the per-recipient
+// progress, and the next invocation resumes that campaign rather than building
+// a second one. It is deliberately not a foreign key, for the same reason the
+// other cross-table references in this schema are not: a deleted draft must not
+// take the history of the run that made it with it.
+//
+// `period` is a UTC month, always "YYYY-MM". Reminders are filed under the
+// month they nag about; the reports under the month they describe.
+// ---------------------------------------------------------------------------
+
+model MonthlyJobRun {
+  id String @id @default(cuid())
+
+  job    String // "blog-reminder" | "report-reminder" | "sponsor-report" | "newsletter"
+  period String // the month this run covers, as "YYYY-MM", UTC
+
+  // RUNNING  claimed, not finished. A bulk send in this state is resumable.
+  // SENT     finished. Nothing may send under this (job, period) again.
+  // SKIPPED  deliberately not sent, with the reason in `detail`.
+  // FAILED   nothing was sent and the run may be retried.
+  status String @default("RUNNING")
+
+  campaignId     String? // the Campaign a bulk send is grinding through
+  recipientCount Int     @default(0)
+  detail         String? // why it was skipped, or what failed
+  trigger        String  @default("cron") // "cron" | "admin"
+
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([job, period])
+  @@index([status])
+  @@index([startedAt])
+}

@@ -2,6 +2,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import Icon from '$lib/components/Icon.svelte';
+	import { purposeMeta } from '$lib/emailTags';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -41,6 +42,20 @@
 		if (denominator < data.minSample) return null;
 		return Math.round((numerator / denominator) * 1000) / 10;
 	}
+
+	/** A percentage for a table cell, or null when the sample cannot carry one. */
+	function pct(numerator: number, denominator: number): string | null {
+		const value = rate(numerator, denominator);
+		return value === null ? null : `${value}%`;
+	}
+
+	const logLink = (tag: string) =>
+		`/admin/email/messages?range=${data.rangeKey}&purpose=${encodeURIComponent(tag)}`;
+
+	/** Rows with nothing in them are kept, dimmed: "no OTPs went out" is an answer. */
+	const idle = (row: { sent: number; delivered: number }) => row.sent === 0 && row.delivered === 0;
+
+	$: purposeTotal = data.purposes.reduce((sum, r) => sum + r.sent, 0);
 
 	$: deliveryRate = rate(delivered, data.sent);
 	$: bounceRate = rate(bounced, data.sent);
@@ -121,11 +136,16 @@
 		<h1 class="a-title">Email</h1>
 		<p class="a-sub">What Axene Mailer reports back about the mail this site sends.</p>
 	</div>
-	<select class="a-select range" bind:value={range} on:change={onRange} aria-label="Date range">
-		{#each data.ranges as r}
-			<option value={r.key}>{r.label}</option>
-		{/each}
-	</select>
+	<div class="head-tools">
+		<a class="a-btn" href="/admin/email/messages">
+			<Icon name="sms-tracking" size={14} /> Message log
+		</a>
+		<select class="a-select range" bind:value={range} on:change={onRange} aria-label="Date range">
+			{#each data.ranges as r}
+				<option value={r.key}>{r.label}</option>
+			{/each}
+		</select>
+	</div>
 </div>
 
 {#if !data.ready}
@@ -298,8 +318,85 @@
 		{/if}
 	</section>
 
-	<section class="block" in:fly={{ y: 16, duration: 420, delay: 360 }}>
-		<h2 class="a-section-title"><Icon name="tag" size={14} /> By tag</h2>
+	<section class="block" in:fly={{ y: 16, duration: 420, delay: 350 }}>
+		<div class="block-head">
+			<h2 class="a-section-title"><Icon name="category" size={14} /> By purpose</h2>
+			<span class="head-note">{fmt(purposeTotal)} messages classified</span>
+		</div>
+		<div class="a-card table-card">
+			<div class="table-scroll">
+				<table class="ptable">
+					<thead>
+						<tr>
+							<th scope="col" class="col-name">Purpose</th>
+							<th scope="col">Sent</th>
+							<th scope="col">Delivered</th>
+							<th scope="col">Opened</th>
+							<th scope="col">Clicked</th>
+							<th scope="col">Bounced</th>
+							<th scope="col">Complaints</th>
+							<th scope="col">Failed</th>
+							<th scope="col"><span class="sr-only">Messages</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each data.purposes as row (row.tag)}
+							{@const meta = purposeMeta(row.tag)}
+							<tr class:idle={idle(row)}>
+								<th scope="row" class="col-name">
+									<span class="p-name">
+										{meta.label}
+										{#if meta.audience === 'internal'}
+											<span class="p-flag" title="Goes to your own inbox">to you</span>
+										{/if}
+										{#if meta.sensitive}
+											<span class="p-flag warn" title="Contents are never shown in the admin">
+												sensitive
+											</span>
+										{/if}
+									</span>
+									<span class="p-blurb">{meta.blurb}</span>
+									<code class="p-tag">{row.tag}</code>
+								</th>
+								<td><b>{fmt(row.sent)}</b></td>
+								<td>
+									{fmt(row.delivered)}
+									{#if pct(row.delivered, row.sent)}<em>{pct(row.delivered, row.sent)}</em>{/if}
+								</td>
+								<td>
+									{fmt(row.opened)}
+									{#if pct(row.opened, row.delivered)}<em>~{pct(row.opened, row.delivered)}</em>{/if}
+								</td>
+								<td>
+									{fmt(row.clicked)}
+									{#if pct(row.clicked, row.delivered)}<em>{pct(row.clicked, row.delivered)}</em>{/if}
+								</td>
+								<td class:bad={row.bounced > 0}>{fmt(row.bounced)}</td>
+								<td class:bad={row.complained > 0}>{fmt(row.complained)}</td>
+								<td class:bad={row.failed > 0}>{fmt(row.failed)}</td>
+								<td class="col-go">
+									<a class="go" href={logLink(row.tag)} title="Open the message log for {meta.label}">
+										<Icon name="arrow-right4" size={13} />
+									</a>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<p class="foot-note">
+			Sent is what this site handed to Axene; every other column is what Axene reported back, counted
+			once per message. A percentage appears under a count only where the denominator reaches
+			{data.minSample} messages, so most rows here will read as counts for a long while: a rate off a
+			handful of sends is noise. Opened is prefixed with ~ because it can only ever be an
+			approximation. Rows sit at zero rather than disappearing, so "none of these went out" stays
+			visible.
+		</p>
+	</section>
+
+	<section class="block" in:fly={{ y: 16, duration: 420, delay: 400 }}>
+		<h2 class="a-section-title"><Icon name="tag" size={14} /> Every tag, raw</h2>
 		{#if data.tags.length === 0}
 			<div class="a-card a-empty small"><p>No tagged sends in this range.</p></div>
 		{:else}
@@ -318,14 +415,69 @@
 				{/each}
 			</ul>
 			<p class="foot-note">
+				Every tag as stored, including the facets a send carries alongside its purpose:
+				<code>campaign:&lt;id&gt;</code>, <code>segment:&lt;key&gt;</code> and the older free-form
+				labels. One message appears under each of its tags, so these do not sum to the total sent.
 				Counts, not rates: a single tag rarely carries enough volume for a percentage to mean
-				anything. Messages sent without a tag are grouped as
-				<code>(untagged)</code>.
+				anything. Messages sent without any tag are grouped as <code>(untagged)</code>.
 			</p>
 		{/if}
 	</section>
 
-	<section class="block" in:fly={{ y: 16, duration: 420, delay: 420 }}>
+	<section class="block" in:fly={{ y: 16, duration: 420, delay: 440 }}>
+		<h2 class="a-section-title"><Icon name="mouse-circle" size={14} /> Latest opens and clicks</h2>
+		<div class="grid two">
+			<div class="a-card detail-card">
+				<span class="detail-head"><Icon name="eye" size={13} /> Opens</span>
+				{#if data.opens.length === 0}
+					<p class="detail-empty">No opens reported in this range.</p>
+				{:else}
+					<ul class="detail-list">
+						{#each data.opens as row (row.id)}
+							<li>
+								<span class="d-who">{row.recipient ?? 'Unknown recipient'}</span>
+								<span class="d-meta">
+									{purposeMeta(row.purpose).label}
+									{#if row.client}<span class="dot">·</span>{row.client}{/if}
+								</span>
+								<time class="d-when">{when(row.occurredAt)}</time>
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</div>
+			<div class="a-card detail-card">
+				<span class="detail-head"><Icon name="mouse-circle" size={13} /> Clicks</span>
+				{#if data.clicks.length === 0}
+					<p class="detail-empty">No clicks reported in this range.</p>
+				{:else}
+					<ul class="detail-list">
+						{#each data.clicks as row (row.id)}
+							<li>
+								<span class="d-who">{row.recipient ?? 'Unknown recipient'}</span>
+								{#if row.urlLabel}
+									<span class="d-url" title={row.url}>{row.urlLabel}</span>
+								{/if}
+								<span class="d-meta">
+									{purposeMeta(row.purpose).label}
+									{#if row.client}<span class="dot">·</span>{row.client}{/if}
+								</span>
+								<time class="d-when">{when(row.occurredAt)}</time>
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</div>
+		</div>
+		<p class="foot-note">
+			The most recent ten of each, with whatever the provider attached to the event. Verification
+			mail is excluded from both lists by the query, not filtered afterwards. A client name here is
+			read from the user agent on the event: <em>Gmail image proxy</em> and
+			<em>Apple Mail Privacy</em> are machines fetching the pixel, not someone reading.
+		</p>
+	</section>
+
+	<section class="block" in:fly={{ y: 16, duration: 420, delay: 480 }}>
 		<h2 class="a-section-title"><Icon name="close-circle" size={14} /> Recent hard failures</h2>
 		{#if data.failures.length === 0}
 			<div class="a-card a-empty small">
@@ -356,7 +508,7 @@
 		{/if}
 	</section>
 
-	<section class="block" in:fly={{ y: 16, duration: 420, delay: 480 }}>
+	<section class="block" in:fly={{ y: 16, duration: 420, delay: 540 }}>
 		<h2 class="a-section-title"><Icon name="activity" size={14} /> Webhook health</h2>
 		<div class="a-card health">
 			<div class="h-row">
@@ -771,5 +923,215 @@
 		font-size: 11px;
 		color: var(--mute-2);
 		word-break: break-word;
+	}
+	/* header tools */
+	.head-tools {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+	.head-note {
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--mute);
+		margin-bottom: 16px;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	/* purpose table */
+	.table-card {
+		padding: 4px;
+	}
+	.table-scroll {
+		overflow-x: auto;
+	}
+	.ptable {
+		width: 100%;
+		border-collapse: collapse;
+		min-width: 760px;
+	}
+	.ptable thead th {
+		padding: 12px 10px;
+		text-align: right;
+		font-family: var(--mono);
+		font-size: 9.5px;
+		font-weight: 400;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--mute);
+		border-bottom: 1px solid var(--hairline);
+		white-space: nowrap;
+	}
+	.ptable thead th.col-name {
+		text-align: left;
+	}
+	.ptable tbody tr {
+		border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+	}
+	.ptable tbody tr:last-child {
+		border-bottom: 0;
+	}
+	.ptable tbody tr:hover {
+		background: rgba(255, 255, 255, 0.025);
+	}
+	.ptable tbody tr.idle {
+		opacity: 0.5;
+	}
+	.ptable td,
+	.ptable tbody th {
+		padding: 12px 10px;
+		vertical-align: top;
+		font-size: 13px;
+		color: var(--ink-2);
+		text-align: right;
+		white-space: nowrap;
+	}
+	.ptable tbody th.col-name {
+		text-align: left;
+		font-weight: 400;
+		white-space: normal;
+		min-width: 220px;
+	}
+	.ptable td b {
+		font-weight: 500;
+		color: var(--ink);
+	}
+	.ptable td em {
+		display: block;
+		margin-top: 3px;
+		font-family: var(--mono);
+		font-style: normal;
+		font-size: 10px;
+		letter-spacing: 0.08em;
+		color: var(--mute);
+	}
+	.ptable td.bad {
+		color: var(--danger);
+	}
+	.p-name {
+		display: flex;
+		align-items: center;
+		gap: 7px;
+		flex-wrap: wrap;
+		font-size: 13.5px;
+		color: var(--ink);
+	}
+	.p-flag {
+		font-family: var(--mono);
+		font-size: 9px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--mute);
+		border: 1px solid var(--hairline);
+		border-radius: 999px;
+		padding: 2px 7px;
+	}
+	.p-flag.warn {
+		color: var(--spark);
+		border-color: rgba(255, 122, 26, 0.35);
+	}
+	.p-blurb {
+		display: block;
+		margin-top: 4px;
+		font-size: 12px;
+		color: var(--mute);
+		line-height: 1.5;
+		max-width: 40ch;
+	}
+	.p-tag {
+		display: inline-block;
+		margin-top: 5px;
+		font-family: var(--mono);
+		font-size: 10px;
+		color: var(--mute-2);
+	}
+	.col-go {
+		width: 40px;
+	}
+	.go {
+		display: inline-grid;
+		place-items: center;
+		width: 26px;
+		height: 26px;
+		border-radius: 7px;
+		border: 1px solid var(--hairline);
+		color: var(--mute);
+		transition:
+			color 0.18s ease,
+			border-color 0.18s ease;
+	}
+	.go:hover {
+		color: var(--ink);
+		border-color: var(--hairline-2);
+	}
+
+	/* opens and clicks */
+	.detail-card {
+		padding: 16px 18px;
+	}
+	.detail-head {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--mute);
+	}
+	.detail-empty {
+		margin: 14px 0 0;
+		font-size: 13px;
+		color: var(--mute-2);
+	}
+	.detail-list {
+		list-style: none;
+		margin: 12px 0 0;
+		padding: 0;
+		display: grid;
+		gap: 2px;
+	}
+	.detail-list li {
+		display: grid;
+		gap: 3px;
+		padding: 10px 0;
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+	}
+	.d-who {
+		font-size: 13px;
+		color: var(--ink);
+		word-break: break-word;
+	}
+	.d-url {
+		font-family: var(--mono);
+		font-size: 11px;
+		color: var(--ink-2);
+		word-break: break-all;
+	}
+	.d-meta {
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--mute);
+	}
+	.d-when {
+		font-family: var(--mono);
+		font-size: 10px;
+		color: var(--mute-2);
 	}
 </style>

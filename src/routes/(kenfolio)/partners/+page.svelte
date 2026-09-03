@@ -5,39 +5,39 @@
 	const reasons = [
 		{
 			n: '01',
-			title: 'You see where it goes.',
-			body: "Every sponsored cycle ends with a short public note: what shipped, what didn't, and what the money paid for."
+			title: 'Where your name appears',
+			body: 'Standard puts your name and your link on this page, and gives you a page of your own. Workshop adds your logo here, a line on the homepage, and a logo slide at SkillKenya sessions while you sponsor.'
 		},
 		{
 			n: '02',
-			title: 'You reach the right room.',
-			body: 'Quiet but engaged: engineers, founders, and students across East Africa. Your name lives on the homepage, the notes, and one slide at every event I host.'
+			title: 'The quarterly note',
+			body: "Every sponsor gets it by email: a short write-up of what the money paid for, what shipped and what didn't."
 		},
 		{
 			n: '03',
-			title: 'You compound something real.',
-			body: 'Tutoring sessions, infra credits, and a handful of essays a year. None of it disappears at the end of a quarter.'
+			title: 'What the money pays for',
+			body: 'SkillKenya tutoring, the hosting and tooling behind the open-source work, and the time to keep both going.'
 		}
 	];
 
 	const tiers = [
 		{
 			label: 'Standard',
-			amount: '$1 to $5',
+			amount: '$5',
 			period: '/ month',
-			what: 'Listed on the partners page. A thank-you and the quarterly note.'
+			what: 'Your name and your link on this page, a page of your own, and the quarterly note. Or $25 once, which lists you for twelve months.'
 		},
 		{
 			label: 'Workshop',
-			amount: '$10 to $20',
+			amount: '$15',
 			period: '/ month',
-			what: 'A line on the homepage. Logo at SkillKenya events. Early access to write-ups.'
+			what: 'Everything in Standard, plus your logo here, a line on the homepage, and a logo slide at SkillKenya sessions. Or $100 once, for twelve months.'
 		},
 		{
 			label: 'Custom',
 			amount: 'Arranged',
 			period: '',
-			what: 'Co-built. We pick one project or cohort a year and put your name on it. Pricing is scoped to what we build together.',
+			what: 'Set up by email. What it covers and what it costs are whatever we agree, so there is nothing fixed to quote here.',
 			link: 'mailto:partners@kentom.co.ke?subject=Custom%20partnership'
 		}
 	];
@@ -52,7 +52,7 @@
 
 <Seo
 	title="Partners"
-	description="Back the work, not the noise. Sponsorship tiers and reasons to partner with kenTom, funding SkillKenya tutoring and open-source work."
+	description="Sponsorship tiers for kenTom: what each one costs and what it gets you, plus the sponsors funding SkillKenya tutoring and the open-source work."
 	path="/partners"
 	keywords="sponsor developer, partner with kenTom, open-source sponsorship Kenya"
 	breadcrumbs={[{ name: 'Partners', path: '/partners' }]}
@@ -75,8 +75,7 @@
 					<span class="empty-ic"><Icon name="ai-heart-square" size={44} /></span>
 					<p class="empty-title">No partners yet.</p>
 					<p class="empty-sub">
-						This wall is waiting. Sponsors appear here once they go live. Your logo could be the
-						first.
+						Sponsors show up here once their payment clears and they have asked to be listed.
 					</p>
 				</div>
 			{:else}
@@ -134,9 +133,22 @@
 			</div>
 		</section>
 
-		<!-- 3 · the text -->
+		<!-- 2b · sign up -->
+		<section class="block" id="join">
+			<div class="section-label">Become a partner</div>
+			<p class="join-lede">
+				Two tiers, no calls, no contract. Pick one and your listing goes up when the payment
+				clears.
+			</p>
+			<a class="join-cta" href="/partners/join">
+				<span>Sponsor kenTom</span>
+				<span class="ar" aria-hidden="true"><Icon name="arrow-right4" size={15} /></span>
+			</a>
+		</section>
+
+				<!-- 3 · the text -->
 		<section class="block">
-			<div class="section-label">Why partner</div>
+			<div class="section-label">What sponsorship covers</div>
 			<ol class="reasons">
 				{#each reasons as r}
 					<li>
@@ -152,7 +164,7 @@
 
 		<div class="cta-row">
 			<a class="pill pill--solid" href="mailto:partners@kentom.co.ke?subject=Sponsorship">
-				<span>Start a conversation</span>
+				<span>Email about sponsorship</span>
 				<span class="ar" aria-hidden="true"><Icon name="messages" size={14} /></span>
 			</a>
 			<span class="alt">
@@ -307,6 +319,36 @@
 	}
 	.past-list a:hover {
 		color: var(--ink-2);
+	}
+	.join-lede {
+		margin: 0 0 20px;
+		max-width: 44ch;
+		font-size: 15px;
+		line-height: 1.6;
+		color: var(--ink-2);
+	}
+	.join-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 11px;
+		padding: 13px 24px;
+		border-radius: 999px;
+		background: var(--spark);
+		color: #0b0b0b;
+		text-decoration: none;
+		font-size: 15px;
+		transition: filter 0.2s ease, transform 0.2s ease;
+	}
+	.join-cta:hover {
+		filter: brightness(1.08);
+		transform: translateY(-1px);
+	}
+	.join-cta .ar {
+		display: inline-flex;
+		line-height: 0;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.join-cta:hover { transform: none; }
 	}
 	.tiers {
 		display: grid;

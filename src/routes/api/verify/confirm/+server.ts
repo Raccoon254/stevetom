@@ -14,6 +14,14 @@ export const POST: RequestHandler = async ({ request }) => {
 			return json({ success: false, error: result.reason }, { status: 400 });
 		}
 
+		// sponsorship signup (/partners/join): proving the address is all this
+		// does. No Sponsor row is created and no payment is taken here; the
+		// Paystack webhook stays the only thing that creates a sponsor. The
+		// canonical address goes back so the client can use it for checkout.
+		if (result.payload?.mode === 'sponsor') {
+			return json({ success: true, verified: true, email: result.email });
+		}
+
 		// newsletter sign-up: just subscribe the verified address
 		if (result.payload?.mode === 'newsletter') {
 			await subscribeEmail(result.email);

@@ -14,6 +14,7 @@
 		{ href: '/admin/projects', label: 'Projects', icon: 'box' },
 		{ href: '/admin/services', label: 'Services', icon: 'setting' },
 		{ href: '/admin/service-requests', label: 'Requests', icon: 'messages' },
+		{ href: '/admin/sponsors', label: 'Sponsors', icon: 'crown' },
 		{ href: '/admin/newsletter', label: 'Newsletter', icon: 'sms' },
 		{ href: '/admin/email', label: 'Email', icon: 'sms-tracking' },
 		{ href: '/admin/contacts', label: 'Contacts', icon: 'profile-2user' },

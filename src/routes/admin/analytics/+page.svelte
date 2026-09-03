@@ -2,17 +2,24 @@
 	import { fade, fly } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import Icon from '$lib/components/Icon.svelte';
+	import ChartFrame from '$lib/components/charts/ChartFrame.svelte';
+	import ChartLegend from '$lib/components/charts/ChartLegend.svelte';
+	import TimeSeriesChart from '$lib/components/charts/TimeSeriesChart.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	// Two series, so both get a legend entry and their own colour. The bars use
-	// the admin accent; the visitors line uses the cool tone already in this UI.
-	const VIEWS = '#ff7a1a';
-	const VISITORS = '#3f9bd1';
+	/* The traffic chart used to be a hand-rolled SVG in this file, with its
+	   own geometry, its own tooltip and two hard-coded hexes. It is now the
+	   shared TimeSeriesChart, so the dashboard and this page draw the same
+	   quantity the same way and there is one chart implementation in the
+	   codebase rather than two. The colours come from the validated chart
+	   palette (see $lib/components/charts/chart-tokens.css) instead of the
+	   accent orange, which is a UI colour rather than a series colour. */
 
 	const nf = new Intl.NumberFormat('en');
 	const fmt = (n: number) => nf.format(n);
+	const countTick = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(0)}k` : String(Math.round(n)));
 
 	let range = data.rangeKey;
 	$: range = data.rangeKey;
@@ -22,24 +29,7 @@
 		goto(`/admin/analytics?range=${value}`, { replaceState: true, noScroll: true, keepFocus: true });
 	}
 
-	// ── chart geometry ──────────────────────────────────────────────────────
-	const W = 1000;
-	const H = 280;
-	const PAD = { top: 18, right: 10, bottom: 34, left: 46 };
-	const plotW = W - PAD.left - PAD.right;
-	const plotH = H - PAD.top - PAD.bottom;
-
-	$: series = data.series;
-	$: peak = Math.max(1, ...series.map((p) => p.views), ...series.map((p) => p.visitors));
-	$: slot = series.length ? plotW / series.length : plotW;
-	$: barW = Math.max(1, Math.min(slot - 2, 46)); // 2px surface gap between bars
-	$: x = (i: number) => PAD.left + i * slot + (slot - barW) / 2;
-	$: mid = (i: number) => PAD.left + i * slot + slot / 2;
-	$: y = (v: number) => PAD.top + plotH - (v / peak) * plotH;
-	$: visitorLine = series.map((p, i) => `${mid(i)},${y(p.visitors)}`).join(' ');
-
-	let hover: number | null = null;
-
+	// ── traffic series ──────────────────────────────────────────────────────
 	function bucketLabel(iso: string, unit: string): string {
 		const d = new Date(iso);
 		if (unit === 'hour') {
@@ -47,9 +37,36 @@
 		}
 		return d.toLocaleDateString('en', { month: 'short', day: 'numeric' });
 	}
+	function bucketLabelLong(iso: string, unit: string): string {
+		const d = new Date(iso);
+		if (unit === 'hour')
+			return d.toLocaleString('en', {
+				month: 'short',
+				day: 'numeric',
+				hour: '2-digit',
+				minute: '2-digit'
+			});
+		if (unit === 'week')
+			return `Week of ${d.toLocaleDateString('en', { month: 'short', day: 'numeric' })}`;
+		return d.toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric' });
+	}
 
-	// a handful of x labels, never one per bar
-	$: tickEvery = Math.max(1, Math.ceil(series.length / 7));
+	$: labels = data.series.map((p) => bucketLabel(p.bucket, data.unit));
+	$: longLabels = data.series.map((p) => bucketLabelLong(p.bucket, data.unit));
+	$: trafficSeries = [
+		{ name: 'Page views', color: 'var(--chart-1)', values: data.series.map((p) => p.views) },
+		{
+			name: 'Visitors',
+			color: 'var(--chart-2)',
+			values: data.series.map((p) => p.visitors),
+			kind: 'line' as const
+		}
+	];
+	$: trafficRows = data.series.map((p) => [
+		bucketLabelLong(p.bucket, data.unit),
+		fmt(p.views),
+		fmt(p.visitors)
+	]);
 
 	// ── breakdown helpers ───────────────────────────────────────────────────
 	const share = (count: number, rows: { count: number }[]) => {
@@ -169,95 +186,32 @@
 	</div>
 
 	<section class="block" in:fly={{ y: 16, duration: 420, delay: 240 }}>
-		<div class="block-head">
-			<h2 class="a-section-title"><Icon name="graph" size={14} /> Traffic over time</h2>
-			<div class="legend">
-				<span class="key"><i style="background:{VIEWS}"></i> Page views</span>
-				<span class="key"><i class="line" style="background:{VISITORS}"></i> Visitors</span>
-			</div>
-		</div>
-
-		{#if !hasTraffic}
-			<div class="a-card a-empty">
-				<div class="a-empty-icon"><Icon name="graph" size={30} /></div>
-				<h3>No page views in this range</h3>
-				<p>Hits appear here as soon as someone visits the site.</p>
-			</div>
-		{:else}
-			<div class="a-card chart-card">
-				<div class="chart-wrap">
-					<svg viewBox="0 0 {W} {H}" role="img" aria-label="Page views and visitors over {data.rangeLabel.toLowerCase()}">
-						<!-- recessive grid -->
-						{#each [0, 0.5, 1] as t}
-							<line
-								x1={PAD.left}
-								x2={W - PAD.right}
-								y1={PAD.top + plotH * t}
-								y2={PAD.top + plotH * t}
-								class="gridline"
-							/>
-							<text x={PAD.left - 10} y={PAD.top + plotH * t + 5} class="axis" text-anchor="end">
-								{fmt(Math.round(peak * (1 - t)))}
-							</text>
-						{/each}
-
-						{#each series as point, i}
-							{#if point.views > 0}
-								<rect
-									x={x(i)}
-									y={y(point.views)}
-									width={barW}
-									height={Math.max(2, PAD.top + plotH - y(point.views))}
-									rx="3"
-									fill={VIEWS}
-									opacity={hover === null || hover === i ? 1 : 0.45}
-								>
-									<title>{bucketLabel(point.bucket, data.unit)}: {point.views} views, {point.visitors} visitors</title>
-								</rect>
-							{/if}
-						{/each}
-
-						{#if series.length > 1}
-							<polyline points={visitorLine} class="visitors" stroke={VISITORS} />
-						{/if}
-
-						{#each series as point, i}
-							{#if i % tickEvery === 0}
-								<text x={mid(i)} y={H - 10} class="axis" text-anchor="middle">
-									{bucketLabel(point.bucket, data.unit)}
-								</text>
-							{/if}
-						{/each}
-
-						<!-- hover targets, wider than the bars so they are easy to hit -->
-						{#each series as _, i}
-							<rect
-								x={PAD.left + i * slot}
-								y={PAD.top}
-								width={slot}
-								height={plotH}
-								fill="transparent"
-								role="presentation"
-								on:mouseenter={() => (hover = i)}
-								on:mouseleave={() => (hover = null)}
-							/>
-						{/each}
-					</svg>
-
-					{#if hover !== null && series[hover]}
-						<div
-							class="tip"
-							style="left:{((mid(hover) / W) * 100).toFixed(2)}%"
-							transition:fade={{ duration: 90 }}
-						>
-							<span class="tip-when">{bucketLabel(series[hover].bucket, data.unit)}</span>
-							<span class="tip-row"><i style="background:{VIEWS}"></i>{fmt(series[hover].views)} views</span>
-							<span class="tip-row"><i style="background:{VISITORS}"></i>{fmt(series[hover].visitors)} visitors</span>
-						</div>
-					{/if}
-				</div>
-			</div>
-		{/if}
+		<ChartFrame
+			title="Traffic over time"
+			note="Visitors are counted from the daily rotating hash, so the same person on two days counts twice."
+			empty={!hasTraffic}
+			emptyIcon="graph"
+			emptyTitle="No page views in this range"
+			emptyText="Hits appear here as soon as someone visits the site."
+			columns={['Bucket', 'Page views', 'Visitors']}
+			rows={trafficRows}
+		>
+			<ChartLegend
+				slot="legend"
+				items={[
+					{ name: 'Page views', color: 'var(--chart-1)' },
+					{ name: 'Visitors', color: 'var(--chart-2)', kind: 'line' }
+				]}
+			/>
+			<TimeSeriesChart
+				{labels}
+				tooltipLabels={longLabels}
+				series={trafficSeries}
+				height={280}
+				formatValue={countTick}
+				ariaLabel="Page views and visitors over {data.rangeLabel.toLowerCase()}"
+			/>
+		</ChartFrame>
 	</section>
 
 	<section class="block" in:fly={{ y: 16, duration: 420, delay: 300 }}>
@@ -396,13 +350,6 @@
 	.block {
 		margin-bottom: clamp(28px, 5vh, 48px);
 	}
-	.block-head {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		gap: 12px;
-	}
 
 	.delta {
 		display: inline-flex;
@@ -413,102 +360,10 @@
 		font-size: 9.5px;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
-		color: #9fe2a0;
+		color: var(--chart-delta-up);
 	}
 	.delta.down {
-		color: var(--danger);
-	}
-
-	/* legend: identity is never colour alone, each key is labelled */
-	.legend {
-		display: flex;
-		gap: 16px;
-		margin-bottom: 16px;
-	}
-	.key {
-		display: inline-flex;
-		align-items: center;
-		gap: 7px;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: var(--mute);
-	}
-	.key i {
-		width: 9px;
-		height: 9px;
-		border-radius: 2px;
-	}
-	.key i.line {
-		height: 2px;
-		border-radius: 2px;
-	}
-
-	.chart-card {
-		padding: 16px 14px 8px;
-	}
-	.chart-wrap {
-		position: relative;
-	}
-	.chart-wrap svg {
-		display: block;
-		width: 100%;
-		height: auto;
-		overflow: visible;
-	}
-	line.gridline {
-		stroke: rgba(255, 255, 255, 0.08);
-		stroke-width: 1;
-	}
-	text.axis {
-		fill: #6fa89c;
-		font-family: var(--mono);
-		font-size: 15px;
-		letter-spacing: 0.04em;
-	}
-	polyline.visitors {
-		fill: none;
-		stroke-width: 2.5;
-		stroke-linejoin: round;
-		stroke-linecap: round;
-	}
-	rect {
-		transition: opacity 0.15s ease;
-	}
-
-	.tip {
-		position: absolute;
-		top: 4px;
-		transform: translateX(-50%);
-		display: grid;
-		gap: 3px;
-		padding: 9px 11px;
-		background: var(--panel);
-		border: 1px solid var(--hairline-2);
-		border-radius: 9px;
-		pointer-events: none;
-		white-space: nowrap;
-		z-index: 2;
-	}
-	.tip-when {
-		font-family: var(--mono);
-		font-size: 9.5px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: var(--mute);
-	}
-	.tip-row {
-		display: inline-flex;
-		align-items: center;
-		gap: 7px;
-		font-size: 12.5px;
-		color: var(--ink);
-	}
-	.tip-row i {
-		width: 8px;
-		height: 8px;
-		border-radius: 2px;
+		color: var(--chart-delta-down);
 	}
 
 	/* conversions */

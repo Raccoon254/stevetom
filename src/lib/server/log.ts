@@ -6,7 +6,7 @@ import { prisma } from '$lib/db.js';
 
 export type LogEntry = {
 	action: string;
-	entity: 'request' | 'project' | 'service' | 'donation' | 'newsletter';
+	entity: 'request' | 'project' | 'service' | 'donation' | 'newsletter' | 'sponsor';
 	entityId?: string | null;
 	summary: string;
 	actor?: 'system' | 'admin' | 'client';

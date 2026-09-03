@@ -3,10 +3,12 @@ import { json } from '@sveltejs/kit';
 import { PAYSTACK_SECRET_KEY } from '$env/static/private';
 import { prisma } from '$lib/db.js';
 import { CONVERSIONS, recordEvent } from '$lib/server/analytics';
+import { ensurePlan } from '$lib/server/paystackPlans';
 
 // Initialize transaction endpoint
 export const POST: RequestHandler = async ({ request, getClientAddress }) => {
-  const { amount, email, currency, sessionId, visitorId, sponsor } = await request.json();
+  const { amount, email, currency, sessionId, visitorId, sponsor, cadence } = await request.json();
+  const wantsRecurring = cadence === 'RECURRING';
 
   // Who they are and whether they want to be seen. All optional: a plain
   // donation carries none of it. `listed` is the consent flag, and it is opt-in
@@ -73,6 +75,14 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
     }
   }
 
+  // A subscription needs a Plan attached at initialisation. Without one the
+  // charge happens exactly once, so "monthly" would be a false promise.
+  let planCode: string | null = null;
+  if (wantsRecurring) {
+    planCode = await ensurePlan(kesAmount, 'monthly');
+  }
+  const isRecurring = wantsRecurring && Boolean(planCode);
+
   try {
     // Initialize Paystack transaction
     const response = await fetch('https://api.paystack.co/transaction/initialize', {
@@ -90,6 +100,7 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
         // including someone who abandoned checkout and pressed back. Paystack
         // appends ?reference= and ?trxref= to this.
         callback_url: `${process.env.ORIGIN || 'http://localhost:5173'}/thank-you`,
+        ...(planCode ? { plan: planCode } : {}),
         metadata: {
           // Read back by the webhook on charge.success. Paystack echoes
           // metadata verbatim, so this is how the listing details survive the
@@ -124,7 +135,7 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
         paystackReference: data.data.reference,
         status: 'PENDING',
         provider: 'PAYSTACK',
-        cadence: 'ONE_TIME',
+        cadence: isRecurring ? 'RECURRING' : 'ONE_TIME',
         // Promoted out of the metadata blob into real columns so they can be
         // queried and indexed rather than JSON-parsed row by row.
         usdAmount,
@@ -152,7 +163,10 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
     return json({
       authorizationUrl: data.data.authorization_url,
       reference: data.data.reference,
-      accessCode: data.data.access_code
+      accessCode: data.data.access_code,
+      // If a plan was wanted but could not be created, this comes back false and
+      // the caller must not tell the sponsor they set up a monthly payment.
+      recurring: isRecurring
     });
   } catch (err: any) {
     console.error('Paystack donation error:', err);

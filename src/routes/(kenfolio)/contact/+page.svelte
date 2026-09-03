@@ -153,8 +153,8 @@
 		{#if step === 'form'}
 			<h1 class="headline">Start a <em>conversation</em>.</h1>
 			<p class="lede">
-				A project, a question, or just hello. Tell me what's on your mind. Every message lands in
-				my inbox and I usually reply within a day.
+				A project, a question, or just hello. Every message lands in my inbox and I usually reply
+				within a day.
 			</p>
 
 			<div class="body">

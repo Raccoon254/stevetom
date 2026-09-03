@@ -1,0 +1,80 @@
+/* ──────────────────────────────────────────────────────────────────
+   kenTom · chart palette
+   ──────────────────────────────────────────────────────────────────
+   Chart chrome (grid, axis ink, tooltip surface) reuses the tokens the
+   rest of the UI already ships: --hairline, --mute, --ink, --panel,
+   --bg. Only the *data* colours live here, because the design system
+   had no series palette and eyeballing one is exactly what a chart
+   must not do.
+
+   These slots come from the validated categorical palette in the
+   dataviz reference, re-checked against this site's own surfaces
+   rather than the reference's:
+
+     categorical, light  (surface #f4f1ea)  PASS  worst adjacent
+                                                  CVD ΔE 24.7,
+                                                  normal ΔE 33.6
+                                            WARN  #eb6834 at 2.84:1 —
+                                                  relief shipped as
+                                                  visible value labels
+                                                  + the table view on
+                                                  every chart frame
+     categorical, dark   (surface #0d0d0d)  PASS  all four checks
+     ordinal ramp, light (surface #f4f1ea)  PASS  light end #6da7ec
+                                                  2.22:1 (step 250 was
+                                                  too light for this
+                                                  warmer surface, so
+                                                  the ramp starts one
+                                                  step darker)
+     ordinal ramp, dark  (surface #0d0d0d)  PASS  light end 3.60:1
+
+   Categorical slots are assigned in fixed order and never cycled; no
+   chart on this site carries more than two of them. Ordered scales
+   (funnel stages, sponsor tiers) take the one-hue ordinal ramp so the
+   reader sees the order in the colour.
+   ────────────────────────────────────────────────────────────────── */
+
+:root {
+	/* the surface a chart is painted on: gaps and rings are drawn in it */
+	--chart-surface: #f4f1ea;
+
+	/* categorical — identity (which series) */
+	--chart-1: #2a78d6; /* blue   */
+	--chart-2: #eb6834; /* orange */
+	--chart-3: #1baf7a; /* aqua   */
+
+	/* ordinal — position in a sequence, light to dark */
+	--chart-ord-1: #6da7ec;
+	--chart-ord-2: #3987e5;
+	--chart-ord-3: #256abf;
+	--chart-ord-4: #184f95;
+
+	/* delta ink — a reserved pair, never reused as a series colour, and
+	   always shipped with a chevron and the words "vs previous period",
+	   so direction never rides on hue alone. These are read as small
+	   text, so they are stepped for WCAG text contrast rather than the
+	   3:1 mark floor: 6.69:1 and 6.34:1 on the light surface. */
+	--chart-delta-up: #006300;
+	--chart-delta-down: #a32b2b;
+}
+
+/* The admin runs always-dark regardless of the site theme toggle, so it
+   takes the dark steps by class as well as by data-theme. Custom
+   properties inherit, so the .admin element wins for its own subtree. */
+:root[data-theme='dark'],
+.admin {
+	--chart-surface: #0d0d0d;
+
+	--chart-1: #3987e5;
+	--chart-2: #d95926;
+	--chart-3: #199e70;
+
+	--chart-ord-1: #9ec5f4;
+	--chart-ord-2: #6da7ec;
+	--chart-ord-3: #3987e5;
+	--chart-ord-4: #256abf;
+
+	/* 5.79:1 and 6.02:1 on the dark surface */
+	--chart-delta-up: #0ca30c;
+	--chart-delta-down: #e66767;
+}

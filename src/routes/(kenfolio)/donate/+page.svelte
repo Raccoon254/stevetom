@@ -55,7 +55,7 @@
 				message = `Thank you for your ${data.currency} ${data.amount} gift. It goes straight into the work.`;
 			} else {
 				status = 'error';
-				message = 'We could not verify that payment. If you were charged, please get in touch.';
+				message = 'I could not verify that payment. If you were charged, email me@kentom.co.ke.';
 			}
 		} catch {
 			status = 'error';
@@ -232,8 +232,9 @@
 								<span>Show me as Anonymous instead</span>
 							</label>
 							<p class="listing-note">
-								Listings start at $25 one-off. Below that you are thanked, not listed. A logo
-								needs the Workshop tier. You can ask to be removed at any time.
+								Listings start at $25 in one gift. Below that you are thanked, not listed. A logo
+								needs the Workshop tier, which starts at $100 in one gift. A listing runs for twelve
+								months, and you can ask to be taken down at any time.
 							</p>
 						{/if}
 					</div>

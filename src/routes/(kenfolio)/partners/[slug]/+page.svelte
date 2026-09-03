@@ -78,7 +78,6 @@
 <style>
 	.wrap {
 		max-width: 560px;
-		margin: 0 auto;
 	}
 	.back {
 		display: inline-flex;

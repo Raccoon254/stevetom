@@ -113,7 +113,7 @@
 			<div class="mark wait"><Icon name="clock" size={22} /></div>
 			<h1>Still confirming.</h1>
 			<p class="lede">
-				Your bank has not finished telling us this one settled. Nothing is wrong and there is
+				Your bank has not confirmed this one settled yet. Nothing is wrong and there is
 				nothing to do: it usually lands within a minute or two, and the receipt follows once it
 				does. You will not be charged twice.
 			</p>
@@ -144,7 +144,6 @@
 <style>
 	.wrap {
 		max-width: 560px;
-		margin: 0 auto;
 	}
 	.mark {
 		display: inline-flex;

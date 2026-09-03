@@ -2,6 +2,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { newCode, makeToken } from '$lib/server/otp';
 import { sendEmail, renderEmail, p, otpBlock, SENDERS } from '$lib/server/mailer';
+import { EMAIL_TAGS } from '$lib/emailTags';
 
 /** Step 1: issue a verification code to the email on a contact/quote form. */
 export const POST: RequestHandler = async ({ request }) => {
@@ -19,7 +20,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			from: SENDERS.hq,
 			to: [{ email }],
 			subject: 'Your kenTom verification code',
-			tags: ['verification'],
+			tags: [EMAIL_TAGS.OTP, 'verification'],
 			html: renderEmail({
 				heading: 'Confirm your email',
 				preheader: `Your code is ${code}`,

@@ -88,7 +88,7 @@ export const POST: RequestHandler = async ({ request }) => {
 					if (sponsor) {
 						await logActivity({
 							action: 'sponsor.ended',
-							entity: 'donation',
+							entity: 'sponsor',
 							entityId: sponsor.id,
 							summary: `Sponsorship ended for ${sponsor.displayName}, listing runs to ${
 								sponsor.expiresAt?.toISOString().slice(0, 10) ?? 'now'

@@ -16,6 +16,7 @@ import {
 	CONTACT
 } from './mailer';
 import { logActivity } from './log';
+import { EMAIL_TAGS } from '$lib/emailTags';
 
 export type RequestInput = {
 	name?: string;
@@ -112,7 +113,7 @@ export async function createServiceRequest(data: RequestInput): Promise<{ id: st
 			to: [NOTIFY_TO],
 			replyTo: { email },
 			subject: isQuote ? `New quote request from ${who}` : `New contact message from ${who}`,
-			tags: ['notification', isQuote ? 'quote' : 'contact'],
+			tags: [EMAIL_TAGS.REQUEST_NOTIFICATION, 'notification', isQuote ? 'quote' : 'contact'],
 			html: renderEmail({
 				heading: isQuote ? 'New quote request' : 'New contact message',
 				preheader: `From ${who}`,
@@ -134,7 +135,7 @@ export async function createServiceRequest(data: RequestInput): Promise<{ id: st
 			to: [{ email, name: who }],
 			replyTo: CONTACT,
 			subject: isQuote ? 'I have your request' : 'I have your message',
-			tags: ['confirmation', isQuote ? 'quote' : 'contact'],
+			tags: [EMAIL_TAGS.REQUEST_CONFIRMATION, 'confirmation', isQuote ? 'quote' : 'contact'],
 			html: renderEmail({
 				heading: 'Thank you',
 				preheader: `I have your ${isQuote ? 'request' : 'message'}.`,
@@ -154,4 +155,62 @@ export async function createServiceRequest(data: RequestInput): Promise<{ id: st
 	}
 
 	return { id: serviceRequest.id };
+}
+
+/**
+ * The admin -> client reply for one service request: the email itself and the
+ * activity-log line that records it.
+ *
+ * This lives here, next to the request's own emails, so the two callers share
+ * one implementation: the admin request page's `reply` form action and the
+ * older POST /api/service-requests/[id]/reply endpoint. Neither reimplements
+ * the email.
+ *
+ * It never throws. Failures come back as a status and a message, so the API
+ * route can answer with JSON and the form action can answer with `fail()`.
+ */
+export type ReplyResult =
+	| { ok: true; email: string }
+	| { ok: false; status: number; error: string };
+
+export async function sendRequestReply(id: string, message: unknown): Promise<ReplyResult> {
+	const text = String(message ?? '').trim();
+	if (!text) return { ok: false, status: 400, error: 'The reply is empty.' };
+
+	try {
+		const sr = await prisma.serviceRequest.findUnique({ where: { id } });
+		if (!sr) return { ok: false, status: 404, error: 'Request not found.' };
+
+		const paras = text
+			.split(/\n{2,}/)
+			.map((para) => p(esc(para).replace(/\n/g, '<br>')))
+			.join('');
+
+		await sendEmail({
+			from: SENDERS.hq,
+			to: [{ email: sr.clientEmail, name: sr.clientName }],
+			replyTo: CONTACT,
+			subject: `Re: ${sr.projectTitle}`,
+			tags: [EMAIL_TAGS.REQUEST_REPLY, 'reply'],
+			html: renderEmail({
+				heading: `Hi ${esc(sr.clientName.split(' ')[0] || sr.clientName)},`,
+				preheader: 'A reply from kenTom.',
+				footerNote: 'You received this as a reply to your request on kentom.co.ke.',
+				bodyHtml: paras + p('Steve', 0)
+			})
+		});
+
+		await logActivity({
+			action: 'request.reply',
+			entity: 'request',
+			entityId: sr.id,
+			actor: 'admin',
+			summary: `Replied by email to ${sr.clientName}`
+		});
+
+		return { ok: true, email: sr.clientEmail };
+	} catch (error) {
+		console.error('reply failed:', error);
+		return { ok: false, status: 500, error: 'Failed to send the reply.' };
+	}
 }

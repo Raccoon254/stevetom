@@ -6,6 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import { sign } from './otp';
 import { sendEmail, renderEmail, p, buttonDark, esc, SENDERS } from './mailer';
 import { logActivity } from './log';
+import { EMAIL_TAGS } from '$lib/emailTags';
 import { posts } from '$lib/content';
 
 const prisma = new PrismaClient();
@@ -38,7 +39,7 @@ export async function subscribeEmail(email: string): Promise<void> {
 			from: SENDERS.hq,
 			to: [{ email: addr }],
 			subject: "You're on the list",
-			tags: ['newsletter', 'welcome'],
+			tags: [EMAIL_TAGS.NEWSLETTER_WELCOME, 'newsletter', 'welcome'],
 			headers: {
 				'List-Unsubscribe': `<${unsubscribeUrl(addr)}>`,
 				'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
@@ -98,7 +99,7 @@ export async function sendIssue(
 				from: SENDERS.hq,
 				to: [{ email: sub.email }],
 				subject: post.title,
-				tags: ['newsletter', 'issue'],
+				tags: [EMAIL_TAGS.NEWSLETTER_ISSUE, 'newsletter', 'issue'],
 				headers: {
 					'List-Unsubscribe': `<${unsubscribeUrl(sub.email)}>`,
 					'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'

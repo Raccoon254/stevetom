@@ -41,6 +41,7 @@ import {
 import { unsubscribeUrl } from '$lib/server/newsletter';
 import { logActivity } from '$lib/server/log';
 import { renderBodyHtml, renderBodyText } from '$lib/emailMarkdown';
+import { EMAIL_TAGS } from '$lib/emailTags';
 import {
 	SEGMENTS,
 	contactSources,
@@ -321,7 +322,7 @@ export async function sendTest(campaignId: string): Promise<ActionResult> {
 			subject: `[TEST] ${campaign.subject}`,
 			html: renderCampaignHtml(campaign, NOTIFY_TO.email),
 			text: renderCampaignText(campaign, NOTIFY_TO.email),
-			tags: tagsFor(campaign, ['test'])
+			tags: [EMAIL_TAGS.CAMPAIGN_TEST, ...tagsFor(campaign, ['test'])]
 		});
 	} catch (error) {
 		return { ok: false, error: `The test send failed: ${errorText(error)}` };
@@ -405,7 +406,7 @@ export async function deliverBatch(campaignId: string): Promise<BatchResult> {
 	}
 
 	const from = senderFor(campaign.fromKey);
-	const tags = tagsFor(campaign);
+	const tags = [EMAIL_TAGS.CAMPAIGN, ...tagsFor(campaign)];
 	const startedAt = Date.now();
 
 	let sent = 0;
