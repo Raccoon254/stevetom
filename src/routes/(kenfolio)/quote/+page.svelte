@@ -48,6 +48,7 @@
 	let service = '';
 	let busy = false;
 	let error = '';
+	let briefEl: HTMLInputElement | null = null;
 
 	// verification
 	let token = '';
@@ -58,6 +59,24 @@
 	async function start() {
 		if (busy) return;
 		error = '';
+
+		/*
+		 * The brief was optional, so a request could arrive with nothing in it at
+		 * all. createServiceRequest then falls back to a generated description
+		 * ("Quote request for ...") and what lands in the admin is a name, an
+		 * email and no idea what the person wants. That is not a lead, it is a
+		 * round trip to ask the question the form already asked.
+		 */
+		if (brief.trim().length < 10) {
+			error = 'Tell me what you are building, in a sentence. That is what I price from.';
+			await tick();
+			briefEl?.focus();
+			return;
+		}
+		if (!service) {
+			error = 'Pick what kind of work it is.';
+			return;
+		}
 		if (!email.includes('@')) {
 			error = 'Enter a valid email address.';
 			return;
@@ -150,7 +169,14 @@
 			<h1 class="prompt">Tell me what you're <em>building</em>.</h1>
 
 			<div class="field">
-				<input type="text" placeholder="A sentence about it" aria-label="Brief" bind:value={brief} />
+				<input
+					type="text"
+					placeholder="A sentence about it"
+					aria-label="Brief"
+					bind:this={briefEl}
+					bind:value={brief}
+					aria-invalid={error.startsWith('Tell me what') ? 'true' : undefined}
+				/>
 			</div>
 
 			<div class="pick">
