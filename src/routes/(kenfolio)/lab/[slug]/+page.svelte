@@ -7,6 +7,7 @@
 	import RainDemo from '$lib/components/lab/RainDemo.svelte';
 	import ScrollDropDemo from '$lib/components/lab/ScrollDropDemo.svelte';
 	import ThemeToggle from '$lib/components/kenfolio/ThemeToggle.svelte';
+	import { PERSON_ID, WEBSITE_ID, SITE, abs } from '$lib/seo';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -23,6 +24,26 @@
 	$: Demo = demoMap[x.demo];
 	$: idx = experiments.findIndex((e) => e.slug === x.slug);
 	$: next = experiments[(idx + 1) % experiments.length];
+	// TechArticle: each lab page is a write-up of how the demo was built. No
+	// datePublished is claimed because the data only carries a year, not a date.
+	$: labLd = {
+		'@context': 'https://schema.org',
+		'@type': 'TechArticle',
+		'@id': `${abs(`/lab/${x.slug}`)}#article`,
+		headline: x.name,
+		name: x.name,
+		description: x.summary,
+		url: abs(`/lab/${x.slug}`),
+		inLanguage: SITE.language,
+		copyrightYear: x.year,
+		keywords: [x.tag, 'interface animation', 'creative coding'].join(', '),
+		author: { '@id': PERSON_ID },
+		publisher: { '@id': PERSON_ID },
+		isPartOf: { '@id': WEBSITE_ID },
+		mainEntityOfPage: { '@type': 'WebPage', '@id': abs(`/lab/${x.slug}`) },
+		articleSection: x.tag,
+		about: x.sections.map((sec) => ({ '@type': 'Thing', name: sec.heading }))
+	};
 </script>
 
 <Seo
@@ -31,10 +52,13 @@
 	path="/lab/{x.slug}"
 	type="article"
 	keywords="{x.tag} experiment, {x.name}, interface animation, creative coding"
+	section={x.tag}
+	tags={[x.tag]}
 	breadcrumbs={[
 		{ name: 'Lab', path: '/lab' },
 		{ name: x.name, path: `/lab/${x.slug}` }
 	]}
+	jsonld={[labLd]}
 />
 
 <main class="page">

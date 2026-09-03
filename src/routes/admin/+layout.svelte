@@ -10,10 +10,14 @@
 
 	const nav = [
 		{ href: '/admin', label: 'Dashboard', icon: 'chart' },
+		{ href: '/admin/analytics', label: 'Analytics', icon: 'graph' },
 		{ href: '/admin/projects', label: 'Projects', icon: 'box' },
 		{ href: '/admin/services', label: 'Services', icon: 'setting' },
 		{ href: '/admin/service-requests', label: 'Requests', icon: 'messages' },
 		{ href: '/admin/newsletter', label: 'Newsletter', icon: 'sms' },
+		{ href: '/admin/email', label: 'Email', icon: 'sms-tracking' },
+		{ href: '/admin/contacts', label: 'Contacts', icon: 'profile-2user' },
+		{ href: '/admin/messages', label: 'Messages', icon: 'send' },
 		{ href: '/admin/logs', label: 'Logs', icon: 'activity' }
 	];
 
@@ -123,7 +127,7 @@
 					</nav>
 					<div class="side-foot">
 						<a href="/" class="nav-link subtle">
-							<Icon name="arrow-left" size={17} />
+							<Icon name="arrow-left4" size={17} />
 							<span>Back to site</span>
 						</a>
 						<form action="/logout" method="POST">

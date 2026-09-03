@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="kenTom">
+  <rect width="512" height="512" rx="104" ry="104" fill="#ffffff"/>
+  <g transform="translate(111 106) scale(0.5034)">
+    <path d="M 0 0 L 319.02 -1 L 318.946 402.932 L 158 595 L 158 183 L -1 183 L 0 0 Z" fill="#050505" transform="translate(1,1)"/>
+    <path d="M 0 0 C 110.421 0 191.846 0 191.846 0 L 0 183.628 C 0 183.628 0 65.96 0 0 Z" fill="#050505" transform="translate(384,0)"/>
+  </g>
+</svg>

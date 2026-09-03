@@ -23,13 +23,27 @@
 		<meta name="twitter:card" content="summary_large_image" />
 
 		<!-- Icons & PWA -->
-		<link rel="icon" type="image/jpeg" href="%sveltekit.assets%/favicon.jpg" />
-		<link rel="apple-touch-icon" sizes="180x180" href="%sveltekit.assets%/favicon.jpg" />
+		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/favicon.svg" />
+		<link rel="icon" type="image/png" sizes="96x96" href="%sveltekit.assets%/favicon-96x96.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="%sveltekit.assets%/favicon-32x32.png" />
+		<link rel="icon" type="image/x-icon" sizes="48x48 32x32 16x16" href="%sveltekit.assets%/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="%sveltekit.assets%/apple-touch-icon.png" />
 		<meta name="apple-mobile-web-app-title" content="kenTom" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 		<meta name="application-name" content="kenTom" />
+		<meta name="msapplication-TileColor" content="#050505" />
+		<meta name="msapplication-TileImage" content="%sveltekit.assets%/icon-192.png" />
 		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
+
+		<!-- Feed discovery: how readers and aggregators find the notes -->
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="kenTom · Notes"
+			href="/rss.xml"
+		/>
 
 		<!-- Performance hints -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -60,7 +74,7 @@
 			"@type": "Person",
 			"@id": "https://kentom.co.ke/#person",
 			"name": "Steve Osoro Tom",
-			"alternateName": ["kenTom", "Raccoon254"],
+			"alternateName": ["kenTom", "KenTom", "Raccoon254"],
 			"jobTitle": "Full-Stack Developer & Software Engineer",
 			"description": "Full-stack developer in Kenya building web apps, mobile apps, and custom software.",
 			"url": "https://kentom.co.ke",
@@ -141,7 +155,8 @@
 				{ "@type": "SiteNavigationElement", "name": "Lab", "url": "https://kentom.co.ke/lab", "description": "Interface experiments and animation studies, explained" },
 				{ "@type": "SiteNavigationElement", "name": "Partners", "url": "https://kentom.co.ke/partners", "description": "Sponsor the work, tiers and how to partner" },
 				{ "@type": "SiteNavigationElement", "name": "Quote", "url": "https://kentom.co.ke/quote", "description": "Tell Steve Tom what you are building" },
-				{ "@type": "SiteNavigationElement", "name": "Contact", "url": "https://kentom.co.ke/contact", "description": "Start a conversation with Steve Tom" }
+				{ "@type": "SiteNavigationElement", "name": "Contact", "url": "https://kentom.co.ke/contact", "description": "Start a conversation with Steve Tom" },
+				{ "@type": "SiteNavigationElement", "name": "Support", "url": "https://kentom.co.ke/donate", "description": "Support the work with a one-off gift" }
 			]
 		}
 		</script>

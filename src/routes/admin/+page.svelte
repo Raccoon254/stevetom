@@ -103,7 +103,7 @@
 	<section class="block" in:fly={{ y: 16, duration: 420, delay: 320 }}>
 		<div class="block-head">
 			<h2 class="a-section-title"><Icon name="messages" size={14} /> Recent requests</h2>
-			<a class="more" href="/admin/service-requests">All requests <Icon name="arrow-right" size={12} /></a>
+			<a class="more" href="/admin/service-requests">All requests <Icon name="arrow-right4" size={12} /></a>
 		</div>
 
 		{#if recentRequests.length === 0}

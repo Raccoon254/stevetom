@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { sessionId, visitorId } from '$lib/analytics';
 	import { onMount } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
@@ -14,6 +15,14 @@
 	let currency: Currency = 'USD';
 	let amount = 10;
 	let email = '';
+
+	// Listing details. Off by default: a donation is a donation, and appearing
+	// on the partners page is a separate, explicit choice.
+	let listed = false;
+	let anonymous = false;
+	let displayName = '';
+	let orgName = '';
+	let websiteUrl = '';
 	let status: Status = 'idle';
 	let message = '';
 
@@ -77,7 +86,21 @@
 			const res = await fetch('/api/paystack-donations', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ amount, email, currency })
+				body: JSON.stringify({
+					amount,
+					email,
+					currency,
+					// Ties the payment to the visit that produced it.
+					sessionId: sessionId(),
+					visitorId: visitorId(),
+					sponsor: {
+						listed,
+						anonymous,
+						displayName: displayName || null,
+						orgName: orgName || null,
+						websiteUrl: websiteUrl || null
+					}
+				})
 			});
 			const data = await res.json();
 			if (res.ok && data.authorizationUrl) {
@@ -173,6 +196,46 @@
 							bind:value={email}
 							placeholder="your@email"
 						/>
+					</div>
+
+					<div class="listing">
+						<label class="check">
+							<input type="checkbox" bind:checked={listed} />
+							<span>List me on the partners page</span>
+						</label>
+
+						{#if listed}
+							<div class="field">
+								<label for="displayName">Name to show</label>
+								<input
+									id="displayName"
+									type="text"
+									bind:value={displayName}
+									placeholder="Your name or your brand"
+								/>
+							</div>
+							<div class="field">
+								<label for="orgName">Company (optional)</label>
+								<input id="orgName" type="text" bind:value={orgName} placeholder="Acme Ltd" />
+							</div>
+							<div class="field">
+								<label for="websiteUrl">Link (optional)</label>
+								<input
+									id="websiteUrl"
+									type="url"
+									bind:value={websiteUrl}
+									placeholder="https://example.com"
+								/>
+							</div>
+							<label class="check">
+								<input type="checkbox" bind:checked={anonymous} />
+								<span>Show me as Anonymous instead</span>
+							</label>
+							<p class="listing-note">
+								Listings start at $25 one-off. Below that you are thanked, not listed. A logo
+								needs the Workshop tier. You can ask to be removed at any time.
+							</p>
+						{/if}
 					</div>
 
 					{#if status === 'error'}
@@ -357,6 +420,33 @@
 		letter-spacing: 0.26em;
 		text-transform: uppercase;
 		color: var(--mute);
+	}
+	.listing {
+		border-top: 1px solid var(--hairline, rgba(127, 127, 127, 0.2));
+		margin-top: 6px;
+		padding-top: 16px;
+		display: grid;
+		gap: 12px;
+	}
+	.check {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-size: 14px;
+		color: var(--ink-2);
+		cursor: pointer;
+	}
+	.check input {
+		width: 16px;
+		height: 16px;
+		accent-color: var(--spark);
+		flex: 0 0 auto;
+	}
+	.listing-note {
+		font-size: 12px;
+		line-height: 1.55;
+		color: var(--mute);
+		margin: 2px 0 0;
 	}
 	.amount-input {
 		display: flex;

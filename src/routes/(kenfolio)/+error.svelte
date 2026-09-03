@@ -5,6 +5,7 @@
 
 <svelte:head>
 	<title>kenTom · {$page.status}</title>
+	<meta name="robots" content="noindex, follow" />
 </svelte:head>
 
 <ErrorView status={$page.status} message={$page.error?.message ?? ''} />

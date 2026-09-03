@@ -115,7 +115,7 @@
 			/>
 			<button class="pill pill--solid" type="submit" disabled={busy}>
 				<span>{busy ? 'Sending' : 'Subscribe'}</span>
-				<span class="ar" aria-hidden="true"><Icon name="arrow-right" size={13} /></span>
+				<span class="ar" aria-hidden="true"><Icon name="arrow-right4" size={13} /></span>
 			</button>
 		</form>
 		{#if error}<p class="err">{error}</p>{/if}

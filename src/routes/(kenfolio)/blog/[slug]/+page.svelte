@@ -2,7 +2,8 @@
 	import MarkdownDoc from '$lib/components/kenfolio/MarkdownDoc.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { longDate } from '$lib/content';
-	import { abs } from '$lib/seo';
+	import { blogPostingLd } from '$lib/seo';
+	import { imageSize } from '$lib/imageDimensions.generated';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -10,19 +11,7 @@
 	$: meta = [post.category, longDate(post.date), post.readingTime]
 		.filter(Boolean)
 		.join('  ·  ');
-	$: articleLd = {
-		'@context': 'https://schema.org',
-		'@type': 'BlogPosting',
-		headline: post.title,
-		description: post.excerpt,
-		url: abs(`/blog/${post.slug}`),
-		datePublished: post.date,
-		...(post.image ? { image: abs(post.image) } : {}),
-		...(post.category ? { articleSection: post.category } : {}),
-		author: { '@id': 'https://kentom.co.ke/#person' },
-		publisher: { '@id': 'https://kentom.co.ke/#person' },
-		mainEntityOfPage: abs(`/blog/${post.slug}`)
-	};
+	$: articleLd = blogPostingLd(post);
 </script>
 
 <Seo
@@ -31,7 +20,14 @@
 	path="/blog/{post.slug}"
 	type="article"
 	image={post.image || undefined}
+	imageAlt={post.title}
+	imageWidth={imageSize(post.image)?.width}
+	imageHeight={imageSize(post.image)?.height}
 	published={post.date}
+	modified={post.date}
+	section={post.category}
+	tags={post.category ? [post.category] : []}
+	keywords={[post.category, 'Steve Tom', 'kenTom', 'notes'].filter(Boolean).join(', ')}
 	breadcrumbs={[
 		{ name: 'Notes', path: '/blog' },
 		{ name: post.title, path: `/blog/${post.slug}` }

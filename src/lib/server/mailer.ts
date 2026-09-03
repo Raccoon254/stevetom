@@ -72,7 +72,41 @@ export async function sendEmail(opts: SendOptions): Promise<{ id?: string; statu
 		const body = await res.text().catch(() => '');
 		throw new Error(`Axene Mailer ${res.status}: ${body}`);
 	}
-	return res.json().catch(() => ({}));
+	const queued = await res.json().catch(() => ({}));
+	await recordQueued(opts, queued);
+	return queued;
+}
+
+/**
+ * Remember what we just handed to Axene, so the delivery webhook has something
+ * to attribute an open, a bounce or a complaint to: the webhook payload carries
+ * the message id but not the recipient or the tags.
+ *
+ * Best-effort by construction. The send has already succeeded by the time this
+ * runs and every failure path here is swallowed, so a missing table, a cold
+ * database or a duplicate id can never turn a delivered email into a thrown
+ * error for the caller. Losing a row costs one message's worth of analytics.
+ */
+async function recordQueued(opts: SendOptions, queued: { id?: string; status?: string }) {
+	try {
+		const messageId = typeof queued?.id === 'string' ? queued.id.trim() : '';
+		const recipient = opts.to[0]?.email?.trim().toLowerCase();
+		if (!messageId || !recipient) return;
+
+		const { prisma } = await import('$lib/db.js');
+		await prisma.emailMessage.create({
+			data: {
+				messageId,
+				recipient,
+				subject: opts.subject || null,
+				fromEmail: opts.from?.email?.toLowerCase() || null,
+				tags: opts.tags ?? [],
+				status: typeof queued?.status === 'string' ? queued.status : 'queued'
+			}
+		});
+	} catch (error) {
+		console.error('mailer: could not record queued message', error);
+	}
 }
 
 /** Escape user-supplied text before placing it in an HTML email. */

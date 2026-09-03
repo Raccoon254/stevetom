@@ -2,6 +2,7 @@
 	import { tick } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import { PERSON, PERSON_ID, WEBSITE_ID, SITE, abs } from '$lib/seo';
 
 	const links = [
 		{ label: 'TikTok', handle: '@raccoon.254', href: 'https://www.tiktok.com/@raccoon.254', icon: 'tiktok' },
@@ -9,6 +10,35 @@
 		{ label: 'YouTube', handle: '@iamkentom', href: 'https://www.youtube.com/@iamkentom', icon: 'youtube-logo' },
 		{ label: 'WhatsApp', handle: 'Message me', href: 'https://wa.link/w1774n', icon: 'whatsapp-logo' }
 	];
+
+	// ContactPage, with the same contact details the Person node in app.html
+	// carries, so the two never disagree.
+	const contactLd = {
+		'@context': 'https://schema.org',
+		'@type': 'ContactPage',
+		'@id': `${abs('/contact')}#contactpage`,
+		url: abs('/contact'),
+		name: 'Contact Steve Tom',
+		description:
+			'Get in touch with Steve Tom. Start a conversation or find me on TikTok, GitHub, YouTube and WhatsApp.',
+		inLanguage: SITE.language,
+		isPartOf: { '@id': WEBSITE_ID },
+		mainEntity: {
+			'@id': PERSON_ID,
+			'@type': 'Person',
+			name: PERSON.name,
+			email: `mailto:${PERSON.email}`,
+			telephone: PERSON.telephone,
+			contactPoint: {
+				'@type': 'ContactPoint',
+				contactType: 'Project enquiries',
+				email: PERSON.email,
+				telephone: PERSON.telephone,
+				areaServed: 'KE',
+				availableLanguage: ['en']
+			}
+		}
+	};
 
 	let step: 'form' | 'verify' | 'done' = 'form';
 	let name = '';
@@ -113,6 +143,7 @@
 	path="/contact"
 	keywords="contact Steve Tom, hire developer Kenya, kenTom contact"
 	breadcrumbs={[{ name: 'Contact', path: '/contact' }]}
+	jsonld={[contactLd]}
 />
 
 <main class="page">
@@ -158,7 +189,7 @@
 					<div class="send-row">
 						<button class="pill pill--solid" type="submit" disabled={busy}>
 							<span>{busy ? 'Sending code' : 'Continue'}</span>
-							<span class="ar" aria-hidden="true"><Icon name="arrow-right" size={14} /></span>
+							<span class="ar" aria-hidden="true"><Icon name="arrow-right4" size={14} /></span>
 						</button>
 						<span class="alt">or email <a href="mailto:me@kentom.co.ke">directly</a></span>
 					</div>

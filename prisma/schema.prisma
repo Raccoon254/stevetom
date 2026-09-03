@@ -110,13 +110,47 @@ model NewsletterIssue {
 model Donation {
   id                String         @id @default(cuid())
   email             String
-  amount            Float // Amount in major currency units (KES, USD, etc.)
+  amount            Float // Amount actually charged, in major units of `currency`
   currency          String         @default("KES")
   paystackReference String?        @unique // Paystack transaction reference
   status            DonationStatus @default(PENDING)
   metadata          String? // JSON string for additional data
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
+
+  // Canonical USD figure. Tier thresholds are always evaluated against this so
+  // that a moving KES exchange rate can never silently reclassify a sponsor.
+  usdAmount        Float?
+  fxRate           Float? // USD -> KES rate used at charge time, if converted
+  originalAmount   Float? // what the donor actually typed
+  originalCurrency String? // the currency they typed it in
+
+  provider PaymentProvider @default(PAYSTACK)
+  cadence  SponsorCadence  @default(ONE_TIME)
+
+  // A donation may or may not be attached to a sponsor relationship: an
+  // anonymous tip has no Sponsor row at all.
+  sponsorId      String?
+  sponsor        Sponsor?      @relation(fields: [sponsorId], references: [id])
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+
+  // PayPal's order id. Previously nothing about a PayPal donation was stored at
+  // all, so a donation could not be reconciled or even proven to exist.
+  paypalOrderId String? @unique
+
+  // Attribution: which visit produced this donation. Deliberately NOT a foreign
+  // key. If it were, a donation insert would fail whenever the analytics beacon
+  // had not already created the session row (ad blocker, DNT, storage blocked),
+  // which would mean losing a real payment to a tracking miss. Both are
+  // nullable for the same reason: a donor who blocks all of it still donates.
+  sessionId String?
+  visitorId String?
+
+  @@index([sponsorId])
+  @@index([status, createdAt])
+  @@index([sessionId])
+  @@index([visitorId])
 }
 
 enum DonationStatus {
@@ -124,4 +158,426 @@ enum DonationStatus {
   SUCCESS
   FAILED
   CANCELLED
+}
+
+// ---------------------------------------------------------------------------
+// Sponsorship
+//
+// A Donation is a payment event and stays an immutable ledger row. A Sponsor is
+// the *relationship*: who they are, what they get, and whether they consented to
+// appear in public. Keeping the two apart means the partners wall is a single
+// indexed query instead of a fold over every transaction, and it gives consent
+// and logo data somewhere to live.
+// ---------------------------------------------------------------------------
+
+model Sponsor {
+  id    String @id @default(cuid())
+  email String @unique
+  slug  String @unique // drives /partners/<slug> and the embeddable badge
+
+  // Public identity. displayName is required because a sponsor with no name
+  // cannot be listed; anonymity is expressed through `visibility`, not by
+  // leaving this blank.
+  displayName String
+  orgName     String?
+  websiteUrl  String?
+  logoUrl     String?
+  blurb       String? // one line, shown on the sponsor's own page
+
+  tier    SponsorTier    @default(SUPPORTER)
+  cadence SponsorCadence @default(ONE_TIME)
+
+  // PRIVATE is the default on purpose: publishing someone's name because they
+  // paid is not consent. Listing requires an explicit opt-in at checkout.
+  visibility SponsorVisibility @default(PRIVATE)
+
+  // Anyone can pay $1 and type anything as a display name, so nothing reaches
+  // the wall until it has been looked at.
+  moderation ModerationState @default(PENDING_REVIEW)
+
+  // Both figures are kept in USD. `monthlyUsd` drives the tier for recurring
+  // sponsors, `lifetimeUsd` for one-time ones.
+  monthlyUsd  Float @default(0)
+  lifetimeUsd Float @default(0)
+
+  startedAt   DateTime  @default(now())
+  // One-time sponsorship buys a fixed window and then rolls off to "past
+  // supporters". An active recurring sponsor has no expiry until it cancels.
+  expiresAt   DateTime?
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  donations     Donation[]
+  subscriptions Subscription[]
+
+  @@index([visibility, moderation])
+  @@index([expiresAt])
+}
+
+// A recurring sponsorship. Paystack needs subscriptionCode + emailToken to
+// cancel on the sponsor's behalf, so both are stored.
+model Subscription {
+  id        String  @id @default(cuid())
+  sponsorId String
+  sponsor   Sponsor @relation(fields: [sponsorId], references: [id])
+
+  provider         PaymentProvider @default(PAYSTACK)
+  planCode         String?
+  subscriptionCode String?         @unique
+  emailToken       String?
+  customerCode     String?
+
+  amountUsd Float
+  interval  String             @default("monthly")
+  status    SubscriptionStatus @default(ACTIVE)
+
+  currentPeriodEnd DateTime?
+  cancelledAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  donations Donation[]
+
+  @@index([sponsorId])
+  @@index([status])
+}
+
+enum SponsorTier {
+  SUPPORTER
+  STANDARD
+  WORKSHOP
+  CUSTOM
+}
+
+enum SponsorCadence {
+  ONE_TIME
+  RECURRING
+}
+
+enum SponsorVisibility {
+  PRIVATE // pays, is never shown
+  ANONYMOUS // shown as "Anonymous" in the count, no name
+  PUBLIC // name, and logo where the tier allows
+}
+
+enum ModerationState {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum PaymentProvider {
+  PAYSTACK
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  COMPLETED
+}
+
+// ---------------------------------------------------------------------------
+// First-party analytics
+//
+// Every row here is written by this site's own /api/analytics/collect endpoint.
+// No third-party beacon is involved, no cookie is set, and no raw IP address is
+// ever stored. `visitorHash` is a salted SHA-256 of (IP + user agent) that is
+// re-salted with the current UTC date, so it can count unique visitors within a
+// day but cannot be joined across days or reversed back to a person.
+// ---------------------------------------------------------------------------
+
+model PageView {
+  id String @id @default(cuid())
+
+  path     String // pathname only, query string and hash stripped
+  referrer String? // referring hostname only, null for same-site and direct
+  source   String? // utm_source / ref campaign tag, when present
+  country  String? // ISO-3166 alpha-2 from the x-vercel-ip-country header
+
+  device  DeviceClass @default(UNKNOWN)
+  browser String? // coarse family: Chrome, Safari, Firefox, Edge, Other
+
+  // Rotating daily hash, never an IP. See the note above.
+  visitorHash String?
+  // Persistent, client-generated visitor id, and the rolling session it belongs
+  // to. Neither is a foreign key, for the same reason as on Donation: a hit
+  // must never fail to record because a parent row is missing.
+  visitorId   String?
+  sessionId   String?
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
+  @@index([path, createdAt])
+  @@index([country, createdAt])
+}
+
+// Conversions and other named moments that matter. Kept separate from PageView
+// so the conversion queries stay small and the pageview table can be pruned
+// aggressively without losing the business signal.
+model AnalyticsEvent {
+  id String @id @default(cuid())
+
+  name    String // e.g. "newsletter.signup", "quote.submitted"
+  path    String?
+  country String?
+  device  DeviceClass @default(UNKNOWN)
+
+  value    Float? // monetary value where the event has one
+  currency String?
+  entityId String? // id of the row this event produced, when there is one
+
+  sessionId String?
+  visitorId String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([name, createdAt])
+  @@index([sessionId])
+}
+
+enum DeviceClass {
+  DESKTOP
+  MOBILE
+  TABLET
+  BOT
+  UNKNOWN
+}
+
+// ---------------------------------------------------------------------------
+// Sessions
+//
+// A visit, rather than a single hit. The client keeps a persistent visitorId
+// and a sessionId that rolls over after SESSION_TIMEOUT_MINUTES of inactivity,
+// so one session spans several pages and survives a reload or a closed tab.
+//
+// This is a deliberate change of posture from the cookieless first-party
+// counting that came before it: a persistent visitorId can follow someone
+// across visits, which is the point (understanding what people actually do)
+// but also the reason the privacy notice has to say so plainly. Do Not Track
+// and Global Privacy Control still suppress the whole pipeline.
+// ---------------------------------------------------------------------------
+
+model Session {
+  id        String  @id // generated client-side, opaque and random
+  // Nullable: localStorage can be partially blocked, and a session we can still
+  // follow within one visit is worth more than one we refuse to record.
+  visitorId String?
+
+  startedAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+
+  entryPath String?
+  exitPath  String?
+  referrer  String?
+  source    String?
+  country   String?
+
+  device  DeviceClass @default(UNKNOWN)
+  browser String?
+
+  pageViewCount Int     @default(0)
+  eventCount    Int     @default(0)
+  // Set when this visit produced something we care about, so the dashboard can
+  // ask "which journeys convert" without a join across every event.
+  converted     Boolean @default(false)
+
+  @@index([visitorId])
+  @@index([startedAt])
+  @@index([converted, startedAt])
+}
+
+// ---------------------------------------------------------------------------
+// Email delivery analytics
+//
+// Two tables, one per direction.
+//
+// EmailMessage is the outbound side: one row per message this site hands to
+// Axene Mailer, written at queue time. It exists because the webhook payload
+// does not carry the recipient or the tags for most event types, so without a
+// local record of what we sent there is nothing to attribute a delivery,
+// an open or a bounce to.
+//
+// EmailDeliveryEvent is the inbound side: one row per webhook delivery from
+// Axene, joined back to the message by the provider's own message id.
+//
+// The join is deliberately not a foreign key. A webhook can outrun the send
+// that caused it, and an event we cannot correlate is still worth keeping:
+// dropping it would silently understate the bounce rate. Every reader treats a
+// null messageId as "uncorrelated", never as an error.
+// ---------------------------------------------------------------------------
+
+model EmailMessage {
+  id String @id @default(cuid())
+
+  // Axene's id for the message, taken from the send response `id`. This is the
+  // same value that arrives on every webhook as `email_id`.
+  messageId String @unique
+
+  recipient String // first To address, lowercased
+  subject   String?
+  fromEmail String?
+  // The tags the message was sent with. Copied onto each event as well, so the
+  // tag breakdown never needs a cross-table join.
+  tags      String[]
+  // Provider status at queue time ("queued"), not a live delivery state: the
+  // current state of a message is whatever its events say.
+  status    String   @default("queued")
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([recipient])
+}
+
+model EmailDeliveryEvent {
+  id String @id @default(cuid())
+
+  // Axene's own id for this webhook delivery, from the X-Axene-Delivery-ID
+  // header. Axene reuses the same id across its whole retry schedule, so a
+  // unique index on it is exactly the idempotency guarantee we need: a replayed
+  // delivery collides and is dropped instead of double-counting. Synthesised
+  // from a hash of the signed content if a delivery ever arrives without it.
+  providerEventId String @unique
+
+  messageId String? // Axene email_id; null on the dashboard's test event
+  recipient String? // resolved from EmailMessage, or from the event payload
+  type      EmailEventType
+  tags      String[]
+
+  occurredAt DateTime // provider send time, from X-Axene-Timestamp
+  detail     Json? // the raw provider `data` blob, kept verbatim
+
+  createdAt DateTime @default(now())
+
+  @@index([messageId])
+  @@index([type, createdAt])
+  @@index([recipient])
+  @@index([type, occurredAt])
+}
+
+enum EmailEventType {
+  QUEUED
+  SENT
+  DELIVERED
+  OPENED
+  CLICKED
+  BOUNCED
+  COMPLAINED
+  FAILED
+  UNSUBSCRIBED
+  UNKNOWN
+}
+
+// ---------------------------------------------------------------------------
+// Admin messaging console
+//
+// A Campaign is one thing the owner wrote and decided to send: the subject, the
+// markdown body, which sender it goes out as, and which audience it was aimed
+// at. CampaignDelivery is the per-recipient row.
+//
+// The recipient list is materialised into CampaignDelivery the moment the draft
+// is created, not resolved at send time. That snapshot is what makes a send
+// auditable (you can see exactly who was on the list), resumable (a serverless
+// function that dies halfway leaves the remaining rows QUEUED and the next
+// invocation picks them up) and idempotent (a row is claimed with a conditional
+// update, so the same address cannot be claimed twice).
+//
+// Delivery events are attached later, keyed by providerId, which is Axene's
+// message id: the same value EmailMessage.messageId and the webhook's email_id
+// carry. It is deliberately not a foreign key, for the same reason those are
+// not: an event we cannot correlate is still worth keeping.
+// ---------------------------------------------------------------------------
+
+model Campaign {
+  id String @id @default(cuid())
+
+  subject String
+  bodyMd  String // markdown exactly as the owner typed it
+
+  // Key into SENDERS in src/lib/server/mailer.ts ("hq" | "partners"), never a
+  // literal address: the verified sender list lives in one place.
+  fromKey String @default("hq")
+
+  // Which audience this was aimed at. `segment` is the machine key, `segmentLabel`
+  // the wording shown at the time, kept so a later renamed segment cannot rewrite
+  // history. A one-to-one message stores the address in contactEmail.
+  segment      String
+  segmentLabel String
+  contactEmail String?
+
+  status CampaignStatus @default(DRAFT)
+
+  // Snapshot counts. The pages also count delivery rows live, so a number here
+  // can never be the only source of a claim about what was sent.
+  recipientCount Int @default(0)
+  sentCount      Int @default(0)
+  failedCount    Int @default(0)
+
+  // Whether the rendered email carries the one-click unsubscribe link and the
+  // List-Unsubscribe headers. Always true for a segment send.
+  includeUnsubscribe Boolean @default(true)
+
+  // A real send is refused until a test has landed in the owner's inbox.
+  testSentAt  DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  sentBy    String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deliveries CampaignDelivery[]
+
+  @@index([status, createdAt])
+  @@index([createdAt])
+}
+
+model CampaignDelivery {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  email String // lowercased
+  name  String?
+
+  status CampaignDeliveryStatus @default(QUEUED)
+
+  // Axene's message id for this send, so a webhook event can be attributed back
+  // to the campaign it belongs to.
+  providerId String?
+  error      String?
+
+  // When the row was claimed by a batch, and when the provider accepted it.
+  claimedAt DateTime?
+  sentAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // One row per address per campaign: the uniqueness constraint is what stops a
+  // double-submitted draft from queueing the same person twice.
+  @@unique([campaignId, email])
+  @@index([campaignId, status])
+  @@index([email])
+  @@index([providerId])
+}
+
+enum CampaignStatus {
+  DRAFT
+  SENDING
+  SENT
+  CANCELLED
+}
+
+enum CampaignDeliveryStatus {
+  QUEUED
+  SENDING // claimed by a batch, not yet confirmed by the provider
+  SENT
+  FAILED
+  SKIPPED
 }

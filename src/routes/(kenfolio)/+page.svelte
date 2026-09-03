@@ -4,6 +4,37 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import NewsletterSignup from '$lib/components/kenfolio/NewsletterSignup.svelte';
+	import { projects } from '$lib/data/projects';
+	import { PERSON_ID, WEBSITE_ID, SITE, abs } from '$lib/seo';
+
+	// ── structured data ─────────────────────────────────────────────────
+	// The Person, WebSite and ProfessionalService nodes are declared once in
+	// src/app.html; this page only marks itself as that person's profile page
+	// and lists the work it links to, so nothing is restated twice.
+	const homeLd = {
+		'@context': 'https://schema.org',
+		'@type': 'ProfilePage',
+		'@id': `${abs('/')}#profilepage`,
+		url: abs('/'),
+		name: SITE.title,
+		description: SITE.description,
+		inLanguage: SITE.language,
+		isPartOf: { '@id': WEBSITE_ID },
+		mainEntity: { '@id': PERSON_ID },
+		about: { '@id': PERSON_ID },
+		primaryImageOfPage: { '@type': 'ImageObject', url: abs(SITE.ogImage) },
+		hasPart: {
+			'@type': 'ItemList',
+			name: 'Selected work',
+			numberOfItems: projects.length,
+			itemListElement: projects.map((project, i) => ({
+				'@type': 'ListItem',
+				position: i + 1,
+				url: abs(`/work/${project.slug}`),
+				name: project.name
+			}))
+		}
+	};
 
 	// ── about · rotating facts ──────────────────────────────────────────
 	// Each theme has four variations that mean the same thing, kept to a
@@ -118,9 +149,6 @@
 	onMount(() => {
 		let alive = true;
 		const cleanups: Array<() => void> = [];
-		document.documentElement.classList.add('kf-snap');
-		cleanups.push(() => document.documentElement.classList.remove('kf-snap'));
-
 		const onResize = (fn: () => void) => {
 			window.addEventListener('resize', fn);
 			cleanups.push(() => window.removeEventListener('resize', fn));
@@ -936,6 +964,7 @@
 	path="/"
 	type="profile"
 	keywords="kenTom, Steve Tom, full-stack developer Kenya, web developer Nairobi, software engineer, custom software, mobile app developer, Raccoon254"
+	jsonld={[homeLd]}
 />
 
 <nav class="index" aria-label="sections">
@@ -999,7 +1028,7 @@
 				text-anchor="middle"
 				font-weight="700"
 				font-size="280"
-				letter-spacing="-14">ken<tspan class="wm-em-a">Tom</tspan><tspan class="wm-stop">.</tspan></text
+				letter-spacing="-14">ken<tspan class="wm-em">Tom</tspan><tspan class="wm-stop">.</tspan></text
 			>
 
 			<text
@@ -1175,15 +1204,12 @@
 		max-width: 720px;
 	}
 
-	/* soft scroll-snap, only while the landing page is mounted */
-	:global(html.kf-snap) {
-		scroll-snap-type: y proximity;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		:global(html.kf-snap) {
-			scroll-snap-type: none;
-		}
-	}
+	/* No scroll-snap on the landing page. Every .stage is exactly 100vh and
+	   aligns to start, so even `proximity` snapped small wheel deltas straight
+	   back to the section they started in: the page was unscrollable by mouse or
+	   trackpad, while PageDown (a full viewport, landing exactly on the next
+	   snap point) still worked. The `scroll-snap-align` on .stage is inert
+	   without a snap type on an ancestor and is left in place. */
 
 	/* dot index: fixed right, hover reveals label */
 	.index {
@@ -1225,13 +1251,13 @@
 		white-space: nowrap;
 	}
 	.index a:hover::after,
-	.index a.active::after {
+	.index a:global(.active)::after {
 		opacity: 1;
 	}
 	.index a:hover {
 		border-color: var(--ink-2);
 	}
-	.index a.active {
+	.index a:global(.active) {
 		background: var(--ink-2);
 		border-color: var(--ink-2);
 		transform: scale(1.15);
@@ -1781,9 +1807,6 @@
 		}
 		.stage--contact .email {
 			font-size: clamp(22px, 6.4vw, 32px);
-		}
-		.stage--hero .content {
-			text-align: center;
 		}
 		.hero-foot {
 			align-items: center;

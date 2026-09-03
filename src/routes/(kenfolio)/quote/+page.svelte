@@ -2,6 +2,7 @@
 	import { tick } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import { SERVICE_ID, PERSON_ID, WEBSITE_ID, SITE, abs } from '$lib/seo';
 
 	const services = [
 		{ label: 'Web app', icon: 'monitor' },
@@ -11,6 +12,35 @@
 		{ label: 'Design', icon: 'magicpen' },
 		{ label: 'Something else', icon: 'category' }
 	];
+
+	// The quote page is the entry point to the ProfessionalService declared in
+	// app.html. The list below mirrors the options in the form, nothing more.
+	const quoteLd = {
+		'@context': 'https://schema.org',
+		'@type': 'ContactPage',
+		'@id': `${abs('/quote')}#quotepage`,
+		url: abs('/quote'),
+		name: 'Get a quote from Steve Tom',
+		description:
+			'Tell Steve Tom what you are building. A sentence and an email is enough to start a project quote.',
+		inLanguage: SITE.language,
+		isPartOf: { '@id': WEBSITE_ID },
+		about: { '@id': SERVICE_ID },
+		mainEntity: {
+			'@id': SERVICE_ID,
+			'@type': 'ProfessionalService',
+			provider: { '@id': PERSON_ID },
+			areaServed: { '@type': 'Country', name: 'Kenya' },
+			hasOfferCatalog: {
+				'@type': 'OfferCatalog',
+				name: 'Development services',
+				itemListElement: services.map((item) => ({
+					'@type': 'Offer',
+					itemOffered: { '@type': 'Service', name: item.label }
+				}))
+			}
+		}
+	};
 
 	let step: 'form' | 'verify' | 'done' = 'form';
 	let brief = '';
@@ -111,6 +141,7 @@
 	path="/quote"
 	keywords="hire developer Kenya, project quote, custom software quote, web app development"
 	breadcrumbs={[{ name: 'Quote', path: '/quote' }]}
+	jsonld={[quoteLd]}
 />
 
 <main class="page">
@@ -151,7 +182,7 @@
 			<div class="send-row">
 				<button class="pill pill--solid" type="submit" disabled={busy}>
 					<span>{busy ? 'Sending code' : 'Continue'}</span>
-					<span class="ar" aria-hidden="true"><Icon name="arrow-right" size={14} /></span>
+					<span class="ar" aria-hidden="true"><Icon name="arrow-right4" size={14} /></span>
 				</button>
 				<span class="alt">or <a href="mailto:me@kentom.co.ke">email</a></span>
 			</div>

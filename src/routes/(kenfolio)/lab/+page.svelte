@@ -2,6 +2,31 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { experiments } from '$lib/data/labExperiments';
+	import { PERSON_ID, WEBSITE_ID, abs } from '$lib/seo';
+
+	// CollectionPage + ItemList: tells crawlers the lab index is a list page and
+	// names every experiment it links to, in the order they appear.
+	const labLd = {
+		'@context': 'https://schema.org',
+		'@type': 'CollectionPage',
+		'@id': `${abs('/lab')}#collection`,
+		name: 'Lab',
+		description:
+			'Side rigs, animations, and interaction experiments, each with a live demo and a write-up.',
+		url: abs('/lab'),
+		isPartOf: { '@id': WEBSITE_ID },
+		author: { '@id': PERSON_ID },
+		mainEntity: {
+			'@type': 'ItemList',
+			numberOfItems: experiments.length,
+			itemListElement: experiments.map((x, i) => ({
+				'@type': 'ListItem',
+				position: i + 1,
+				url: abs(`/lab/${x.slug}`),
+				name: x.name
+			}))
+		}
+	};
 </script>
 
 <Seo
@@ -10,6 +35,7 @@
 	path="/lab"
 	keywords="UI experiments, animation studies, SVG canvas CSS, creative coding"
 	breadcrumbs={[{ name: 'Lab', path: '/lab' }]}
+	jsonld={[labLd]}
 />
 
 <main class="page">

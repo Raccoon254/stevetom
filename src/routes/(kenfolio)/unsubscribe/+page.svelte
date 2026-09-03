@@ -32,7 +32,7 @@
 		{/if}
 		<a class="pill pill--solid" href="/blog">
 			<span>Back to notes</span>
-			<span class="ar" aria-hidden="true"><Icon name="arrow-left" size={13} /></span>
+			<span class="ar" aria-hidden="true"><Icon name="arrow-left4" size={13} /></span>
 		</a>
 	</div>
 </main>

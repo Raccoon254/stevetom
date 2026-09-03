@@ -2,36 +2,40 @@
  * Axene Mailer icon library - Iconsax "Broken" pack.
  * All SVGs use currentColor so they respond to Tailwind text-* classes.
  *
- * Source files live in $lib/icons/broken/*.svg and are loaded eagerly via
- * Vite's import.meta.glob so each <Icon name="..."> renders the raw SVG.
+ * Source files live in $lib/icons/broken/*.svg. Only the icons this site
+ * actually references are bundled: scripts/generate-icons.mjs scans the source
+ * and writes icons.generated.ts with static imports for that subset. Globbing
+ * the whole pack eagerly inlined all 1057 SVGs into one ~1.3 MB client chunk.
+ * After adding a new <Icon name="...">, run `npm run icons`.
  *
- * You can pass either the kebab-case filename (e.g. "arrow-left", "tick-circle")
+ * You can pass either the kebab-case filename (e.g. "arrow-left4", "tick-circle")
  * or a camelCase alias defined below (e.g. "arrowLeft", "checkCircle").
+ *
+ * Directional affordances use the pure chevron glyphs only: arrow-left4,
+ * arrow-right4, arrow-up3, arrow-down4. The tailed variants (arrow-left,
+ * arrow-up2 and friends) and the circled/squared ones are not used for
+ * navigation, and the arrowLeft/arrowRight/arrowUp/arrowDown aliases all
+ * resolve to chevrons so the rule holds by default.
  */
 
-const modules = import.meta.glob('./icons/broken/*.svg', {
-	query: '?raw',
-	import: 'default',
-	eager: true
-}) as Record<string, string>;
+import { rawIcons } from './icons.generated';
 
-const byName: Record<string, string> = {};
-for (const [path, svg] of Object.entries(modules)) {
-	const name = path.split('/').pop()!.replace(/\.svg$/, '');
-	byName[name] = svg;
-}
+const byName: Record<string, string> = rawIcons;
 
 const aliases: Record<string, string> = {
 	// arrows / chevrons
-	arrowLeft: 'arrow-left',
-	arrowRight: 'arrow-right',
-	arrowUp: 'arrow-up',
-	arrowDown: 'arrow-down',
+	arrowLeft: 'arrow-left4',
+	arrowRight: 'arrow-right4',
+	arrowUp: 'arrow-up3',
+	arrowDown: 'arrow-down4',
 	arrowSwap: 'arrow-swap',
-	chevronDown: 'arrow-down',
-	chevronLeft: 'arrow-left',
-	chevronRight: 'arrow-right',
-	chevronUp: 'arrow-up',
+	// Directional affordances use the pure chevron glyphs, never the tailed
+	// arrow variants. Applies to dropdowns, breadcrumbs, pagination, back,
+	// collapse and sort.
+	chevronDown: 'arrow-down4',
+	chevronLeft: 'arrow-left4',
+	chevronRight: 'arrow-right4',
+	chevronUp: 'arrow-up3',
 	importArrow: 'import-arrow',
 	exportArrow: 'export-arrow',
 	linkExternal: 'export-arrow',
@@ -174,7 +178,14 @@ export type IconName = string;
 
 export function getIcon(name: string): string {
 	if (!name) return '';
-	return byName[name] ?? byName[aliases[name] ?? ''] ?? '';
+	const svg = byName[name] ?? byName[aliases[name] ?? ''] ?? '';
+	if (!svg && import.meta.env.DEV) {
+		// The generated subset is built by scanning source for icon names, so a
+		// miss here means the name was unreachable to that scan (built at
+		// runtime, say) and needs adding before it ships blank.
+		console.warn(`[icons] "${name}" is not in the generated subset. Run: npm run icons`);
+	}
+	return svg;
 }
 
 export const icons = new Proxy(byName, {

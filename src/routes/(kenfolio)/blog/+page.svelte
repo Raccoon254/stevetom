@@ -2,6 +2,33 @@
 	import { posts, shortDate } from '$lib/content';
 	import Seo from '$lib/components/Seo.svelte';
 	import NewsletterSignup from '$lib/components/kenfolio/NewsletterSignup.svelte';
+	import { SITE, PERSON_ID, WEBSITE_ID, abs } from '$lib/seo';
+
+	// Blog + ItemList so the index itself is understood as a collection of the
+	// posts it links to, rather than one loose page of text.
+	const blogLd = {
+		'@context': 'https://schema.org',
+		'@type': 'Blog',
+		'@id': `${abs('/blog')}#blog`,
+		name: 'Notes',
+		description:
+			'Field notes from the workshop, writing by Steve Tom on building software, products, and the work.',
+		url: abs('/blog'),
+		inLanguage: SITE.language,
+		author: { '@id': PERSON_ID },
+		publisher: { '@id': PERSON_ID },
+		isPartOf: { '@id': WEBSITE_ID },
+		blogPost: posts.map((post) => ({
+			'@type': 'BlogPosting',
+			'@id': `${abs(`/blog/${post.slug}`)}#article`,
+			headline: post.title,
+			description: post.excerpt,
+			url: abs(`/blog/${post.slug}`),
+			datePublished: post.date,
+			...(post.image ? { image: [abs(post.image)] } : {}),
+			author: { '@id': PERSON_ID }
+		}))
+	};
 
 	// Build a lowercased search blob per post once, up front. Posts are
 	// already bundled in memory, so filtering is an instant in-memory pass,
@@ -26,6 +53,8 @@
 	description="Field notes from the workshop, writing by Steve Tom on building software, products, and the work."
 	path="/blog"
 	keywords="kenTom notes, Steve Tom blog, developer writing Kenya, software engineering notes"
+	breadcrumbs={[{ name: 'Notes', path: '/blog' }]}
+	jsonld={[blogLd]}
 />
 
 <main class="page">

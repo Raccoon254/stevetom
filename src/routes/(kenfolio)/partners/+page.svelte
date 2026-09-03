@@ -42,8 +42,12 @@
 		}
 	];
 
-	// no partners on board yet; backend wiring comes later
-	const partners: { name: string; logo?: string }[] = [];
+	import type { PageData } from './$types';
+	export let data: PageData;
+
+	$: partners = data.partners;
+	$: past = data.past;
+	$: anonymousCount = data.anonymousCount;
 </script>
 
 <Seo
@@ -78,8 +82,32 @@
 			{:else}
 				<div class="wall">
 					{#each partners as p}
-						<div class="slot">{p.name}</div>
+						<a class="slot" href="/partners/{p.slug}">
+							{#if p.logoUrl}
+								<img src={p.logoUrl} alt={p.orgName || p.displayName} loading="lazy" />
+							{:else}
+								<span class="slot-name">{p.orgName || p.displayName}</span>
+							{/if}
+						</a>
 					{/each}
+				</div>
+			{/if}
+
+			{#if anonymousCount > 0}
+				<p class="anon">
+					{anonymousCount}
+					{anonymousCount === 1 ? 'sponsor who asked' : 'sponsors who asked'} not to be named.
+				</p>
+			{/if}
+
+			{#if past.length}
+				<div class="past">
+					<div class="section-label">Past partners</div>
+					<div class="past-list">
+						{#each past as p}
+							<a href="/partners/{p.slug}">{p.orgName || p.displayName}</a>
+						{/each}
+					</div>
 				</div>
 			{/if}
 		</section>
@@ -233,6 +261,53 @@
 	}
 
 	/* 2 · pricing · borderless divider grid */
+	.slot {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 84px;
+		padding: 16px;
+		border: 1px solid var(--hairline, rgba(127, 127, 127, 0.22));
+		border-radius: 10px;
+		text-decoration: none;
+		color: var(--ink);
+		transition: border-color 0.2s ease;
+	}
+	.slot:hover {
+		border-color: var(--ink-2);
+	}
+	.slot img {
+		max-width: 100%;
+		max-height: 46px;
+		object-fit: contain;
+	}
+	.slot-name {
+		font-size: 15px;
+		text-align: center;
+		line-height: 1.35;
+	}
+	.anon {
+		font-size: 13px;
+		color: var(--mute);
+		margin: 16px 0 0;
+	}
+	.past {
+		margin-top: 34px;
+	}
+	.past-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 20px;
+		margin-top: 10px;
+	}
+	.past-list a {
+		font-size: 13px;
+		color: var(--mute);
+		text-decoration: none;
+	}
+	.past-list a:hover {
+		color: var(--ink-2);
+	}
 	.tiers {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);

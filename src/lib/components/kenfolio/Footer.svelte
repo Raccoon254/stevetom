@@ -4,6 +4,7 @@
 
 <footer class="kf-footer">
 	<span class="copy">© {year} kenTom</span>
+	<a href="/brand">Brand</a>
 	<a href="/privacy">Privacy</a>
 	<a href="/terms">Terms</a>
 </footer>

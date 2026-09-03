@@ -1,19 +1,41 @@
 <script lang="ts">
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import { PERSON_ID, WEBSITE_ID, SITE, abs } from '$lib/seo';
 	import type { PageData } from './$types';
 	export let data: PageData;
 	$: project = data.project;
+	// Plain-text description for meta and JSON-LD: the project body carries
+	// inline <em> markup for the page, which must not leak into metadata.
+	$: summary = project.body[0].replace(/<[^>]+>/g, '');
+	// Meta descriptions get trimmed at a word boundary so search results end on
+	// a whole word rather than mid-sentence.
+	$: metaDescription =
+		summary.length <= 175 ? summary : summary.slice(0, summary.lastIndexOf(' ', 175)) + '…';
+	$: workLd = {
+		'@context': 'https://schema.org',
+		'@type': 'CreativeWork',
+		'@id': `${abs(`/work/${project.slug}`)}#work`,
+		name: project.name,
+		headline: project.name,
+		description: summary,
+		url: abs(`/work/${project.slug}`),
+		sameAs: [project.link.href],
+		inLanguage: SITE.language,
+		creator: { '@id': PERSON_ID },
+		author: { '@id': PERSON_ID },
+		isPartOf: { '@id': WEBSITE_ID },
+		mainEntityOfPage: { '@type': 'WebPage', '@id': abs(`/work/${project.slug}`) }
+	};
 </script>
 
 <Seo
 	title={project.name}
-	description={`${project.name}: ${project.meta}. Selected work by Steve Tom (kenTom).`}
+	description={metaDescription}
 	path="/work/{project.slug}"
-	breadcrumbs={[
-		{ name: 'Work', path: '/' },
-		{ name: project.name, path: `/work/${project.slug}` }
-	]}
+	keywords={`${project.name}, Steve Tom, kenTom, selected work, software project Kenya`}
+	breadcrumbs={[{ name: project.name, path: `/work/${project.slug}` }]}
+	jsonld={[workLd]}
 />
 
 <main class="page">
