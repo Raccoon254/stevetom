@@ -4,7 +4,16 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // Runtime queries go through Neon's pooler.
+  url       = env("DATABASE_URL")
+  // Migrations do not. Prisma takes a postgres advisory lock before applying
+  // anything, and an advisory lock is held on a specific backend connection.
+  // Through a transaction-mode pooler that connection is handed back to the
+  // pool immediately, so the lock is unreliable and the deploy dies with
+  // "P1002: Timed out trying to acquire a postgres advisory lock". That is
+  // exactly how the last production build failed. directUrl is the documented
+  // Neon setup: migrations use the direct endpoint, runtime keeps the pooler.
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model Project {
