@@ -444,9 +444,22 @@
 	}
 	/* Roughly twice the old popup's box, and draggable taller from the corner.
 	   Vertical only: a horizontal drag would push the column out of the grid. */
-	.reply {
+	/* Underline, not a box. Written as .a-textarea.reply so it outweighs the
+	   shared `.admin .a-textarea` rule in admin.css without touching the other
+	   textareas that rule serves. The fill and the side padding go with the
+	   border: they only existed to describe a box that is no longer drawn. */
+	.a-textarea.reply {
 		min-height: 240px;
 		resize: vertical;
+		border: 0;
+		border-bottom: 1px solid var(--hairline-2);
+		border-radius: 0;
+		background: none;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.a-textarea.reply:focus {
+		border-bottom-color: var(--spark);
 	}
 	.composer-foot {
 		display: flex;
