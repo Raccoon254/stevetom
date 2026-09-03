@@ -47,10 +47,10 @@
 	};
 
 	const STEPS = [
-		{ label: 'Tier', heading: 'Pick a tier, and how often.' },
-		{ label: 'You', heading: 'Your name, and whether to show it.' },
-		{ label: 'Email', heading: 'Where to send the receipt.' },
-		{ label: 'Review', heading: 'Check the details, then pay.' }
+		{ label: 'Tier', heading: 'Tier and billing' },
+		{ label: 'You', heading: 'Your listing' },
+		{ label: 'Email', heading: 'Email address' },
+		{ label: 'Review', heading: 'Review and pay' }
 	];
 
 	/* ─── wizard state ─── */
@@ -847,14 +847,14 @@
 		<section class="gallery r r-6" aria-labelledby="gal-h">
 			<div class="gal-head">
 				<span class="mini-label">What a sponsorship looks like</span>
-				<h2 id="gal-h">The badge, your page, and the links back to you.</h2>
+				<h2 id="gal-h">What a sponsor gets</h2>
 			</div>
 
 			<div class="gal-grid">
 				<figure class="gal">
 					<div class="gal-art"><SponsorBadgeArt /></div>
 					<figcaption>
-						<h3>A badge for your own site, once it exists</h3>
+						<h3>Badge for your site</h3>
 						<p>
 							A "Sponsoring kenTom" badge for your footer, drawn here as it is meant to look. It
 							is not built yet: there is nothing to copy and no date for it, so count it as
@@ -872,7 +872,7 @@
 						/>
 					</div>
 					<figcaption>
-						<h3>A page of your own</h3>
+						<h3>Your sponsor page</h3>
 						<p>
 							Live at /partners/you: your name, a short blurb, the tier, the month you started,
 							whether you are current, and a button out to your site. Logos appear on Workshop.
@@ -882,7 +882,7 @@
 				<figure class="gal gal--wide">
 					<div class="gal-art"><SponsorLinkArt /></div>
 					<figcaption>
-						<h3>A path back to you</h3>
+						<h3>Links back to you</h3>
 						<p>
 							The partners wall points at your page, and your page links out to you. That outbound
 							link carries <code>rel="sponsored"</code>, so what you get is referral traffic, not

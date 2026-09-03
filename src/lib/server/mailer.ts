@@ -4,7 +4,7 @@
  *
  * Sending goes through the Axene REST API with AXENE_MAILER_API_KEY.
  * The HTML templates follow the Axene system-email style: white ground,
- * #111 text, Georgia body, monospace labels, hairline #e2e2e0 dividers,
+ * #111 text, Google Sans body, mono labels, hairline #e2e2e0 dividers,
  * dark buttons, table-based for legacy mail-client support.
  *
  * Verified senders (all forward to tomsteve187@gmail.com):
@@ -122,8 +122,33 @@ export function esc(value: unknown): string {
    Ported from the Axene system-email design (v3). */
 
 const MAX_WIDTH = 560;
-const BODY_FONT = 'Georgia, serif';
-const MONO_FONT = "'Courier New', monospace";
+
+/*
+ * Brand fonts, with the fallback doing the real work.
+ *
+ * Most mail clients strip web fonts: Gmail on every platform, Outlook on
+ * Windows (it renders through Word), Yahoo and AOL all drop @font-face and any
+ * stylesheet link. Apple Mail, iOS Mail, Outlook for Mac, Samsung Mail and
+ * Thunderbird honour them. So Google Sans is requested for the clients that
+ * will use it, and the stack behind it is chosen to look right on its own,
+ * because that is what most recipients will actually see.
+ *
+ * The fallbacks are deliberately sans, not the old Georgia: falling back from a
+ * geometric sans to a serif changes the look of the mail far more than the
+ * difference between two sans faces.
+ */
+export const BODY_FONT =
+	"'Google Sans','Helvetica Neue',Helvetica,Arial,sans-serif";
+export const HEADING_FONT =
+	"'Google Sans Display','Google Sans','Helvetica Neue',Helvetica,Arial,sans-serif";
+export const MONO_FONT =
+	"'Google Sans Mono','SFMono-Regular',Menlo,Consolas,'Courier New',monospace";
+
+/** Only the clients that support web fonts ever fetch this. */
+const FONT_STYLESHEET =
+	'https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700' +
+	'&family=Google+Sans+Display:wght@400;500;700' +
+	'&family=Google+Sans+Mono:wght@400;500&display=swap';
 const LOGO_URL = 'https://stevetom.vercel.app/logo-dark.png';
 
 /** Body paragraph. */
@@ -201,9 +226,11 @@ export function renderEmail(opts: {
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>${docTitle}</title>
 <!--[if mso]>
-<style type="text/css">table, td, div, h1, h2, p, a { font-family: Georgia, serif !important; }</style>
+<style type="text/css">table, td, div, h1, h2, p, a { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important; }</style>
 <![endif]-->
+<link href="${FONT_STYLESHEET}" rel="stylesheet" type="text/css">
 <style>
+@import url('${FONT_STYLESHEET}');
 @media only screen and (max-width:600px){
   .content{width:100%!important;max-width:100%!important;padding:20px 16px!important;}
   h1{font-size:20px!important;}
@@ -217,7 +244,7 @@ ${preheader}
 <table width="100%" cellpadding="0" cellspacing="0" border="0" class="content" style="max-width:${MAX_WIDTH}px;margin:0 auto;border-collapse:collapse">
 <tr><td style="padding:0;font-family:${BODY_FONT};color:#111">
 <img src="${LOGO_URL}" width="34" alt="kenTom" style="display:block;width:34px;height:auto;border:0;margin-bottom:20px">
-<h1 style="margin:0 0 20px 0;font-family:${BODY_FONT};font-size:24px;line-height:1.3;font-weight:600;color:#111">${opts.heading}</h1>
+<h1 style="margin:0 0 20px 0;font-family:${HEADING_FONT};font-size:24px;line-height:1.3;font-weight:600;color:#111">${opts.heading}</h1>
 ${opts.bodyHtml}
 </td></tr>
 <tr><td style="padding:20px 0 0 0;border-top:1px solid #e2e2e0">

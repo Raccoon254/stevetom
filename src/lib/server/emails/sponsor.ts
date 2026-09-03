@@ -7,7 +7,7 @@
  * swallowed here rather than handed back to the caller.
  *
  * Everything visual comes from the shared kenTom system-email style in
- * ../mailer: white ground, #111 text, Georgia body, monospace labels,
+ * ../mailer: white ground, #111 text, Google Sans body, mono labels,
  * hairline #e2e2e0 rules, dark buttons, tables all the way down. Nothing in
  * this file declares a background colour, so a client that inverts the page
  * for dark mode keeps its contrast either way.
@@ -24,7 +24,8 @@ import {
 	esc,
 	SENDERS,
 	NOTIFY_TO,
-	CONTACT
+	CONTACT,
+	BODY_FONT as MAILER_BODY_FONT
 } from '../mailer';
 
 const SITE = 'https://kentom.co.ke';
@@ -36,7 +37,8 @@ import { EMAIL_TAGS } from '$lib/emailTags';
  */
 const ONE_TIME_LISTING_MONTHS = 12;
 
-const BODY_FONT = 'Georgia, serif';
+// Imported, not redeclared: one definition of the brand stack.
+const BODY_FONT = MAILER_BODY_FONT;
 const MONO_FONT = "'Courier New', monospace";
 
 const TIER_LABEL: Record<SponsorTier, string> = {
@@ -104,7 +106,7 @@ function todayUtc(): string {
 	}
 }
 
-/** Left mono label, right Georgia value, hairline between every row. */
+/** Left mono label, right body-font value, hairline between every row. */
 function factTable(rows: Array<[string, string]>): string {
 	const body = rows
 		.map(([l, v], i) => {

@@ -125,7 +125,7 @@ export function renderCampaignHtml(campaign: RenderableCampaign, recipientEmail:
 	const text = renderBodyText(campaign.bodyMd);
 	const unsub =
 		campaign.includeUnsubscribe && recipientEmail
-			? `<p style="margin:26px 0 0;font-family:Georgia,serif;font-size:12px;color:#999">` +
+			? `<p style="margin:26px 0 0;font-family:'Google Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;color:#999">` +
 				`<a href="${unsubscribeUrl(recipientEmail)}" style="color:#999;text-decoration:underline">Unsubscribe in one click</a></p>`
 			: '';
 

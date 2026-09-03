@@ -29,7 +29,8 @@ import {
 	esc,
 	SENDERS,
 	NOTIFY_TO,
-	CONTACT
+	CONTACT,
+	BODY_FONT as MAILER_BODY_FONT
 } from '../mailer';
 import { EMAIL_TAGS } from '$lib/emailTags';
 import {
@@ -46,12 +47,13 @@ import {
 const SITE = 'https://www.kentom.co.ke';
 const ADMIN_REPORTS = `${SITE}/admin/reports`;
 
-const BODY_FONT = 'Georgia, serif';
+// Imported, not redeclared: one definition of the brand stack.
+const BODY_FONT = MAILER_BODY_FONT;
 const MONO_FONT = "'Courier New', monospace";
 
 /* ────────────────────────────── shared pieces ───────────────────────────── */
 
-/** Left mono label, right Georgia value. Matches the sponsorship emails. */
+/** Left mono label, right body-font value. Matches the sponsorship emails. */
 function factTable(rows: Array<[string, string]>): string {
 	const body = rows
 		.map(([l, v], i) => {

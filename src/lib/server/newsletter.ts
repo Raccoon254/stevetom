@@ -52,7 +52,7 @@ export async function subscribeEmail(email: string): Promise<void> {
 					p(
 						"Thanks for subscribing. When I publish a new note, you'll get it here: a short, plain email with a link. Nothing else."
 					) +
-					`<p style="margin:18px 0 0;font-family:Georgia,serif;font-size:12px;color:#999">Changed your mind? <a href="${unsubscribeUrl(addr)}" style="color:#999;text-decoration:underline">Unsubscribe in one click</a>.</p>`
+					`<p style="margin:18px 0 0;font-family:'Google Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;color:#999">Changed your mind? <a href="${unsubscribeUrl(addr)}" style="color:#999;text-decoration:underline">Unsubscribe in one click</a>.</p>`
 			})
 		});
 	} catch (error) {
@@ -111,7 +111,7 @@ export async function sendIssue(
 					bodyHtml:
 						p(esc(post.excerpt)) +
 						buttonDark('Read it', `${SITE}/blog/${post.slug}`) +
-						`<p style="margin:8px 0 0;font-family:Georgia,serif;font-size:12px;color:#999"><a href="${unsubscribeUrl(sub.email)}" style="color:#999;text-decoration:underline">Unsubscribe in one click</a></p>`
+						`<p style="margin:8px 0 0;font-family:'Google Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;color:#999"><a href="${unsubscribeUrl(sub.email)}" style="color:#999;text-decoration:underline">Unsubscribe in one click</a></p>`
 				})
 			});
 			sent++;
