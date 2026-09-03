@@ -1,5 +1,7 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"//buildCommand": "Migrations are deliberately NOT run here. The project setting was 'prisma migrate deploy && prisma generate && npm run build', which meant every build took a postgres advisory lock. Two builds at once, a push landing on top of a redeploy, and they deadlock: both died with P1002 'Timed out trying to acquire a postgres advisory lock'. Schema changes are applied with `npx prisma migrate deploy` as a deliberate step instead, so a deploy can never be blocked by, or race, a migration.",
+	"buildCommand": "prisma generate && npm run build",
 	"crons": [
 		{ "path": "/api/cron/daily", "schedule": "0 6 * * *" },
 		{ "path": "/api/cron/deliver", "schedule": "0 18 * * *" }
