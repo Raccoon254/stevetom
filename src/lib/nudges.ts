@@ -101,10 +101,15 @@ export const NUDGES: Record<NudgeId, Nudge> = {
 /* ─────────── timing ─────────── */
 
 /** A nudge needs this many page views in the visit before it may appear. */
-export const PAGES_BEFORE_NUDGE = 2;
+// One page is enough. Requiring a second page meant most visitors, who read
+// one thing and leave, never saw a nudge at all.
+export const PAGES_BEFORE_NUDGE = 1;
 
 /** ...and this long on that page, so it never lands mid-navigation. */
-export const SETTLE_MS = 8000;
+// Long enough that it never lands mid-navigation or while someone is still
+// deciding whether they are on the right page, short enough to actually happen
+// during a normal read.
+export const SETTLE_MS = 12000;
 
 const DAY = 86_400_000;
 const DISMISSED_DAYS = 60;

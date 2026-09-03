@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { tick, onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { sessionId, visitorId } from '$lib/analytics';
@@ -52,6 +53,59 @@
 		{ label: 'Email', heading: 'Email address' },
 		{ label: 'Review', heading: 'Review and pay' }
 	];
+
+	/*
+	 * Draft persistence.
+	 *
+	 * Reloading, or coming back from Paystack, used to drop every answer and put
+	 * the person back on step 1. Kept in sessionStorage rather than localStorage
+	 * so it dies with the tab: this holds a name and an email address, and it
+	 * should not outlive the sitting that produced it.
+	 */
+	const DRAFT_KEY = 'kt_sponsor_draft_v1';
+	let restored = false;
+
+	/*
+	 * Every value is passed in as an argument rather than read from the closure.
+	 * In Svelte 4 the dependency list for a reactive statement is built from the
+	 * identifiers that literally appear in it, so a helper that reads state
+	 * invisibly would simply never re-run.
+	 */
+	function saveDraft(
+		_step: number,
+		_furthest: number,
+		_tier: TierKey,
+		_cadence: Cadence,
+		_email: string,
+		_display: string,
+		_org: string,
+		_url: string,
+		_anon: boolean,
+		_stage: OtpStage,
+		_verified: string
+	) {
+		if (!browser || !restored) return;
+		try {
+			sessionStorage.setItem(
+				DRAFT_KEY,
+				JSON.stringify({
+					step: _step,
+					furthest: _furthest,
+					tier: _tier,
+					cadence: _cadence,
+					email: _email,
+					displayName: _display,
+					orgName: _org,
+					websiteUrl: _url,
+					anonymous: _anon,
+					otpStage: _stage,
+					verifiedEmail: _verified
+				})
+			);
+		} catch {
+			// storage full or blocked: the wizard still works, it just forgets
+		}
+	}
 
 	/* ─── wizard state ─── */
 	let stepIndex = 0;
@@ -116,6 +170,52 @@
 		const s = v.trim();
 		return s.length > 4 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 	}
+
+	onMount(() => {
+		try {
+			const raw = sessionStorage.getItem(DRAFT_KEY);
+			if (raw) {
+				const d = JSON.parse(raw) as Record<string, unknown>;
+				if (d.tier === 'standard' || d.tier === 'workshop') tier = d.tier;
+				if (d.cadence === 'RECURRING' || d.cadence === 'ONE_TIME') cadence = d.cadence;
+				if (typeof d.email === 'string') email = d.email;
+				if (typeof d.displayName === 'string') displayName = d.displayName;
+				if (typeof d.orgName === 'string') orgName = d.orgName;
+				if (typeof d.websiteUrl === 'string') websiteUrl = d.websiteUrl;
+				if (typeof d.anonymous === 'boolean') anonymous = d.anonymous;
+				if (typeof d.verifiedEmail === 'string') verifiedEmail = d.verifiedEmail;
+				// A verified stage is only honoured when the address still matches the
+				// one that was actually proved, so editing the email after a reload
+				// cannot inherit someone else's verification.
+				if (d.otpStage === 'verified' && verifiedEmail && verifiedEmail === email.trim().toLowerCase()) {
+					otpStage = 'verified';
+				} else if (d.otpStage === 'skipped') {
+					otpStage = 'skipped';
+				}
+				const f = typeof d.furthest === 'number' ? d.furthest : 0;
+				furthest = Math.min(Math.max(f, 0), STEPS.length - 1);
+				const st = typeof d.step === 'number' ? d.step : 0;
+				stepIndex = Math.min(Math.max(st, 0), furthest);
+			}
+		} catch {
+			// a corrupt draft is simply ignored, never fatal
+		}
+		restored = true;
+	});
+
+	$: saveDraft(
+		stepIndex,
+		furthest,
+		tier,
+		cadence,
+		email,
+		displayName,
+		orgName,
+		websiteUrl,
+		anonymous,
+		otpStage,
+		verifiedEmail
+	);
 
 	async function validateAndAdvance() {
 		if (stepIndex === 1) {
@@ -211,6 +311,8 @@
 				verifiedEmail = String(data.email || email).trim().toLowerCase();
 				email = verifiedEmail;
 				otpStage = 'verified';
+				// Verification is a means, not a destination.
+				goTo(3);
 			} else {
 				otpError = data.error || 'That code is not correct.';
 				digits = ['', '', '', '', '', ''];
@@ -564,6 +666,25 @@
 												digits = ['', '', '', '', '', ''];
 											}}>Use a different email</button
 										>
+									</div>
+
+									<!-- Without this the wizard dead-ends: verifying removed the only way
+									     forward, because "Continue without verifying" lives in the two
+									     unverified branches. Whoever verified their address could not reach
+									     the payment step at all. -->
+									<div class="nav-row">
+										<button type="button" class="ghost" on:click={() => goTo(1)}>
+											<span class="ar" aria-hidden="true"
+												><Icon name="arrow-left4" size={13} /></span
+											>
+											<span>Back</span>
+										</button>
+										<button type="button" class="go" on:click={() => goTo(3)}>
+											<span>Continue</span>
+											<span class="ar" aria-hidden="true"
+												><Icon name="arrow-right4" size={14} /></span
+											>
+										</button>
 									</div>
 								{:else if otpStage === 'sent'}
 									<p class="step-sub">
