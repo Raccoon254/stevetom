@@ -372,41 +372,6 @@
 
 		<div class="split">
 			<section class="wiz r r-4" aria-label="Sponsorship signup">
-				<!-- progress: a ruled bar plus a named, clickable step list. Each
-				     step's state is spelled out for screen readers as well as
-				     shown, so it never rests on colour alone. -->
-				<nav class="rail" aria-label="Signup steps">
-					<div class="rail-track" aria-hidden="true">
-						<span class="rail-fill" style="width:{((stepIndex + 1) / STEPS.length) * 100}%"></span>
-					</div>
-					<ol class="rail-list">
-						{#each STEPS as s, i}
-							<li class="rail-item" class:done={i < stepIndex} class:on={i === stepIndex}>
-								<button
-									type="button"
-									class="rail-btn"
-									disabled={i > furthest}
-									aria-current={i === stepIndex ? 'step' : undefined}
-									on:click={() => goTo(i)}
-								>
-									<span class="rail-n" aria-hidden="true">
-										{#if i < stepIndex}
-											<Icon name="tick-circle" size={12} />
-										{:else}
-											{i + 1}
-										{/if}
-									</span>
-									<span class="rail-t">{s.label}</span>
-									<span class="sr">
-										{#if i < stepIndex}completed{:else if i === stepIndex}current step{:else}not
-											started yet{/if}
-									</span>
-								</button>
-							</li>
-						{/each}
-					</ol>
-				</nav>
-
 				<div class="card">
 					<div class="card-top">
 						<span class="step-count">Step {stepIndex + 1} of {STEPS.length}</span>
@@ -940,18 +905,6 @@
 		max-width: 1000px;
 	}
 
-	.sr {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0 0 0 0);
-		white-space: nowrap;
-		border: 0;
-	}
-
 	/* Entrance: one orchestrated cascade rather than scattered effects. */
 	.r {
 		opacity: 0;
@@ -1038,78 +991,6 @@
 		grid-template-columns: 1fr 320px;
 		gap: clamp(24px, 4vw, 52px);
 		align-items: start;
-	}
-
-	/* ─────────── progress rail ─────────── */
-	.rail { margin-bottom: 22px; }
-	.rail-track {
-		height: 2px;
-		border-radius: 2px;
-		background: var(--mute-3);
-		overflow: hidden;
-	}
-	.rail-fill {
-		display: block;
-		height: 100%;
-		background: var(--spark);
-		transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-	}
-	.rail-list {
-		list-style: none;
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: 4px;
-		margin: 10px 0 0;
-		padding: 0;
-	}
-	.rail-btn {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		width: 100%;
-		padding: 4px 0;
-		border: 0;
-		background: none;
-		font: inherit;
-		color: var(--mute);
-		cursor: pointer;
-		text-align: left;
-		transition: color 0.25s ease;
-	}
-	.rail-btn:disabled { cursor: default; opacity: 0.55; }
-	.rail-btn:not(:disabled):hover { color: var(--ink-2); }
-	.rail-n {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 20px;
-		height: 20px;
-		flex: 0 0 auto;
-		border: var(--rail);
-		border-radius: 50%;
-		font-family: var(--mono);
-		font-size: 10px;
-		line-height: 0;
-		transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
-	}
-	.rail-item.on .rail-n {
-		border-color: var(--spark);
-		color: var(--spark);
-	}
-	.rail-item.done .rail-n {
-		border-color: transparent;
-		background: var(--mute-3);
-		color: var(--ink-2);
-	}
-	.rail-item.on .rail-t { color: var(--ink); }
-	.rail-t {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.2em;
-		text-transform: uppercase;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 	}
 
 	/* ─────────── the card ─────────── */
@@ -1641,20 +1522,6 @@
 		.gal--wide .gal-art { max-width: none; }
 	}
 	@media (max-width: 640px) {
-		.rail-list { grid-template-columns: repeat(4, auto); justify-content: start; gap: 12px; }
-		/* labels go quiet, not away: hiding them with display:none would strip
-		   them out of each button's accessible name too */
-		.rail-item:not(.on) .rail-t {
-			position: absolute;
-			width: 1px;
-			height: 1px;
-			padding: 0;
-			margin: -1px;
-			overflow: hidden;
-			clip: rect(0 0 0 0);
-			white-space: nowrap;
-			border: 0;
-		}
 		.gal-grid { grid-template-columns: 1fr; }
 		.live-art { max-width: none; }
 	}
@@ -1671,7 +1538,6 @@
 		.pane, .pane.rev { animation: none; }
 		.otp.shake { animation: none; }
 		.tier:hover, .go:hover:not(:disabled) { transform: none; }
-		.rail-fill { transition: none; }
-		.tier, .go, .ghost, .seg button, .rail-btn, .rail-n, .gal { transition: none; }
+		.tier, .go, .ghost, .seg button, .gal { transition: none; }
 	}
 </style>
