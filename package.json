@@ -10,7 +10,8 @@
 		"db:seed": "npx tsx prisma/seed.ts",
 		"icons": "node scripts/generate-icons.mjs",
 		"images": "node scripts/generate-image-dimensions.mjs",
-		"prebuild": "npm run icons && npm run images"
+		"prebuild": "prisma generate && npm run icons && npm run images",
+		"postinstall": "prisma generate"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^5.0.0",
